@@ -90,8 +90,10 @@ public class CommentServiceImpl  implements CommentService {
         commentVote.setDate(new Date());
         commentVote.setUser(userRepository.getOne(userId));
         commentVote.setComment(commentRepository.getOne(commentId));
+
         return commentVoteRepository.save(commentVote).getId();
     }
+
 
     @Override
     public void disLikeComment(Long commentId, Long userId){

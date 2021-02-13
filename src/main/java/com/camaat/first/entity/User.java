@@ -1,5 +1,6 @@
 package com.camaat.first.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,10 @@ public class User {
 
     private  String photoUrl;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    private  Speciality speciality;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private List<Post> posts =new ArrayList<>();
@@ -41,6 +46,7 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "user")
     private List<PostVote> postVote=new ArrayList<>();
+
 
 
 

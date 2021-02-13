@@ -32,6 +32,12 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private University university;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Speciality speciality;
+
     @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<PostVote> postVote=new ArrayList<>();
