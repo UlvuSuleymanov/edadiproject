@@ -20,11 +20,7 @@ public class UserProfile {
     private String email;
     private Date signUpDate;
 
-
-
-
-
-    @OneToOne(mappedBy ="userProfile" )
+    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = false,cascade =CascadeType.ALL )
     private User user;
 
 }

@@ -39,7 +39,7 @@ public class Post {
     private Speciality speciality;
 
     @LazyCollection(LazyCollectionOption.EXTRA)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
+    @OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<PostVote> postVote=new ArrayList<>();
 
 

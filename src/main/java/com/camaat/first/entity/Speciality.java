@@ -22,11 +22,17 @@ public class Speciality {
     //type u : Speciality of the university
     //type g : General speciality
     private char type;
-    private User addedBy;
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "speciality")
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality",orphanRemoval = false)
     private List<Post> postList= new ArrayList<>();;
+
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality",orphanRemoval = false)
+    private List<User> userList= new ArrayList<>();;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private  University university;
+
 
 
 }
