@@ -6,10 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -32,6 +30,8 @@ public class User {
     private String password;
 
     private  String photoUrl;
+
+    private Date birthDay;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

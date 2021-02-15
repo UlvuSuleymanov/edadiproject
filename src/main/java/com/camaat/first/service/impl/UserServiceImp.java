@@ -50,6 +50,7 @@ public class UserServiceImp implements UserService {
         user.setUsername(signUpRequestModel.getUsername());
         user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
         user.getAuthorities().add(UserAuthority.USER_READ);
+        user.getAuthorities().add(UserAuthority.ADMIN_UPDATE);
         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
         return user;
 

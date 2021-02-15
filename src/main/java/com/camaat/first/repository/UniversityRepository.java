@@ -1,4 +1,9 @@
 package com.camaat.first.repository;
 
-public interface UniversityRepository {
+import com.camaat.first.entity.University;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UniversityRepository extends JpaRepository<University,Long> {
 }

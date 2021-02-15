@@ -2,7 +2,12 @@ package com.camaat.first.entity;
 
     public enum UserAuthority {
         USER_READ("user:read"),
-        USER_UPDATE("user:update");
+        USER_UPDATE("user:update"),
+        ADMIN_READ("admin:read"),
+        ADMIN_UPDATE("admin:update");
+
+
+
 
 
         private final String permission;
