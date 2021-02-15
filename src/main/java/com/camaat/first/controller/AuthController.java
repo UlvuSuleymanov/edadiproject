@@ -40,6 +40,7 @@ import org.springframework.http.ResponseEntity;
     @RequestMapping(value = "/signup",method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody final SignUpRequestModel signUpRequestModel){
       SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
+
       signUpResponseModel = authenticationService.signUp(signUpRequestModel);
 
         return   ResponseEntity.ok(signUpResponseModel);

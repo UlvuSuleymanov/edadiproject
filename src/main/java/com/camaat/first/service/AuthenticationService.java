@@ -1,6 +1,6 @@
 package com.camaat.first.service;
 
- import com.camaat.first.model.response.SignInResponseModel;
+  import com.camaat.first.model.response.SignInResponseModel;
  import com.camaat.first.entity.User;
  import com.camaat.first.model.request.SignInRequestModel;
  import com.camaat.first.model.request.SignUpRequestModel;
@@ -9,8 +9,7 @@ package com.camaat.first.service;
 public interface AuthenticationService {
   SignUpResponseModel signUp(final SignUpRequestModel signUpRequestModel);
   SignUpResponseModel checkUserCredentials(SignUpRequestModel signUpRequestModel);
-
-  boolean checkUsername(String username);
+   boolean checkUsername(String username);
   boolean checkPassword(String password);
   boolean checkEmail(String email);
   boolean checkName(String name);

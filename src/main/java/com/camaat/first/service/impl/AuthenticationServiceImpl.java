@@ -8,12 +8,11 @@ import com.camaat.first.model.response.SignUpResponseModel;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.AuthenticationService;
 import com.camaat.first.service.UserService;
-import com.camaat.first.utility.DataParser;
 import com.camaat.first.utility.ImageUtil;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -31,6 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public SignUpResponseModel signUp(final SignUpRequestModel signUpRequestModel) {
         SignUpResponseModel signUpResponseModel =  checkUserCredentials(signUpRequestModel);
+
         if(signUpResponseModel.isNewUserIsValid())
         {
             User user = saveUser(signUpRequestModel);
@@ -101,6 +101,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return signUpResponseModel;
     }
+
+
+
 
 
     @Override

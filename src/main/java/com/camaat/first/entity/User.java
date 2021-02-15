@@ -49,8 +49,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<PostVote> postVote=new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
-    private  UserProfile userProfile;
 
 
 
