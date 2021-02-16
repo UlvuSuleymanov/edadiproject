@@ -13,5 +13,5 @@ import lombok.experimental.Accessors;
 public class UniResponseModel {
     private Long id;
     private String abbrName;
-    private String info;
+    private String name;
 }

@@ -44,6 +44,11 @@ public class UnversityServiceImpl implements UniversityService {
         UniResponseModel uniResponseModel = new UniResponseModel();
        return   uniResponseModel.setAbbrName(university.getAbbrName())
                 .setId(university.getId())
-                .setInfo(university.getInfo());
+                .setName(university.getName());
+    }
+
+    @Override
+    public UniResponseModel getUni(String abbrName) {
+        return null;
     }
 }

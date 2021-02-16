@@ -1,10 +1,13 @@
-package com.camaat.first.service.impl;
+package com.camaat.first.service;
 
 import com.camaat.first.entity.Speciality;
+import com.camaat.first.model.response.SpecialitySummaryResModel;
 
 import java.util.List;
 
 public interface SpecialityService {
-    List<Speciality> getGeneralSpeciality();
-    List<Speciality> getSpecialitye(Long uniID);
+    List<SpecialitySummaryResModel> getGeneralSpecialities();
+    List<Speciality> getSpecialtiesOfUni(Long uniID);
+    SpecialitySummaryResModel createSpecialitySummaryResModel(Speciality speciality);
+
 }
