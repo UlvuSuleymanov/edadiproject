@@ -4,6 +4,7 @@ import com.camaat.first.model.response.SpecialitySummaryResModel;
 import com.camaat.first.service.SpecialityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,10 +19,17 @@ public class SpecialityController {
         this.specialityService = specialityService;
     }
 
-    @GetMapping
+    @GetMapping("/general")
     ResponseEntity getGeneralSpecialityList(){
     List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getGeneralSpecialities();
     return ResponseEntity.ok(specialitySummaryResModelList);
     }
+
+    @GetMapping("/university/{id}")
+    ResponseEntity getSpecialityOfUni(@PathVariable Long id){
+        List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getSpecialtiesOfUni(id);
+        return ResponseEntity.ok(specialitySummaryResModelList);
+    }
+
 
 }

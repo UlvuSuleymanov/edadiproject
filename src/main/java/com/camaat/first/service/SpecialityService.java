@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SpecialityService {
     List<SpecialitySummaryResModel> getGeneralSpecialities();
-    List<Speciality> getSpecialtiesOfUni(Long uniID);
+    List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniID);
     SpecialitySummaryResModel createSpecialitySummaryResModel(Speciality speciality);
 
 }
