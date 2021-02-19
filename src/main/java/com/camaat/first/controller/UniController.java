@@ -2,6 +2,7 @@ package com.camaat.first.controller;
 
  import com.camaat.first.entity.University;
  import com.camaat.first.model.request.UniRequestModel;
+ import com.camaat.first.model.response.SpecialitySummaryResModel;
  import com.camaat.first.model.response.UniResponseModel;
  import com.camaat.first.repository.UniversityRepository;
  import com.camaat.first.service.UniversityService;
@@ -45,7 +46,12 @@ public class UniController {
     }
 
 
-    @GetMapping("/{id}/specialities")
+    @GetMapping("/{uniId}/specialities")
+    ResponseEntity getSpecialitiesOfUni(@PathVariable Long uniId){
+       List<SpecialitySummaryResModel>  specialitySummaryResModelList  = universityService.getSpecialtiesOfUni(uniId);
+        return ResponseEntity.ok(specialitySummaryResModelList);
+    }
+
 
 
 }

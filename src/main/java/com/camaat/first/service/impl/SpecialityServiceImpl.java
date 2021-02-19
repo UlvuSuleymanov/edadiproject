@@ -29,15 +29,7 @@ public class SpecialityServiceImpl implements SpecialityService {
                  .collect(Collectors.toList());
     }
 
-    @Override
-    public List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniId) {
-        List<Speciality> specialityList = specialityRepository.findByUniversityİd(uniId);
 
-        return specialityList.stream()
-                .map(speciality -> createSpecialitySummaryResModel(speciality))
-                .collect(Collectors.toList());
-
-    }
 
     @Override
     public SpecialitySummaryResModel createSpecialitySummaryResModel(Speciality speciality) {

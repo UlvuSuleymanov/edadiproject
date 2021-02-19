@@ -1,9 +1,13 @@
 package com.camaat.first.service.impl;
 
+import com.camaat.first.entity.Speciality;
 import com.camaat.first.entity.University;
 import com.camaat.first.model.request.UniRequestModel;
+import com.camaat.first.model.response.SpecialitySummaryResModel;
 import com.camaat.first.model.response.UniResponseModel;
+import com.camaat.first.repository.SpecialityRepository;
 import com.camaat.first.repository.UniversityRepository;
+import com.camaat.first.service.SpecialityService;
 import com.camaat.first.service.UniversityService;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +16,13 @@ import java.util.stream.Collectors;
 @Service
 public class UnversityServiceImpl implements UniversityService {
     private final UniversityRepository universityRepository;
+    private final SpecialityRepository specialityRepository;
+    private final SpecialityService specialityService;
 
-    public UnversityServiceImpl(UniversityRepository universityRepository) {
+    public UnversityServiceImpl(UniversityRepository universityRepository, SpecialityRepository specialityRepository, SpecialityService specialityService) {
         this.universityRepository = universityRepository;
+        this.specialityRepository = specialityRepository;
+        this.specialityService = specialityService;
     }
 
     @Override
@@ -45,6 +53,17 @@ public class UnversityServiceImpl implements UniversityService {
        return   uniResponseModel.setAbbrName(university.getAbbrName())
                 .setId(university.getId())
                 .setName(university.getName());
+    }
+
+
+    @Override
+    public List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniId) {
+        List<Speciality> specialityList = specialityRepository.findByUniversityId(uniId);
+
+        return specialityList.stream()
+                .map(speciality -> specialityService.createSpecialitySummaryResModel(speciality))
+                .collect(Collectors.toList());
+
     }
 
     @Override
