@@ -25,11 +25,7 @@ public class SpecialityController {
     return ResponseEntity.ok(specialitySummaryResModelList);
     }
 
-    @GetMapping("/university/{id}")
-    ResponseEntity getSpecialityOfUni(@PathVariable Long id){
-        List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getSpecialtiesOfUni(id);
-        return ResponseEntity.ok(specialitySummaryResModelList);
-    }
+
 
 
 }
