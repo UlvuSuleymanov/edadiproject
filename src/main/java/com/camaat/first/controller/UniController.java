@@ -44,4 +44,8 @@ public class UniController {
     return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    @GetMapping("/{id}/specialities")
+
+
 }

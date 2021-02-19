@@ -51,6 +51,8 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
 
+                .antMatchers(GET,"/api/search/**").permitAll()
+
                 .antMatchers(POST, "/api/auth/**").permitAll()
 
                 .antMatchers(GET,"/api/user/{username}").permitAll()
@@ -61,11 +63,9 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,"/api/posts").permitAll()
 
-                .antMatchers(GET,"/api/speciality").permitAll()
+                .antMatchers(GET,"/api/speciality/**").permitAll()
 
                 .antMatchers(GET,"/api/post/{postId}").permitAll()
-
-                .antMatchers(GET,"/api/search/**").permitAll()
 
                 .antMatchers(GET,"/api/uni").permitAll()
 

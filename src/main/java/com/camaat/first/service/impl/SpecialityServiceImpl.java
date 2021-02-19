@@ -2,6 +2,7 @@ package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.Speciality;
 import com.camaat.first.model.response.SpecialitySummaryResModel;
+import com.camaat.first.model.response.UniResponseModel;
 import com.camaat.first.repository.SpecialityRepository;
 import com.camaat.first.service.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,13 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
-    public List<Speciality> getSpecialtiesOfUni(Long uniID) {
-        return null;
+    public List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniId) {
+        List<Speciality> specialityList = specialityRepository.findByUniversityİd(uniId);
+
+        return specialityList.stream()
+                .map(speciality -> createSpecialitySummaryResModel(speciality))
+                .collect(Collectors.toList());
+
     }
 
     @Override
