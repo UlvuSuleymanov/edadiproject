@@ -35,7 +35,7 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
          String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
-         if(requestHeader!=null) {
+         if(requestHeader!=null && requestHeader!="") {
              try {
                  JwtProvider jwtProvider = new JwtProvider(jwtBean);
 
