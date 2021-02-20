@@ -69,6 +69,9 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,"/api/uni").permitAll()
 
+                .antMatchers(GET,"/api/uni/**").permitAll()
+
+
                 .antMatchers(GET,"/api/post/{postId}/comments").permitAll()
 
                  .anyRequest().authenticated()

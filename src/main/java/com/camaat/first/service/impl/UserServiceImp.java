@@ -44,14 +44,18 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User     userBuilder(SignUpRequestModel signUpRequestModel) {
+
+        if(signUpRequestModel.isStudent()){
+
+        }
         User user = new User();
         user.setName(signUpRequestModel.getName());
         user.setEmail(signUpRequestModel.getEmail());
         user.setUsername(signUpRequestModel.getUsername());
         user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
         user.getAuthorities().add(UserAuthority.USER_READ);
-        user.getAuthorities().add(UserAuthority.ADMIN_UPDATE);
-        user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
+
+         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
         return user;
 
     }
