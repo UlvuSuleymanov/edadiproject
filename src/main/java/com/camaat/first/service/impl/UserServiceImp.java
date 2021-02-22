@@ -1,18 +1,13 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.model.response.SignInResponseModel;
-import com.camaat.first.model.response.UserResponseModel;
+ import com.camaat.first.model.response.UserResponseModel;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.ImageService;
-import com.camaat.first.utility.UserEnum;
-import com.camaat.first.entity.User;
-import com.camaat.first.entity.UserAuthority;
-import com.camaat.first.model.UserPrincipalModel;
-import com.camaat.first.model.request.SignInRequestModel;
-import com.camaat.first.model.request.SignUpRequestModel;
+ import com.camaat.first.entity.User;
+ import com.camaat.first.model.UserPrincipalModel;
+
 import com.camaat.first.security.jwt.JwtBean;
-import com.camaat.first.security.jwt.JwtProvider;
-import com.camaat.first.service.UserService;
+ import com.camaat.first.service.UserService;
 import com.camaat.first.utility.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,23 +37,7 @@ public class UserServiceImp implements UserService {
         this.jwtBean = jwtBean;
     }
 
-    @Override
-    public User     userBuilder(SignUpRequestModel signUpRequestModel) {
 
-        if(signUpRequestModel.isStudent()){
-
-        }
-        User user = new User();
-        user.setName(signUpRequestModel.getName());
-        user.setEmail(signUpRequestModel.getEmail());
-        user.setUsername(signUpRequestModel.getUsername());
-        user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
-        user.getAuthorities().add(UserAuthority.USER_READ);
-
-         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
-        return user;
-
-    }
 
     @Override
     public UserResponseModel createUserSerponseModel(String username) {
@@ -99,68 +78,12 @@ public class UserServiceImp implements UserService {
 
     }
 
-    @Override
-    public SignInResponseModel login(SignInRequestModel signInRequestModel) {
-        JwtProvider jwtProvider = new JwtProvider(jwtBean);
-        String username = signInRequestModel.getUsername();
-        String password = signInRequestModel.getPassword();
-        User user;
-
-
-        if(userRepository.existsByUsername(username) || userRepository.existsByEmail(username))
-        {
-            user = userRepository.findByUsernameOrEmail(username,username)
-                    .orElseThrow(() ->
-                            new UsernameNotFoundException("User not found with username or email : " + username)
-                    );
-
-        }
-        else {
-            return  new SignInResponseModel("","",false,false,"");
-
-
-        }
-
-
-        if(!passwordEncoder.matches(password,user.getPassword())){
-            return  new SignInResponseModel("","",true,false,"");
-
-        }
-
-        String token = jwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities());
-
-        return  new SignInResponseModel(user.getUsername(),token,true,true, ImageUtil.generatePhotoUrl(user.getPhotoUrl()) );
 
 
 
 
-
-
-
-
-
-
-
-
-    }
-
-    @Override
-    public boolean checkPassword(String password) {
-
-    if(password!=null) {
-        if (password.trim().length() < 3)
-            return false;
-        else {
-            return true;
-        }
-
-
-    }
-        return false;
-    }
-
-
-    public static UserPrincipalModel createUserPrincipial(User user) {
+     @Override
+    public  UserPrincipalModel createUserPrincipial(User user) {
         List<GrantedAuthority> authorities = user.getAuthorities().stream().map(authority ->
                 new SimpleGrantedAuthority(authority.getPermission())
         ).collect(Collectors.toList());
@@ -173,6 +96,7 @@ public class UserServiceImp implements UserService {
                 user.getPassword(),
                 authorities
         );
+
     }
 
 

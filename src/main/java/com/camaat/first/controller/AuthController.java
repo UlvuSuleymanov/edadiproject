@@ -30,7 +30,7 @@ import org.springframework.http.ResponseEntity;
 
     @RequestMapping(value = "signin",method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody SignInRequestModel signInRequestModel){
-    SignInResponseModel signUpResponseModel=   userService.login(signInRequestModel);
+    SignInResponseModel signUpResponseModel=   authenticationService.signIn(signInRequestModel);
 
     return  ResponseEntity.ok(signUpResponseModel);
 

@@ -1,14 +1,18 @@
 package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.User;
+import com.camaat.first.entity.UserAuthority;
 import com.camaat.first.model.request.SignInRequestModel;
 import com.camaat.first.model.request.SignUpRequestModel;
 import com.camaat.first.model.response.SignInResponseModel;
 import com.camaat.first.model.response.SignUpResponseModel;
 import com.camaat.first.repository.UserRepository;
+import com.camaat.first.security.jwt.JwtBean;
+import com.camaat.first.security.jwt.JwtProvider;
 import com.camaat.first.service.AuthenticationService;
 import com.camaat.first.service.UserService;
 import com.camaat.first.utility.ImageUtil;
+import com.camaat.first.utility.UserEnum;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,12 +24,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private  final UserRepository userRepository;
     private  final UserService userService;
     private  final PasswordEncoder passwordEncoder;
+    private final JwtBean jwtBean;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtBean = jwtBean;
     }
+
+
 
     @Override
     public SignUpResponseModel signUp(final SignUpRequestModel signUpRequestModel) {
@@ -54,16 +62,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return isGoodUsername;
     }
 
+
+
     @Override
     public boolean checkPassword(String password) {
-        boolean isGoodPassword=true;
-        if(password.length()<6)
-        {
-            isGoodPassword= false;
+
+        boolean isGood=true;
+
+        if(password!=null) {
+
+            if (password.trim().length() < 6)
+                isGood= false;
+            else {
+                isGood=true;
+            }
+
+
+        }
+        else{
+            isGood=false;
         }
 
-        return isGoodPassword;
+
+
+        return isGood;
     }
+
+
 
     @Override
     public boolean checkEmail(String email) {
@@ -80,7 +105,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User saveUser(SignUpRequestModel signUpRequestModel) {
-       User newUser= userService.userBuilder(signUpRequestModel);
+       User newUser= userBuilder(signUpRequestModel);
        User user = userRepository.save(newUser);
        return user;
     }
@@ -105,18 +130,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 
-
     @Override
     public SignInResponseModel signIn(SignInRequestModel signInRequestModel) {
+        JwtProvider jwtProvider = new JwtProvider(jwtBean);
         String username = signInRequestModel.getUsername();
         String password = signInRequestModel.getPassword();
-        SignInResponseModel signInResponseModel=new SignInResponseModel();
-
-        User  user ;
-        boolean userIsExists =userRepository.existsByUsername(username) || userRepository.existsByEmail(username);
+        User user;
 
 
-        if(userIsExists)
+        if(userRepository.existsByUsername(username) || userRepository.existsByEmail(username))
         {
             user = userRepository.findByUsernameOrEmail(username,username)
                     .orElseThrow(() ->
@@ -136,12 +158,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         }
 
-//        String token = JwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities(), jwtBean);
-        String token =" JwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities(), jwtBean);";
+        String token = jwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities());
 
         return  new SignInResponseModel(user.getUsername(),token,true,true, ImageUtil.generatePhotoUrl(user.getPhotoUrl()) );
 
 
+
+    }
+
+
+
+    @Override
+    public User     userBuilder(SignUpRequestModel signUpRequestModel) {
+
+        if(signUpRequestModel.isStudent()){
+
+        }
+        User user = new User();
+        user.setName(signUpRequestModel.getName());
+        user.setEmail(signUpRequestModel.getEmail());
+        user.setUsername(signUpRequestModel.getUsername());
+        user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
+        user.getAuthorities().add(UserAuthority.USER_READ);
+
+        user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
+        return user;
 
     }
 

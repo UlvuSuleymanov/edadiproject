@@ -1,10 +1,7 @@
 package com.camaat.first.service;
-
-import com.camaat.first.model.response.SignInResponseModel;
-import com.camaat.first.model.response.UserResponseModel;
 import com.camaat.first.entity.User;
-import com.camaat.first.model.request.SignInRequestModel;
-import com.camaat.first.model.request.SignUpRequestModel;
+import com.camaat.first.model.UserPrincipalModel;
+import com.camaat.first.model.response.UserResponseModel;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -14,22 +11,23 @@ public interface UserService {
        * The Creator is God. But figuratively this method create a user.
        * First method check user details
        * if all values are suitable method save user :)
-       * @param signUpRequestModel
+       * @param
        * @return
        */
-      User userBuilder(SignUpRequestModel signUpRequestModel);
 
 
       UserResponseModel createUserSerponseModel(String username);
 
 
+      UserPrincipalModel createUserPrincipial(User user);
 
 
       String setPhoto(MultipartFile multipartFile ,String username);
 
-      SignInResponseModel login (SignInRequestModel signInRequestModel);
-
-      boolean checkPassword(String password);
+//      SignInResponseModel login (SignInRequestModel signInRequestModel);
+//      User userBuilder(SignUpRequestModel signUpRequestModel);
+//
+//      boolean checkPassword(String password);
 
 
 }

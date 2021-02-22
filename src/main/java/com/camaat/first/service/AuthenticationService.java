@@ -15,4 +15,9 @@ public interface AuthenticationService {
   boolean checkName(String name);
   User saveUser(SignUpRequestModel signUpRequestModel);
   SignInResponseModel signIn(SignInRequestModel signInRequestModel);
-}
+
+
+//    SignInResponseModel login (SignInRequestModel signInRequestModel);
+    User userBuilder(SignUpRequestModel signUpRequestModel);
+
+ }
