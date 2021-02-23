@@ -8,13 +8,13 @@ import com.camaat.first.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserPrincipalServiceImp implements UserPrincipalService {
 
     private  final UserService userService;
     private final UserRepository userRepository;
+
     @Autowired
     public UserPrincipalServiceImp(UserService userService, UserRepository userRepository) {
         this.userService = userService;
@@ -22,7 +22,7 @@ public class UserPrincipalServiceImp implements UserPrincipalService {
     }
 
     @Override
-    @Transactional
+
     public UserPrincipalModel loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
@@ -34,7 +34,7 @@ public class UserPrincipalServiceImp implements UserPrincipalService {
     }
 
      @Override
-     @Transactional
+
      public UserPrincipalModel loadUserById(Long id){
         User user = userRepository.getOne(id);
         return userService.createUserPrincipial(user);
