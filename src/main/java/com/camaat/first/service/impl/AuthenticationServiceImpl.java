@@ -1,21 +1,25 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.User;
-import com.camaat.first.entity.UserAuthority;
+import com.camaat.first.entity.*;
 import com.camaat.first.model.request.SignInRequestModel;
 import com.camaat.first.model.request.SignUpRequestModel;
 import com.camaat.first.model.response.SignInResponseModel;
 import com.camaat.first.model.response.SignUpResponseModel;
+import com.camaat.first.repository.SpecialityOfferRepository;
+import com.camaat.first.repository.SpecialityRepository;
+import com.camaat.first.repository.UniversityRepository;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.security.jwt.JwtBean;
 import com.camaat.first.security.jwt.JwtProvider;
 import com.camaat.first.service.AuthenticationService;
+import com.camaat.first.service.SpecialityService;
 import com.camaat.first.service.UserService;
 import com.camaat.first.utility.ImageUtil;
-import com.camaat.first.utility.UserEnum;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -25,39 +29,93 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private  final UserService userService;
     private  final PasswordEncoder passwordEncoder;
     private final JwtBean jwtBean;
+    private  final SpecialityRepository  specialityRepository;
+    private  final UniversityRepository universityRepository;
+    private  final SpecialityService specialityService;
+    private final SpecialityOfferRepository specialityOfferRepository;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean) {
+    private  User user;
+
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean, SpecialityRepository specialityRepository, UniversityRepository universityRepository, SpecialityService specialityService, SpecialityOfferRepository specialityOfferRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtBean = jwtBean;
+        this.specialityRepository = specialityRepository;
+        this.universityRepository = universityRepository;
+        this.specialityService = specialityService;
+        this.specialityOfferRepository = specialityOfferRepository;
     }
 
 
 
     @Override
     public SignUpResponseModel signUp(final SignUpRequestModel signUpRequestModel) {
-        SignUpResponseModel signUpResponseModel =  checkUserCredentials(signUpRequestModel);
 
-        if(signUpResponseModel.isNewUserIsValid())
-        {
-            User user = saveUser(signUpRequestModel);
+          user = new User();
+        SignUpResponseModel signUpResponseModel =  new SignUpResponseModel();
+
+
+        signUpResponseModel.setEmailIsValid(setEmail(signUpRequestModel.getEmail()))
+                .setUsernameIsValid(setUsername(signUpRequestModel.getUsername()))
+                .setNameIsValid(setName(signUpRequestModel.getName()))
+                .setPasswordIsValid(setPassword(signUpRequestModel.getPassword()));
+
+        if(signUpRequestModel.getIsStudent()){
+            signUpResponseModel.setUniversityIsValid(setUniversity(signUpRequestModel.getUniId()));
+
+            if(signUpRequestModel.getSpecialityIsExists()){
+                signUpResponseModel.setSpecialityIsValid(setSpeciality(signUpRequestModel.getSpecialityId()));
+            }
+
         }
 
-        return signUpResponseModel;
+
+
+
+
+
+        if(signUpResponseModel.isEmailIsValid()
+           &&signUpResponseModel.isUsernameIsValid()
+           &&signUpResponseModel.isNameIsValid()
+           &&signUpResponseModel.isPasswordIsValid())
+        {
+
+            if(signUpRequestModel.getIsStudent()&& !signUpRequestModel.getSpecialityIsExists())
+            {
+                SpecialityOffer speciality = new SpecialityOffer();
+                speciality.setName(signUpRequestModel.getNewSpecialityText());
+                speciality.setAuthor(user.getUsername());
+                speciality.setUniId(signUpRequestModel.getUniId());
+                specialityOfferRepository.save(speciality);
+            }
+
+                 userRepository.save(user);
+                return signUpResponseModel.setNewUserIsValid(true);
+
+
+        }
+
+
+        return signUpResponseModel.setNewUserIsValid(false);
 
     }
 
+
     @Override
-    public boolean checkUsername(String username) {
+    public boolean setUsername(String username) {
         boolean isGoodUsername=true;
+
         if(username.length()>40)
         {
-            isGoodUsername=false;
-            return isGoodUsername;
+         return false;
         }
 
         isGoodUsername = !userRepository.existsByUsername(username);
+
+        if(isGoodUsername)
+          user.setUsername(username);
+
 
         return isGoodUsername;
     }
@@ -65,7 +123,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public boolean checkPassword(String password) {
+    public boolean setPassword(String password) {
 
         boolean isGood=true;
 
@@ -84,6 +142,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
 
+        if(isGood)
+        {
+            user.setPassword(passwordEncoder.encode(password));
+
+        }
+
+
+
 
         return isGood;
     }
@@ -91,41 +157,61 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public boolean checkEmail(String email) {
+    public boolean setEmail(String email) {
       boolean isGoodEmail=true;
       isGoodEmail=!userRepository.existsByEmail(email);
+
+         if(isGoodEmail)
+          user.setEmail(email);
       return isGoodEmail;
 
     }
 
     @Override
-    public boolean checkName(String name) {
+    public boolean setName(String name) {
+        user.setName(name);
         return true;
     }
 
     @Override
-    public User saveUser(SignUpRequestModel signUpRequestModel) {
-       User newUser= userBuilder(signUpRequestModel);
-       User user = userRepository.save(newUser);
-       return user;
-    }
+    public boolean setUniversity(Long uniId) {
+        Optional<University> universityOptional = universityRepository.findById(uniId);
 
+        System.out.println("line178"+universityOptional.isPresent());
+        if(universityOptional.isPresent())
+        {
+            user.setUniversity(universityOptional.get());
+            return true;
+        }
+        return false;
+    }
 
 
     @Override
-    public SignUpResponseModel checkUserCredentials(SignUpRequestModel signUpRequestModel) {
-        SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
-        signUpResponseModel
-                .setEmailIsValid(checkEmail(signUpRequestModel.getEmail()))
-                .setUsernameIsValid(checkUsername(signUpRequestModel.getUsername()))
-                .setPasswordIsValid(checkPassword(signUpRequestModel.getPassword()));
-        if(signUpResponseModel.isEmailIsValid()&&signUpResponseModel.isPasswordIsValid()&&signUpResponseModel.isUsernameIsValid() )
-        {
-            signUpResponseModel.setNewUserIsValid(true);
+    public boolean setSpeciality(Long specialityId) {
+
+        Optional<Speciality> specialityOptional= specialityRepository.findById(specialityId);
+        boolean isGood=false;
+        if(specialityOptional.isPresent() ){
+           isGood= specialityOptional.get().getUniversity().getId().longValue()==user.getUniversity().getId().longValue();
+
+
         }
 
-        return signUpResponseModel;
+       if(isGood){
+           user.setSpeciality(specialityOptional.get());
+       }
+
+       return isGood;
+
     }
+
+
+
+
+
+
+
 
 
 
@@ -168,23 +254,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 
-    @Override
-    public User     userBuilder(SignUpRequestModel signUpRequestModel) {
-
-        if(signUpRequestModel.isStudent()){
-
-        }
-        User user = new User();
-        user.setName(signUpRequestModel.getName());
-        user.setEmail(signUpRequestModel.getEmail());
-        user.setUsername(signUpRequestModel.getUsername());
-        user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
-        user.getAuthorities().add(UserAuthority.USER_READ);
-
-        user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
-        return user;
-
-    }
+//    @Override
+//    public User userBuilder(SignUpRequestModel signUpRequestModel) {
+//
+//        if(signUpRequestModel.isStudent()){
+//
+//        }
+//        User user = new User();
+//        user.setName(signUpRequestModel.getName());
+//        user.setEmail(signUpRequestModel.getEmail());
+//        user.setUsername(signUpRequestModel.getUsername());
+//        user.setPhotoUrl(UserEnum.DEFAULT_USER_IMAGE_NAME.getImageName());
+//        user.getAuthorities().add(UserAuthority.USER_READ);
+//
+//        user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
+//        return user;
+//
+//    }
 
 
 

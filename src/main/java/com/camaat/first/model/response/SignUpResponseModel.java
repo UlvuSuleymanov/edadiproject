@@ -14,5 +14,7 @@ public class SignUpResponseModel {
      private boolean emailIsValid;
      private boolean passwordIsValid;
      private boolean nameIsValid;
+     private boolean universityIsValid;
+     private boolean specialityIsValid;
      private  boolean newUserIsValid;
 }

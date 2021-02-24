@@ -17,6 +17,6 @@ public class SignUpRequestModel {
      private Long uniId;
      private Long specialityId;
      private String newSpecialityText;
-     private boolean specialityIsExists;
-     private boolean isStudent;
+     private Boolean specialityIsExists;
+     private Boolean isStudent;
 }

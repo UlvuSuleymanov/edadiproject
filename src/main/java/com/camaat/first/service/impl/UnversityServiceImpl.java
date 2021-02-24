@@ -67,6 +67,11 @@ public class UnversityServiceImpl implements UniversityService {
     }
 
     @Override
+    public boolean existsById(Long id) {
+      return   universityRepository.existsById(id);
+    }
+
+    @Override
     public UniResponseModel getUni(String abbrName) {
         return null;
     }

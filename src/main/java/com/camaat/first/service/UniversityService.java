@@ -13,5 +13,5 @@ public interface UniversityService {
     UniResponseModel getUniResponseModel(University university);
     UniResponseModel getUni(String abbrName);
     List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniID);
-
+    boolean  existsById(Long id);
 }
