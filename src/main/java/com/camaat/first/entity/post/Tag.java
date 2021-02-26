@@ -1,5 +1,6 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.post;
 
+import com.camaat.first.entity.post.Post;
 import lombok.AllArgsConstructor;
  import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;

@@ -1,7 +1,7 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.Speciality;
-import com.camaat.first.entity.University;
+import com.camaat.first.entity.university.Speciality;
+import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.UniRequestModel;
 import com.camaat.first.model.response.SpecialitySummaryResModel;
 import com.camaat.first.model.response.UniResponseModel;

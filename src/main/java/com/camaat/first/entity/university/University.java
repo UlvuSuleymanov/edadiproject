@@ -1,5 +1,8 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.university;
 
+import com.camaat.first.entity.User;
+import com.camaat.first.entity.post.Post;
+import com.camaat.first.entity.university.Speciality;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +29,7 @@ public class University {
     private List<Post> postList= new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
-    private List<Speciality> specialityList= new ArrayList<>();;
+    private List<UniSpeciality> uniSpecialityList= new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
     private List<User> userList= new ArrayList<>();;

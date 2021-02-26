@@ -1,5 +1,7 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.post;
 
+import com.camaat.first.entity.User;
+import com.camaat.first.entity.post.Comment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +24,7 @@ public class CommentVote {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    private  User user;
+    private User user;
 
     private Date date;
 

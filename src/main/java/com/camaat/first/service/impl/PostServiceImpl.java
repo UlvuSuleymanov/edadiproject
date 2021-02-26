@@ -1,8 +1,8 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.Post;
-import com.camaat.first.entity.PostVote;
-import com.camaat.first.entity.Tag;
+import com.camaat.first.entity.post.Post;
+import com.camaat.first.entity.post.PostVote;
+import com.camaat.first.entity.post.Tag;
 import com.camaat.first.entity.User;
 import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.repository.PostRepository;
@@ -20,7 +20,6 @@ import com.camaat.first.service.S3Service;
  import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

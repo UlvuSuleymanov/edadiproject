@@ -1,6 +1,6 @@
 package com.camaat.first.repository;
 
-import com.camaat.first.entity.University;
+import com.camaat.first.entity.university.University;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

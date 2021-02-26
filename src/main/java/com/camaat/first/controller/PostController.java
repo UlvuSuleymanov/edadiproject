@@ -1,10 +1,10 @@
 package com.camaat.first.controller;
 
-import com.camaat.first.entity.PostVote;
+import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.TagService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.camaat.first.entity.Post;
+import com.camaat.first.entity.post.Post;
 import com.camaat.first.model.request.PostRequestModel;
 import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.repository.PostRepository;

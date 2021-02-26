@@ -1,5 +1,9 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.post;
 
+import com.camaat.first.entity.*;
+import com.camaat.first.entity.university.Speciality;
+import com.camaat.first.entity.university.UniSpeciality;
+import com.camaat.first.entity.university.University;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,9 +42,14 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private Speciality speciality;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UniSpeciality uniSpeciality;
+
     @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<PostVote> postVote=new ArrayList<>();
+
+
 
 
    @LazyCollection(LazyCollectionOption.EXTRA)

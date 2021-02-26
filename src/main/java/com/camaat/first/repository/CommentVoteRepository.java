@@ -1,6 +1,6 @@
 package com.camaat.first.repository;
 
-import com.camaat.first.entity.CommentVote;
+ import com.camaat.first.entity.post.CommentVote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

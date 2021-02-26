@@ -1,6 +1,9 @@
 package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.*;
+import com.camaat.first.entity.university.Speciality;
+import com.camaat.first.entity.university.SpecialityOffer;
+import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.SignInRequestModel;
 import com.camaat.first.model.request.SignUpRequestModel;
 import com.camaat.first.model.response.SignInResponseModel;
@@ -90,6 +93,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 specialityOfferRepository.save(speciality);
             }
 
+                 user.setPhotoUrl("default");
+                 user.getAuthorities().add(UserAuthority.USER_READ);
                  userRepository.save(user);
                 return signUpResponseModel.setNewUserIsValid(true);
 
@@ -193,14 +198,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<Speciality> specialityOptional= specialityRepository.findById(specialityId);
         boolean isGood=false;
         if(specialityOptional.isPresent() ){
-           isGood= specialityOptional.get().getUniversity().getId().longValue()==user.getUniversity().getId().longValue();
+//           isGood= specialityOptional.get().getUniversity().getId().longValue()==user.getUniversity().getId().longValue();
 
 
         }
 
-       if(isGood){
-           user.setSpeciality(specialityOptional.get());
-       }
+//       if(isGood){
+//           user.setSpeciality(specialityOptional.get());
+//       }
 
        return isGood;
 

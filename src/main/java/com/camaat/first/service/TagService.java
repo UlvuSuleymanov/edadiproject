@@ -1,6 +1,6 @@
 package com.camaat.first.service;
-import com.camaat.first.entity.Tag;
-import com.camaat.first.entity.Post;
+import com.camaat.first.entity.post.Tag;
+import com.camaat.first.entity.post.Post;
 import com.camaat.first.model.response.TagResponseModel;
 
 import java.util.Set;

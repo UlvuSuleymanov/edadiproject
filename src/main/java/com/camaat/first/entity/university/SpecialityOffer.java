@@ -1,4 +1,4 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.university;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

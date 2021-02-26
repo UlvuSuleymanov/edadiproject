@@ -1,5 +1,6 @@
-package com.camaat.first.entity;
+package com.camaat.first.entity.post;
 
+import com.camaat.first.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

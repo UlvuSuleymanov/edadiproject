@@ -1,7 +1,7 @@
 package com.camaat.first.service;
 
-import com.camaat.first.entity.Post;
-import com.camaat.first.entity.PostVote;
+import com.camaat.first.entity.post.Post;
+import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.model.request.PostRequestModel;
 import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.model.response.SearchResultResponseModel;

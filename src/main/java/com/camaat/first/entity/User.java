@@ -1,5 +1,10 @@
 package com.camaat.first.entity;
 
+import com.camaat.first.entity.post.Comment;
+import com.camaat.first.entity.post.Post;
+import com.camaat.first.entity.post.PostVote;
+import com.camaat.first.entity.university.UniSpeciality;
+import com.camaat.first.entity.university.University;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +40,10 @@ public class User {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private  Speciality speciality;
+    private UniSpeciality uniSpeciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private  University university;
+    private University university;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Post> posts =new ArrayList<>();

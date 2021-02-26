@@ -1,8 +1,7 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.Speciality;
+import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.model.response.SpecialitySummaryResModel;
-import com.camaat.first.model.response.UniResponseModel;
 import com.camaat.first.repository.SpecialityRepository;
 import com.camaat.first.service.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         SpecialitySummaryResModel specialitySummaryResModel = new SpecialitySummaryResModel();
 
       return    specialitySummaryResModel.setId(speciality.getId())
-                .setName(speciality.getName());
+                .setName("speciality.getName()");
     }
 }

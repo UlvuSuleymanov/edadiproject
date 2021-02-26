@@ -1,8 +1,8 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.Comment;
-import com.camaat.first.entity.CommentVote;
-import com.camaat.first.entity.Post;
+import com.camaat.first.entity.post.Comment;
+import com.camaat.first.entity.post.CommentVote;
+import com.camaat.first.entity.post.Post;
 import com.camaat.first.entity.User;
 import com.camaat.first.model.request.CommentRequestModel;
 import com.camaat.first.model.response.CommentResponseModel;
