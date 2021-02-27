@@ -19,7 +19,8 @@ public class UniSpeciality {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    private String nameAz;
     private String nameEng;
 
 

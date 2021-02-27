@@ -5,22 +5,30 @@ package com.camaat.first.controller;
  import com.camaat.first.model.response.SpecialitySummaryResModel;
  import com.camaat.first.model.response.UniResponseModel;
  import com.camaat.first.repository.UniversityRepository;
+ import com.camaat.first.service.UniSpecialityService;
  import com.camaat.first.service.UniversityService;
  import org.springframework.http.HttpStatus;
  import org.springframework.http.ResponseEntity;
  import org.springframework.security.access.prepost.PreAuthorize;
  import org.springframework.web.bind.annotation.*;
 
+ import java.util.ArrayList;
  import java.util.List;
+ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/uni")
 public class UniController {
     private  final UniversityRepository universityRepository;
     private  final UniversityService universityService;
-    public UniController(UniversityRepository universityRepository, UniversityService universityService) {
+    private final UniSpecialityService uniSpecialityService;
+    public UniController(UniversityRepository universityRepository,
+                         UniversityService universityService,
+                         UniSpecialityService uniSpecialityService) {
+
         this.universityRepository = universityRepository;
         this.universityService = universityService;
+        this.uniSpecialityService = uniSpecialityService;
     }
 
 
@@ -42,14 +50,15 @@ public class UniController {
     @GetMapping("/{abbrName}")
     ResponseEntity getUni(@PathVariable String abbrName){
 
+
     return new ResponseEntity(HttpStatus.OK);
     }
 
 
-    @GetMapping("/{uniId}/specialities")
-    ResponseEntity getSpecialitiesOfUni(@PathVariable Long uniId){
-       List<SpecialitySummaryResModel>  specialitySummaryResModelList  = universityService.getSpecialtiesOfUni(uniId);
-        return ResponseEntity.ok(specialitySummaryResModelList);
+    @GetMapping("/{name}/specialities")
+    ResponseEntity getSpecialitiesOfUni(@PathVariable String name){
+
+        return ResponseEntity.ok(uniSpecialityService.getSpecialitiesOfUni(name));
     }
 
 

@@ -1,6 +1,6 @@
 package com.camaat.first.service.impl;
 
-import com.camaat.first.entity.university.Speciality;
+ import com.camaat.first.entity.university.UniSpeciality;
 import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.UniRequestModel;
 import com.camaat.first.model.response.SpecialitySummaryResModel;
@@ -11,7 +11,7 @@ import com.camaat.first.service.SpecialityService;
 import com.camaat.first.service.UniversityService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+ import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class UnversityServiceImpl implements UniversityService {
@@ -28,9 +28,9 @@ public class UnversityServiceImpl implements UniversityService {
     @Override
     public University createUni(UniRequestModel uniRequestModel) {
          University university = new University();
-         university.setAbbrName(uniRequestModel.getAbbrName());
+         university.setAbbr(uniRequestModel.getAbbrName());
          university.setInfo(uniRequestModel.getInfo());
-         university.setName(uniRequestModel.getName());
+         university.setNameAz(uniRequestModel.getName());
          return university;
     }
 
@@ -50,21 +50,13 @@ public class UnversityServiceImpl implements UniversityService {
     @Override
     public UniResponseModel getUniResponseModel(University university) {
         UniResponseModel uniResponseModel = new UniResponseModel();
-       return   uniResponseModel.setAbbrName(university.getAbbrName())
+       return   uniResponseModel.setAbbrName(university.getAbbr())
                 .setId(university.getId())
-                .setName(university.getName());
+                .setName(university.getNameAz());
     }
 
 
-    @Override
-    public List<SpecialitySummaryResModel> getSpecialtiesOfUni(Long uniId) {
-        List<Speciality> specialityList = specialityRepository.findByUniversityId(uniId);
 
-        return specialityList.stream()
-                .map(speciality -> specialityService.createSpecialitySummaryResModel(speciality))
-                .collect(Collectors.toList());
-
-    }
 
     @Override
     public boolean existsById(Long id) {

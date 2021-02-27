@@ -18,9 +18,10 @@ public class SpecialityController {
         this.specialityService = specialityService;
     }
 
-    @GetMapping("/general")
+
+    @GetMapping()
     ResponseEntity getGeneralSpecialityList(){
-    List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getGeneralSpecialities();
+    List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getSpecialities();
     return ResponseEntity.ok(specialitySummaryResModelList);
     }
 

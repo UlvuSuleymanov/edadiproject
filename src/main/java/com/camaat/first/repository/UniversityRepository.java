@@ -11,6 +11,11 @@ public interface UniversityRepository extends JpaRepository<University,Long> {
 
     boolean existsById(Long id);
 
+    Optional<University> findByAbbr(String abbr);
+
     @Override
     Optional<University> findById(Long id);
+
+//    Optional<University> findByName(String name);
+
 }

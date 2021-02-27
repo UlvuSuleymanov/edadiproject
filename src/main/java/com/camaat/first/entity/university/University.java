@@ -21,8 +21,14 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
-    private String abbrName;
-    private String name;
+    @Column(unique = true)
+    private String abbr;
+
+    private String abbrAz;
+    private String nameAz;
+    private String nameEn;
+
+
     private String info;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")

@@ -6,7 +6,7 @@ import com.camaat.first.model.response.SpecialitySummaryResModel;
 import java.util.List;
 
 public interface SpecialityService {
-    List<SpecialitySummaryResModel> getGeneralSpecialities();
+    List<SpecialitySummaryResModel> getSpecialities();
     SpecialitySummaryResModel createSpecialitySummaryResModel(Speciality speciality);
 
 }

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class SpecialityServiceImpl implements SpecialityService {
     private  final SpecialityRepository specialityRepository;
+
     @Autowired
     public SpecialityServiceImpl(SpecialityRepository specialityRepository) {
         this.specialityRepository = specialityRepository;
@@ -20,8 +21,8 @@ public class SpecialityServiceImpl implements SpecialityService {
 
 
     @Override
-    public List<SpecialitySummaryResModel> getGeneralSpecialities() {
-         List<Speciality> specialityList = specialityRepository.findByUniversityIsNull();
+    public List<SpecialitySummaryResModel> getSpecialities() {
+         List<Speciality> specialityList = specialityRepository.findAll();
 
        return   specialityList.stream()
                  .map(speciality -> createSpecialitySummaryResModel(speciality))
@@ -35,6 +36,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         SpecialitySummaryResModel specialitySummaryResModel = new SpecialitySummaryResModel();
 
       return    specialitySummaryResModel.setId(speciality.getId())
-                .setName("speciality.getName()");
+                .setName(speciality.getNameAze());
     }
 }
