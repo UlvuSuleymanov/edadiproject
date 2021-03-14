@@ -1,7 +1,6 @@
 package com.camaat.first.service.impl;
 
- import com.camaat.first.entity.university.Speciality;
- import com.camaat.first.entity.university.UniSpeciality;
+  import com.camaat.first.entity.university.UniSpeciality;
  import com.camaat.first.entity.university.University;
  import com.camaat.first.model.response.SpecialitySummaryResModel;
  import com.camaat.first.repository.UniSpecialityRepository;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
  import java.util.ArrayList;
  import java.util.List;
  import java.util.Optional;
- import java.util.stream.Collectors;
+  import java.util.stream.Collectors;
 
 @Service
 public class UniSpecialityServiceImpl implements UniSpecialityService{
@@ -29,6 +28,7 @@ public class UniSpecialityServiceImpl implements UniSpecialityService{
     public SpecialitySummaryResModel createUniSpecialityResponseModel(UniSpeciality uniSpeciality) {
         SpecialitySummaryResModel specialitySummaryResModel = new SpecialitySummaryResModel();
         specialitySummaryResModel.setId(uniSpeciality.getId())
+
                 .setName(uniSpeciality.getNameAz());
 
         return specialitySummaryResModel;
@@ -39,15 +39,18 @@ public class UniSpecialityServiceImpl implements UniSpecialityService{
 
 
         Optional<University> universityOptional = universityRepository.findByAbbr(abbr);
-           List<UniSpeciality> specialities= new ArrayList<>();
+        List<UniSpeciality> specialities= new ArrayList<>();
+
         List<SpecialitySummaryResModel> specialitySummaryResModelList = new ArrayList<>();
-        universityOptional.ifPresent(
-                university -> {
-                    university.getUniSpecialityList()
-                            .stream()
-                            .map(uniSpeciality -> specialitySummaryResModelList.add(createUniSpecialityResponseModel(uniSpeciality)));
-                }
-        );
+
+        if(universityOptional.isPresent()) {
+            specialities=universityOptional.get().getUniSpecialityList();
+        }
+        specialitySummaryResModelList = specialities
+                .stream()
+                .map(uniSpeciality -> createUniSpecialityResponseModel(uniSpeciality))
+                .collect(Collectors.toList());
+
 
 
        return specialitySummaryResModelList;

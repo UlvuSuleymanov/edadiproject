@@ -37,6 +37,8 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
          String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
          if(requestHeader!=null && requestHeader!="") {
              try {
+
+                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
                  JwtProvider jwtProvider = new JwtProvider(jwtBean);
 
                  String token = requestHeader.replace(jwtBean.getTitle(), "");
@@ -44,6 +46,7 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
 
                  Claims body = jwtProvider.getTokenClaims(token);
                  List<String> userAuthorityList = (List<String>) body.get("authorities");
+
                  Object id = body.get("id");
 
                  Set<SimpleGrantedAuthority> simpleGrantedAuthorities=  userAuthorityList.stream()

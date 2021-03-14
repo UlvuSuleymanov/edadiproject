@@ -27,7 +27,8 @@ target/
 /.nb-gradle/
 build/
 
-application.properties
 
 ### VS Code ###
 .vscode/
+git rm -rf --cached .
+

@@ -1,45 +1,43 @@
 package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.*;
-import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.entity.university.SpecialityOffer;
+import com.camaat.first.entity.university.UniSpeciality;
 import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.SignInRequestModel;
 import com.camaat.first.model.request.SignUpRequestModel;
 import com.camaat.first.model.response.SignInResponseModel;
 import com.camaat.first.model.response.SignUpResponseModel;
-import com.camaat.first.repository.SpecialityOfferRepository;
-import com.camaat.first.repository.SpecialityRepository;
-import com.camaat.first.repository.UniversityRepository;
-import com.camaat.first.repository.UserRepository;
+import com.camaat.first.repository.*;
 import com.camaat.first.security.jwt.JwtBean;
 import com.camaat.first.security.jwt.JwtProvider;
 import com.camaat.first.service.AuthenticationService;
 import com.camaat.first.service.SpecialityService;
-import com.camaat.first.service.UserService;
+ import com.camaat.first.service.UserService;
 import com.camaat.first.utility.ImageUtil;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+ import java.util.Optional;
 
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private  final UserRepository userRepository;
-    private  final UserService userService;
-    private  final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
     private final JwtBean jwtBean;
-    private  final SpecialityRepository  specialityRepository;
-    private  final UniversityRepository universityRepository;
-    private  final SpecialityService specialityService;
+    private final SpecialityRepository  specialityRepository;
+    private final UniversityRepository universityRepository;
+    private final SpecialityService specialityService;
     private final SpecialityOfferRepository specialityOfferRepository;
+    private final UniSpecialityRepository uniSpecialityRepository;
 
     private  User user;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean, SpecialityRepository specialityRepository, UniversityRepository universityRepository, SpecialityService specialityService, SpecialityOfferRepository specialityOfferRepository) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean, SpecialityRepository specialityRepository, UniversityRepository universityRepository, SpecialityService specialityService, SpecialityOfferRepository specialityOfferRepository, UniSpecialityRepository uniSpecialityRepository) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -48,12 +46,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.universityRepository = universityRepository;
         this.specialityService = specialityService;
         this.specialityOfferRepository = specialityOfferRepository;
+        this.uniSpecialityRepository = uniSpecialityRepository;
     }
 
 
 
     @Override
     public SignUpResponseModel signUp(final SignUpRequestModel signUpRequestModel) {
+
+        System.out.println(signUpRequestModel.toString());
 
           user = new User();
         SignUpResponseModel signUpResponseModel =  new SignUpResponseModel();
@@ -111,7 +112,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public boolean setUsername(String username) {
         boolean isGoodUsername=true;
 
-        if(username.length()>40)
+        Optional<String> optional = Optional.of(username);
+
+
+        if(username!=null&&username.isEmpty()&& username.length()>40)
         {
          return false;
         }
@@ -163,19 +167,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean setEmail(String email) {
-      boolean isGoodEmail=true;
-      isGoodEmail=!userRepository.existsByEmail(email);
+      boolean isGoodEmail=false;
+
+      Optional<String> emailOptional = Optional.ofNullable(email);
+
+        System.out.println("aeeee"+emailOptional.isEmpty());
+      if(emailOptional.isPresent()) {
+          isGoodEmail = !userRepository.existsByEmail(email);
+      }
 
          if(isGoodEmail)
-          user.setEmail(email);
+           user.setEmail(email);
+
+
       return isGoodEmail;
 
     }
 
     @Override
     public boolean setName(String name) {
-        user.setName(name);
-        return true;
+        Optional<String> nameOptional = Optional.ofNullable(name);
+
+        if(nameOptional.isPresent() && name.length()>2)
+        {  user.setName(name);
+          return true;
+        }
+        return false;
     }
 
     @Override
@@ -194,18 +211,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean setSpeciality(Long specialityId) {
+        Optional<Long> id = Optional.ofNullable(specialityId);
 
-        Optional<Speciality> specialityOptional= specialityRepository.findById(specialityId);
+      if(!id.isPresent())
+        {
+            return false;
+        }
+
+        Optional<UniSpeciality> specialityOptional=uniSpecialityRepository.findById(specialityId);
+
         boolean isGood=false;
-        if(specialityOptional.isPresent() ){
-//           isGood= specialityOptional.get().getUniversity().getId().longValue()==user.getUniversity().getId().longValue();
+        if(specialityOptional.isPresent()){
 
+           isGood= specialityOptional.get().getUniversity().getId().longValue()==user.getUniversity().getId().longValue();
 
         }
 
-//       if(isGood){
-//           user.setSpeciality(specialityOptional.get());
-//       }
+       if(isGood){
+           user.setUniSpeciality(specialityOptional.get());
+        }
 
        return isGood;
 

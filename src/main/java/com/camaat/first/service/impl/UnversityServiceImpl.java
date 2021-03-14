@@ -50,7 +50,7 @@ public class UnversityServiceImpl implements UniversityService {
     @Override
     public UniResponseModel getUniResponseModel(University university) {
         UniResponseModel uniResponseModel = new UniResponseModel();
-       return   uniResponseModel.setAbbrName(university.getAbbr())
+       return   uniResponseModel.setAbbr(university.getAbbr())
                 .setId(university.getId())
                 .setName(university.getNameAz());
     }

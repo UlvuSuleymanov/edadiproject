@@ -2,7 +2,6 @@ package com.camaat.first.controller;
 
  import com.camaat.first.entity.university.University;
  import com.camaat.first.model.request.UniRequestModel;
- import com.camaat.first.model.response.SpecialitySummaryResModel;
  import com.camaat.first.model.response.UniResponseModel;
  import com.camaat.first.repository.UniversityRepository;
  import com.camaat.first.service.UniSpecialityService;
@@ -11,10 +10,7 @@ package com.camaat.first.controller;
  import org.springframework.http.ResponseEntity;
  import org.springframework.security.access.prepost.PreAuthorize;
  import org.springframework.web.bind.annotation.*;
-
- import java.util.ArrayList;
  import java.util.List;
- import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/uni")
@@ -50,16 +46,11 @@ public class UniController {
     @GetMapping("/{abbrName}")
     ResponseEntity getUni(@PathVariable String abbrName){
 
-
     return new ResponseEntity(HttpStatus.OK);
     }
 
 
-    @GetMapping("/{name}/specialities")
-    ResponseEntity getSpecialitiesOfUni(@PathVariable String name){
 
-        return ResponseEntity.ok(uniSpecialityService.getSpecialitiesOfUni(name));
-    }
 
 
 
