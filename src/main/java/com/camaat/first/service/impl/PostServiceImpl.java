@@ -4,9 +4,11 @@ import com.camaat.first.entity.post.Post;
 import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.entity.post.Tag;
 import com.camaat.first.entity.User;
+import com.camaat.first.entity.university.University;
 import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.repository.PostRepository;
 import com.camaat.first.repository.PostVoteRepository;
+import com.camaat.first.repository.UniversityRepository;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.ImageService;
 import com.camaat.first.utility.AuthUtil;
@@ -20,6 +22,7 @@ import com.camaat.first.service.S3Service;
  import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,15 +38,17 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final TagServiceImpl tagService;
+    private final UniversityRepository universityRepository;
     private final S3Service s3Service;
     private final ImageService imageService;
     private final PostVoteRepository postVoteRepository;
 
     @Autowired
-    public PostServiceImpl(UserRepository userRepository, PostRepository postRepository, TagServiceImpl tagService, S3Service s3Service, ImageService imageService, PostVoteRepository postVoteRepository) {
+    public PostServiceImpl(UserRepository userRepository, PostRepository postRepository, TagServiceImpl tagService, UniversityRepository universityRepository, S3Service s3Service, ImageService imageService, PostVoteRepository postVoteRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.tagService = tagService;
+        this.universityRepository = universityRepository;
         this.s3Service = s3Service;
         this.imageService = imageService;
         this.postVoteRepository = postVoteRepository;
@@ -63,6 +68,7 @@ public class PostServiceImpl implements PostService {
 
         post.setDate(date);
         post.setUser(user);
+        post.setUniversity(universityRepository.getOne(1L));
         post.setPostText(postRequestModel.getPostText());
         post.setPostTitle(postRequestModel.getPostTitle());
         user.getPosts().add(post);
@@ -111,6 +117,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
+
     @Override
     public PostResponseModel getPostResponse(Post post, boolean isAuthenticated) {
         PostResponseModel postResponseModel = new PostResponseModel();
@@ -124,8 +131,8 @@ public class PostServiceImpl implements PostService {
                 .setAuthorUsername(post.getUser().getUsername())
                 .setAuthorName(post.getUser().getName())
                 .setDate(post.getDate())
-                .setPostCommentCount((long) post.getComments().size())
-                .setPostLikeCount((long) post.getPostVote().size())
+                .setPostCommentCount(post.getComments().size())
+                .setPostLikeCount( post.getPostVote().size())
                 .setPostText(post.getPostText())
                 .setPhotoUrl(post.getPhotoUrl())
                 .setPostTitle(post.getPostTitle())
@@ -133,6 +140,45 @@ public class PostServiceImpl implements PostService {
 
         return postResponseModel;
     }
+    @Override
+    public List<PostResponseModel> getUniversityPosts(String uniAbbr,
+                                                      Integer page,
+                                                      Integer size,
+                                                      String sort) {
+
+
+
+        Optional<University> universityOptional = universityRepository.findByAbbr(uniAbbr);
+        System.out.println("University:"+universityOptional.isPresent());
+        List<Post>postList=null;
+        Pageable pageable = PageRequest.of(page, size);
+
+        if(universityOptional.isPresent()) {
+
+            switch (sort) {
+
+                case "mostCommented":
+                    postList = postRepository.getTopCommentUniversityPost(universityOptional.get().getId(),pageable);
+                    break;
+                case "mostLiked":
+                    postList = postRepository.getTopLikedUniversityPost(universityOptional.get().getId(),pageable);
+                    break;
+
+                default: postList=postRepository.findAll(pageable).toList();
+
+            }
+
+            Optional<List<Post>> postsOptional= Optional.ofNullable(postList);
+            System.out.println("geeeeeeeeeeet--------------"+postsOptional.get().size());
+              if(postsOptional.isPresent())
+             return   postsToResponseModels(postList);
+        }
+        return null;
+
+
+
+    }
+
 
     @Override
     public String savePostPicture(Long id, MultipartFile multipartFile) {
@@ -170,6 +216,40 @@ public class PostServiceImpl implements PostService {
     public void disLikePost(long postId, Long userId) {
         PostVote postVote = postVoteRepository.getPostVoteByIds(userId, postId);
         postVoteRepository.delete(postVote);
+    }
+
+
+    @Override
+    public boolean checkUserIsLiked(Long userId, Long postId) {
+        return postVoteRepository.getPostVoteByIds(userId,postId) != null;
+
+    }
+
+    @Override
+    public List<PostResponseModel> postsToResponseModels(List<Post> posts) {
+         boolean authenticated=AuthUtil.userIsAuthenticated();
+         Long userId=null;
+
+         List<PostResponseModel> postResponseModelList = new ArrayList<>();
+
+         if(authenticated)
+         {
+              userId= AuthUtil.getCurrentUserId();
+         }
+
+
+        for(Post post: posts){
+            boolean isLiked =false;
+            if(authenticated){
+                isLiked=checkUserIsLiked(userId,post.getId());
+            }
+            postResponseModelList.add(new PostResponseModel(post,isLiked));
+
+        }
+
+        return postResponseModelList;
+
+
     }
 
     @Override

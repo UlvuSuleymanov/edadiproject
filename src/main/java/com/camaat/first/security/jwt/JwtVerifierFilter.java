@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -38,7 +38,6 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
          if(requestHeader!=null && requestHeader!="") {
              try {
 
-                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
                  JwtProvider jwtProvider = new JwtProvider(jwtBean);
 
                  String token = requestHeader.replace(jwtBean.getTitle(), "");

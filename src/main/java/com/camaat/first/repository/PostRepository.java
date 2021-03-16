@@ -18,6 +18,15 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
  @Query("SELECT p FROM Post p ORDER BY SIZE(p.postVote) DESC")
  List<Post> getTopLikedPost(Pageable pageable);
 
+ @Query("SELECT p FROM Post p where p.university.id=:id ORDER BY SIZE(p.comments) DESC")
+ List<Post> getTopCommentUniversityPost(Long id,Pageable pageable);
+
+ @Query("SELECT p FROM Post p  where p.university.id=?1 ORDER BY SIZE(p.postVote) DESC")
+ List<Post> getTopLikedUniversityPost(Long id,Pageable pageable);
+
+
+
+
  @Query("Select new com.camaat.first.model.response.SearchResultResponseModel(p.id,p.postTitle) from Post p where p.postTitle like %:title%")
  List<SearchResultResponseModel> getPostLikeTitle(String title, Pageable pageable);
 

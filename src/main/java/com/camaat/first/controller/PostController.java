@@ -3,6 +3,7 @@ package com.camaat.first.controller;
 import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.TagService;
+import com.camaat.first.utility.AuthUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.camaat.first.entity.post.Post;
 import com.camaat.first.model.request.PostRequestModel;
@@ -63,9 +64,26 @@ public class PostController {
     }
 
 
+    @GetMapping(value = "/university/{abbr}/posts")
+    ResponseEntity getUniversityPost(@PathVariable String abbr,
+                                     @RequestParam Integer page,
+                                     @RequestParam Integer size,
+                                     @RequestParam String sort){
+
+
+    return ResponseEntity.ok().body(postService.getUniversityPosts(abbr,page,size,sort));
+    }
+
+
+
     @GetMapping(value = "/post/{postId}")
     ResponseEntity<PostResponseModel> getPost(@PathVariable Long postId) {
         PostResponseModel postResponseModel = postService.getPost(postId, false);
+
+        Optional<Long> id = Optional.ofNullable(AuthUtil.getCurrentUserId());
+        System.out.println(id.isPresent());
+
+//        System.out.println(AuthUtil.getCurrentUserId());
         return ResponseEntity.ok(postResponseModel);
     }
 
@@ -100,12 +118,14 @@ public class PostController {
                                          @RequestParam String sort
     ) {
 
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort, true);
+         List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort, true);
 
         return ResponseEntity.ok(postResponseModelList);
 
     }
+
+
+
 
 
     @PostMapping("/post/{postId}/like")
@@ -123,6 +143,9 @@ public class PostController {
         return new ResponseEntity(HttpStatus.OK);
 
     }
+
+
+
 
 
 }
