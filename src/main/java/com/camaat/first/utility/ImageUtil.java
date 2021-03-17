@@ -9,9 +9,6 @@ public class ImageUtil {
         return ImageEnum.ROOT_IMAGE_URL.getName()+name;
     }
 
-    public static void main(String[] args) {
-
-    }
 
 
 }

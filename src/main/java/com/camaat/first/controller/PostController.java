@@ -2,6 +2,7 @@ package com.camaat.first.controller;
 
 import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.repository.UserRepository;
+import com.camaat.first.service.AuthenticationService;
 import com.camaat.first.service.TagService;
 import com.camaat.first.utility.AuthUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,24 +79,21 @@ public class PostController {
 
     @GetMapping(value = "/post/{postId}")
     ResponseEntity<PostResponseModel> getPost(@PathVariable Long postId) {
-        PostResponseModel postResponseModel = postService.getPost(postId, false);
+        PostResponseModel postResponseModel = postService.getPost(postId);
 
-        Optional<Long> id = Optional.ofNullable(AuthUtil.getCurrentUserId());
-        System.out.println(id.isPresent());
 
-//        System.out.println(AuthUtil.getCurrentUserId());
-        return ResponseEntity.ok(postResponseModel);
+         return ResponseEntity.ok(postResponseModel);
     }
 
-    @GetMapping(value = "/post/{postId}/{username}")
-    ResponseEntity<PostResponseModel> getPostForCurrentUser(@PathVariable Long postId) {
-        PostResponseModel postResponseModel = postService.getPost(postId, true);
-
-        Optional<Long> id = Optional.ofNullable(postId);
-
-
-        return ResponseEntity.ok(postResponseModel);
-    }
+//    @GetMapping(value = "/post/{postId}/{username}")
+//    ResponseEntity<PostResponseModel> getPostForCurrentUser(@PathVariable Long postId) {
+//        PostResponseModel postResponseModel = postService.getPost(postId, true);
+//
+//        Optional<Long> id = Optional.ofNullable(postId);
+//
+//
+//        return ResponseEntity.ok(postResponseModel);
+//    }
 
 
     @GetMapping("/posts")
@@ -104,41 +102,35 @@ public class PostController {
                             @RequestParam String sort
     ) {
 
+
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort, false);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        System.out.println(SecurityContextHolder.getContext());
+
+
+        List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort);
 
         return ResponseEntity.ok(postResponseModelList);
 
     }
-
-
-    @GetMapping("/posts/{username}")
-    ResponseEntity getPostForCurrentUser(@RequestParam Integer page,
-                                         @RequestParam Integer size,
-                                         @RequestParam String sort
-    ) {
-
-         List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort, true);
-
-        return ResponseEntity.ok(postResponseModelList);
-
-    }
-
-
-
 
 
     @PostMapping("/post/{postId}/like")
     public ResponseEntity likePost(@PathVariable Long postId) {
-        Long userId = DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        PostVote postVote = postService.likePost(postId, userId);
+
+        Long userId =  AuthUtil.getCurrentUserId();
+         PostVote postVote = postService.likePost(postId, userId);
         return ResponseEntity.ok(postVote);
     }
 
 
     @DeleteMapping("/post/{postId}/like")
     public ResponseEntity disLikePost(@PathVariable Long postId) {
-        Long userId = DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
+
+        Long userId = AuthUtil.getCurrentUserId();
+
+
         postService.disLikePost(postId, userId);
         return new ResponseEntity(HttpStatus.OK);
 

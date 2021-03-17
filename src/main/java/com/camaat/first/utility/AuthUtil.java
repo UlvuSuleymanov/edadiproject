@@ -7,9 +7,10 @@ public class AuthUtil {
 
         if(userIsAuthenticated())
         {
-         return DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
 
+         return DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
         }
+
         return null;
     }
 

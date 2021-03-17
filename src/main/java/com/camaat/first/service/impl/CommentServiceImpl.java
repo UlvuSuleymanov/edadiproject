@@ -11,6 +11,7 @@ import com.camaat.first.repository.PostRepository;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.CommentService;
 import com.camaat.first.service.ImageService;
+import com.camaat.first.utility.AuthUtil;
 import com.camaat.first.utility.DataParser;
  import com.camaat.first.repository.CommentVoteRepository;
 import com.camaat.first.utility.ImageUtil;
@@ -45,9 +46,8 @@ public class CommentServiceImpl  implements CommentService {
     @Override
     public Comment commentBuilder(CommentRequestModel commentRequestModel, Long postId) {
 
-       Object idObj= SecurityContextHolder.getContext().getAuthentication().getCredentials();
-       Long id = DataParser.objectToLong(idObj);
-
+       Long id = AuthUtil.getCurrentUserId();
+        System.out.println(id);
        Post post = postRepository.getOne(postId);
        User user = userRepository.getOne(id);
 
