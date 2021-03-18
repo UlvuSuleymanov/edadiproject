@@ -45,8 +45,14 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     private University university;
 
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Post> posts =new ArrayList<>();
+
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<Image> images =new ArrayList<>();
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
