@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface CommentService {
     Comment commentBuilder(CommentRequestModel commentRequestModel, Long postId);
-    CommentResponseModel commentResponseBuilder(Comment comment);
-    List<CommentResponseModel> getComments(Long postId, int page, int size, String sort);
+     List<CommentResponseModel> getComments(Long postId, int page, int size, String sort);
     Long likeComment(Long commentId,Long userId);
     void disLikeComment(Long commentId,Long userId);
+    List<CommentResponseModel> commentsToResponseModels(List<Comment>comments);
+    boolean userLiked(Long commentId,Long userId);
 }

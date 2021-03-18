@@ -32,9 +32,8 @@ import java.util.List;
 
      Comment comment = commentService.commentBuilder(commentRequestModel,postId);
      comment=commentRepository.save(comment);
-     CommentResponseModel commentResponseModel=commentService.commentResponseBuilder(comment);
-     return ResponseEntity.ok(commentResponseModel);
 
+     return    ResponseEntity.ok(new CommentResponseModel(comment,false));
 
    }
 
@@ -48,6 +47,8 @@ import java.util.List;
    List<CommentResponseModel> commentResponseModelList =commentService.getComments(postId,page,size,sort);
     return ResponseEntity.ok(commentResponseModelList);
   }
+
+
 
     @PostMapping("/api/comments/{commentId}/like")
     public  ResponseEntity likePost(@PathVariable Long commentId){

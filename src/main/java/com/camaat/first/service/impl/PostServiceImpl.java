@@ -89,24 +89,23 @@ public class PostServiceImpl implements PostService {
     public List<PostResponseModel> getPosts(Integer page, Integer size, String sort) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Optional<List<Post>> postList=Optional.empty();
+        Optional<List<Post>> postList = Optional.empty();
 
 
         switch (sort) {
             case "mostCommented":
-               postList= Optional.ofNullable(postRepository.getTopCommentPost(pageable));
+                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
                 break;
             case "mostLiked":
-               postList= Optional.ofNullable(postRepository.getTopLikedPost(pageable));
+                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
                 break;
             case "three":
                 System.out.println("mostLiked");
                 break;
             default:
-               postList= Optional.of(postRepository.findAll(pageable).toList());
+                postList = Optional.of(postRepository.findAll(pageable).toList());
         }
-        if(postList.isPresent())
-        {
+        if (postList.isPresent()) {
             return postsToResponseModels(postList.get());
         }
 
@@ -120,32 +119,52 @@ public class PostServiceImpl implements PostService {
                                                       String sort) {
 
 
-
         Optional<University> universityOptional = universityRepository.findByAbbr(uniAbbr);
-         List<Post>postList=null;
+        List<Post> postList = null;
         Pageable pageable = PageRequest.of(page, size);
 
-        if(universityOptional.isPresent()) {
+        if (universityOptional.isPresent()) {
 
             switch (sort) {
 
                 case "mostCommented":
-                    postList = postRepository.getTopCommentUniversityPost(universityOptional.get().getId(),pageable);
+                    postList = postRepository.getTopCommentUniversityPost(universityOptional.get().getId(), pageable);
                     break;
                 case "mostLiked":
-                    postList = postRepository.getTopLikedUniversityPost(universityOptional.get().getId(),pageable);
+                    postList = postRepository.getTopLikedUniversityPost(universityOptional.get().getId(), pageable);
                     break;
 
-                default: postList=postRepository.findAll(pageable).toList();
+                default:
+                    postList = postRepository.findAll(pageable).toList();
 
             }
 
-            Optional<List<Post>> postsOptional= Optional.ofNullable(postList);
-               if(postsOptional.isPresent())
-             return   postsToResponseModels(postList);
+            Optional<List<Post>> postsOptional = Optional.ofNullable(postList);
+            if (postsOptional.isPresent())
+                return postsToResponseModels(postList);
         }
         return null;
 
+
+    }
+
+    @Override
+    public PostResponseModel toResponse(Post post) {
+
+        boolean authenticated = AuthUtil.userIsAuthenticated();
+        Long userId = null;
+
+
+        if (authenticated) {
+            userId = AuthUtil.getCurrentUserId();
+        }
+        boolean isLiked = false;
+        if (authenticated) {
+            isLiked = checkUserIsLiked(userId, post.getId());
+
+        }
+
+        return new PostResponseModel(post, isLiked);
 
 
     }
@@ -192,32 +211,18 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean checkUserIsLiked(Long userId, Long postId) {
-        return postVoteRepository.getPostVoteByIds(userId,postId) != null;
+        return postVoteRepository.getPostVoteByIds(userId, postId) != null;
 
     }
 
     @Override
     public List<PostResponseModel> postsToResponseModels(List<Post> posts) {
-         boolean authenticated=AuthUtil.userIsAuthenticated();
-         Long userId=null;
 
-         List<PostResponseModel> postResponseModelList = new ArrayList<>();
+        List<PostResponseModel> postResponseModelList = new ArrayList<>();
 
-         if(authenticated)
-         {
-              userId= AuthUtil.getCurrentUserId();
-         }
+        for (Post post : posts) {
 
-
-        for(Post post: posts){
-            boolean isLiked =false;
-            if(authenticated){
-                isLiked=checkUserIsLiked(userId,post.getId());
-
-            }
-
-            postResponseModelList.add(new PostResponseModel(post,isLiked));
-
+            postResponseModelList.add(toResponse(post));
         }
 
         return postResponseModelList;
@@ -229,25 +234,20 @@ public class PostServiceImpl implements PostService {
     public List<SearchResultResponseModel> searchPostTitle(String postTitle) {
         Pageable pageable = PageRequest.of(0, 10);
 
-      List<SearchResultResponseModel>searchResult= postRepository.getPostLikeTitle(postTitle,pageable);
+        List<SearchResultResponseModel> searchResult = postRepository.getPostLikeTitle(postTitle, pageable);
 
-      return searchResult;
+        return searchResult;
     }
 
     @Override
     public PostResponseModel getPost(Long postId) {
-         Optional<Post> post = postRepository.findById(postId);
+        Optional<Post> post = postRepository.findById(postId);
 
 
-     if(post.isPresent())
-     {
-        List<Post> p= new ArrayList<>();
-        p.add(post.get());
-       return postsToResponseModels(p).get(0);
-     }
+        if (post.isPresent()) {
+            return toResponse(post.get());
+        }
+
         return null;
-
     }
-
-
 }

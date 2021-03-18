@@ -12,17 +12,17 @@ import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.CommentService;
 import com.camaat.first.service.ImageService;
 import com.camaat.first.utility.AuthUtil;
-import com.camaat.first.utility.DataParser;
- import com.camaat.first.repository.CommentVoteRepository;
-import com.camaat.first.utility.ImageUtil;
+import com.camaat.first.repository.CommentVoteRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +35,11 @@ public class CommentServiceImpl  implements CommentService {
 
 
     @Autowired
-    public CommentServiceImpl(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository, ImageService imageService, CommentVoteRepository commentVoteRepository) {
+    public CommentServiceImpl(UserRepository userRepository,
+                              PostRepository postRepository,
+                              CommentRepository commentRepository,
+                              ImageService imageService,
+                              CommentVoteRepository commentVoteRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
@@ -47,7 +51,7 @@ public class CommentServiceImpl  implements CommentService {
     public Comment commentBuilder(CommentRequestModel commentRequestModel, Long postId) {
 
        Long id = AuthUtil.getCurrentUserId();
-        System.out.println(id);
+
        Post post = postRepository.getOne(postId);
        User user = userRepository.getOne(id);
 
@@ -61,27 +65,29 @@ public class CommentServiceImpl  implements CommentService {
 
     }
 
-    @Override
-    public CommentResponseModel commentResponseBuilder(Comment comment) {
-        System.out.println(ImageUtil.generatePhotoUrl(comment.getUser().getPhotoUrl()));
-        CommentResponseModel commentResponseModel =new CommentResponseModel();
-        commentResponseModel.setAuthor(comment.getUser().getUsername())
-                .setAuthorPhotoUrl(ImageUtil.generatePhotoUrl(comment.getUser().getPhotoUrl()))
-                .setBirthDay(comment.getDate())
-                .setCommentId(comment.getId())
-                .setLikeCount(comment.getCommentVotes().size())
-                .setCommentText(comment.getCommentText());
-        return commentResponseModel;
-    }
+
 
     @Override
     public List<CommentResponseModel> getComments(Long postId, int page, int size, String sort) {
 
          Pageable pageable= PageRequest.of(page,size);
-         List<CommentResponseModel> commentResponseModelList =commentRepository.findByPost_id(postId,pageable)
-                .stream().map(comment ->commentResponseBuilder(comment))
-                .collect(Collectors.toList());
-        return commentResponseModelList;
+         List<Comment> commentList = new ArrayList<>();
+
+         Optional<Post> post = postRepository.findById(postId);
+         if(post.isPresent()) {
+             switch (sort) {
+                 case"mostLiked":commentList=commentRepository.getTopLikedComment(postId,pageable);
+
+                 default:
+                     commentList = commentRepository.findByPost_id(postId,pageable);
+
+             }
+
+             return commentsToResponseModels(commentList);
+
+         }
+         return null;
+
     }
 
     @Override
@@ -97,10 +103,50 @@ public class CommentServiceImpl  implements CommentService {
 
     @Override
     public void disLikeComment(Long commentId, Long userId){
-        CommentVote commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
-        if(commentVote!=null){
-            commentVoteRepository.delete(commentVote);
+        Optional<CommentVote> commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
+        if(commentVote.isPresent()){
+            commentVoteRepository.delete(commentVote.get());
         }
 
      }
+
+    @Override
+    public List<CommentResponseModel> commentsToResponseModels(List<Comment> comments) {
+        boolean authenticated=AuthUtil.userIsAuthenticated();
+        boolean isLiked=false;
+        Long userId =null;
+
+        if(authenticated)
+        {
+             AuthUtil.getCurrentUserId();
+             userId=AuthUtil.getCurrentUserId();
+        }
+        List<CommentResponseModel> commentResponseModelList = new ArrayList<>();
+
+        for(Comment comment:comments){
+            isLiked=false;
+
+            if(authenticated){
+                isLiked=userLiked(comment.getId(),userId);
+             }
+            commentResponseModelList.add(new CommentResponseModel(comment,isLiked));
+
+        }
+
+        return commentResponseModelList;
+
+    }
+
+    @Override
+    public boolean userLiked(Long commentId, Long userId) {
+        Optional<CommentVote> commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
+
+        if(commentVote.isPresent())
+        {
+            return true;
+        }
+
+        return false;
+
+    }
 }
