@@ -4,6 +4,7 @@ import com.camaat.first.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +18,10 @@ import java.util.UUID;
 @Entity
 
 public class Image {
+
+
     @Id
+    @Type(type="uuid-char")
     private UUID id;
 
     private Date date;

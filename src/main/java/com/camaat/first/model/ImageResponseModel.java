@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageModel {
-    private String imageUrl;
+public class ImageResponseModel {
+
+     private String url;
+
+    private String fullImageUrl;
  }

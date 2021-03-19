@@ -36,10 +36,8 @@ public class S3ServiceImpl implements S3Service {
 
 		try {
 
+
   			s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
-
-
-
 
 			return keyName;
 
@@ -57,14 +55,14 @@ public class S3ServiceImpl implements S3Service {
      return null;
 	}
 
-
-	@Override
-	public String updatePhoto(String keyName, File file) {
-		PutObjectRequest request = new PutObjectRequest(bucketName, keyName, file);
- 		s3client.putObject(request);
-
-		return keyName;
-	}
+//
+//	@Override
+//	public String updatePhoto(String keyName, File file) {
+//		PutObjectRequest request = new PutObjectRequest(bucketName, keyName, file);
+// 		s3client.putObject(request);
+//
+//		return keyName;
+//	}
 
 
 

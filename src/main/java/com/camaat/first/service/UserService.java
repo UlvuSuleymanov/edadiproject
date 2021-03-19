@@ -22,7 +22,7 @@ public interface UserService {
       UserPrincipalModel createUserPrincipial(User user);
 
 
-      String setPhoto(MultipartFile multipartFile ,String username);
+ //     String setPhoto(MultipartFile multipartFile ,String username);
 
 //      SignInResponseModel login (SignInRequestModel signInRequestModel);
 //      User userBuilder(SignUpRequestModel signUpRequestModel);

@@ -2,8 +2,7 @@ package com.camaat.first.entity.university;
 
 import com.camaat.first.entity.User;
 import com.camaat.first.entity.post.Post;
-import com.camaat.first.entity.university.Speciality;
-import lombok.AllArgsConstructor;
+ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +27,7 @@ public class University {
     private String nameAz;
     private String nameEn;
 
-
+    private String photoUrl;
     private String info;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
