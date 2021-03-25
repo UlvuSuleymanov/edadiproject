@@ -49,10 +49,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public ImageResponseModel setImage(MultipartFile  multipartFile) {
+    public String setImage(MultipartFile  multipartFile, boolean  hasThumb) {
 
-        Long userId = AuthUtil.getCurrentUserId();
-        User user = userRepository.getOne(userId);
+
         UUID uuid =  UUID.randomUUID();
 
 
@@ -65,37 +64,18 @@ public class ImageServiceImpl implements ImageService {
 
         s3Service.setPhoto(uuid.toString(),file);
 
-        File smallImage=getSmallPicture(file);
+        if(hasThumb) {
+            File smallImage = getSmallPicture(file);
+            s3Service.setPhoto("thumb" + uuid.toString(), smallImage);
+            smallImage.delete();
 
-        s3Service.setPhoto("thumb"+uuid.toString(),smallImage);
-
+        }
 
         file.delete();
-        smallImage.delete();
 
 
 
-
-//        Image image = new Image();
-//        image.setId(uuid);
-//        image.setUser(user);
-//        image.setFileName(file.getName());
-//        image.setDate(new Date());
-//        Image a = imageRepository.save(image);
-//
-//        ImageResponseModel imageResponseModel =new ImageResponseModel();
-//        imageResponseModel.setAuthorUsername(user.getUsername());
-//        imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(a.getId().toString()));
-//        imageResponseModel.setFullImageUrl(ImageServiceImpl.getThumbImage(a.getId().toString()));
-//        imageResponseModel.setName(a.getFileName());
-
-         user.setPhotoUrl(uuid.toString());
-         userRepository.save(user);
-
-         ImageResponseModel imageResponseModel = new ImageResponseModel();
-         imageResponseModel.setFullImageUrl(getFullImage(uuid.toString()));
-         imageResponseModel.setUrl(getThumbImage(uuid.toString()));
-         return imageResponseModel;
+      return   uuid.toString();
     }
 
     @Override

@@ -17,18 +17,18 @@ import org.springframework.http.ResponseEntity;
  public class AuthController {
 
 
-     private final UserService userService;
+    private final UserService userService;
     private  final AuthenticationService authenticationService;
 
     @Autowired
     public AuthController( AuthenticationService authenticationService,UserService userService) {
-         this.userService = userService;
+        this.userService = userService;
         this.authenticationService = authenticationService;
     }
 
 
 
-    @RequestMapping(value = "signin",method = RequestMethod.POST)
+    @PostMapping(value = "/signin")
     public ResponseEntity<?> login(@RequestBody SignInRequestModel signInRequestModel){
     SignInResponseModel signUpResponseModel=   authenticationService.signIn(signInRequestModel);
 
@@ -40,8 +40,8 @@ import org.springframework.http.ResponseEntity;
     @PostMapping(value = "/signup")
     public ResponseEntity addUser(@RequestBody final SignUpRequestModel signUpRequestModel){
 
-        System.out.println(signUpRequestModel);
-       SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
+
+      SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
       signUpResponseModel = authenticationService.signUp(signUpRequestModel);
 
         return   ResponseEntity.ok(signUpResponseModel);

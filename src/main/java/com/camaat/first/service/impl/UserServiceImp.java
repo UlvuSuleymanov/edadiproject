@@ -1,20 +1,18 @@
 package com.camaat.first.service.impl;
 
- import com.camaat.first.entity.Image;
+  import com.camaat.first.model.ImageResponseModel;
  import com.camaat.first.model.response.UserResponseModel;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.ImageService;
  import com.camaat.first.entity.User;
  import com.camaat.first.model.UserPrincipalModel;
 
-import com.camaat.first.security.jwt.JwtBean;
- import com.camaat.first.service.UserService;
-import com.camaat.first.utility.ImageUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+  import com.camaat.first.service.UserService;
+ import com.camaat.first.utility.AuthUtil;
+ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,16 +26,16 @@ public class UserServiceImp implements UserService {
     private final  PasswordEncoder passwordEncoder;
     private  final UserRepository userRepository;
     private final ImageService imageService;
-    private  final JwtBean jwtBean;
 
 
     @Autowired
-    public UserServiceImp(PasswordEncoder passwordEncoder, UserRepository userRepository, ImageService imageService, JwtBean jwtBean) {
+    public UserServiceImp(PasswordEncoder passwordEncoder,
+                          UserRepository userRepository,
+                          ImageService imageService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.imageService = imageService;
-        this.jwtBean = jwtBean;
-    }
+     }
 
 
 
@@ -64,29 +62,6 @@ public class UserServiceImp implements UserService {
     }
 
 
-//    @Override
-//    public String setPhoto(MultipartFile multipartFile, String username) {
-//
-//
-//
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() ->
-//                        new UsernameNotFoundException("User not found with username or email : " + username)
-//                );
-//
-//         String photoName= user.getPhotoUrl();
-//         Long id = user.getId();
-//         String newName= imageService.setImage(multipartFile,photoName,id);
-//              user.setPhotoUrl(newName);
-//              userRepository.save(user);
-//
-//              return ImageUtil.generatePhotoUrl(newName);
-//
-//
-//    }
-
-
-
 
 
      @Override
@@ -105,6 +80,21 @@ public class UserServiceImp implements UserService {
         );
 
     }
+
+    @Override
+    public ImageResponseModel setImage(MultipartFile multipartFile) {
+        Long userId = AuthUtil.getCurrentUserId();
+        User user = userRepository.getOne(userId);
+
+        String id = imageService.setImage(multipartFile,true);
+        user.setPhotoUrl(id);
+
+        ImageResponseModel imageResponseModel =new ImageResponseModel();
+        imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(id));
+        imageResponseModel.setFullImageUrl(ImageServiceImpl.getFullImage(id));
+
+        return imageResponseModel;
+     }
 
 
 }

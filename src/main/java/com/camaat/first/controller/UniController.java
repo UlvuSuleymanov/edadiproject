@@ -3,6 +3,7 @@ package com.camaat.first.controller;
  import com.camaat.first.entity.university.University;
  import com.camaat.first.model.request.UniRequestModel;
  import com.camaat.first.model.response.UniResponseModel;
+ import com.camaat.first.model.response.UniSummaryModel;
  import com.camaat.first.repository.UniversityRepository;
  import com.camaat.first.service.UniSpecialityService;
  import com.camaat.first.service.UniversityService;
@@ -13,7 +14,7 @@ package com.camaat.first.controller;
  import java.util.List;
 
 @RestController
-@RequestMapping("/api/uni")
+@RequestMapping("/api/university")
 public class UniController {
     private  final UniversityRepository universityRepository;
     private  final UniversityService universityService;
@@ -39,14 +40,15 @@ public class UniController {
 
     @GetMapping
     ResponseEntity getUniList(){
-     List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
+     List<UniSummaryModel> uniResponseModelList = universityService.getUnisList();
      return ResponseEntity.ok(uniResponseModelList);
 
     }
+
     @GetMapping("/{abbrName}")
     ResponseEntity getUni(@PathVariable String abbrName){
-
-    return new ResponseEntity(HttpStatus.OK);
+     UniResponseModel uniResponseModel = universityService.getUni(abbrName);
+    return ResponseEntity.ok(uniResponseModel);
     }
 
 

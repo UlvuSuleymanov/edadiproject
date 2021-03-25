@@ -55,6 +55,8 @@ public class S3ServiceImpl implements S3Service {
      return null;
 	}
 
+
+
 //
 //	@Override
 //	public String updatePhoto(String keyName, File file) {

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ImageResponseModel {
 
-     private String url;
-
+    private String url;
     private String fullImageUrl;
+
  }

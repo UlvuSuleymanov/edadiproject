@@ -3,14 +3,16 @@ package com.camaat.first.service.impl;
  import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.UniRequestModel;
  import com.camaat.first.model.response.UniResponseModel;
-import com.camaat.first.repository.SpecialityRepository;
+ import com.camaat.first.model.response.UniSummaryModel;
+ import com.camaat.first.repository.SpecialityRepository;
 import com.camaat.first.repository.UniversityRepository;
 import com.camaat.first.service.SpecialityService;
 import com.camaat.first.service.UniversityService;
 import org.springframework.stereotype.Service;
 
  import java.util.List;
-import java.util.stream.Collectors;
+ import java.util.Optional;
+ import java.util.stream.Collectors;
 @Service
 public class UnversityServiceImpl implements UniversityService {
     private final UniversityRepository universityRepository;
@@ -33,11 +35,11 @@ public class UnversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniResponseModel> getUnisList() {
+    public List<UniSummaryModel> getUnisList() {
         List<University> universityList = universityRepository.findAll();
-        List<UniResponseModel> uniResponseModels=universityList
+        List<UniSummaryModel> uniResponseModels=universityList
                 .stream()
-                .map(university -> getUniResponseModel(university))
+                .map(university -> getUniSummaryResponseModel(university))
                 .collect(Collectors.toList());
 
      return uniResponseModels;
@@ -46,10 +48,11 @@ public class UnversityServiceImpl implements UniversityService {
 
 
     @Override
-    public UniResponseModel getUniResponseModel(University university) {
-        UniResponseModel uniResponseModel = new UniResponseModel();
-       return   uniResponseModel.setAbbr(university.getAbbr())
+    public UniSummaryModel getUniSummaryResponseModel(University university) {
+        UniSummaryModel uniSummaryModel = new UniSummaryModel();
+       return   uniSummaryModel.setAbbr(university.getAbbr())
                 .setId(university.getId())
+                .setAbbr(university.getAbbr())
                 .setName(university.getNameAz());
     }
 
@@ -62,7 +65,15 @@ public class UnversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public UniResponseModel getUni(String abbrName) {
-        return null;
+    public UniResponseModel getUni(String abbrName)
+    {
+        Optional<University> university = universityRepository.findByAbbr(abbrName);
+
+        if(university.isPresent())
+        return new UniResponseModel(university.get());
+
+
+       return null;
+
     }
 }

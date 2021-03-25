@@ -1,6 +1,6 @@
 package com.camaat.first.controller;
 
-import com.camaat.first.model.request.CommentRequestModel;
+import  com.camaat.first.model.request.CommentRequestModel;
 import com.camaat.first.model.response.CommentResponseModel;
 import com.camaat.first.repository.CommentRepository;
 import com.camaat.first.service.CommentService;

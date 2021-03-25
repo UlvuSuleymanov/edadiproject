@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UniRequestModel {
+
     private String abbrName;
     private String name;
     private String info;

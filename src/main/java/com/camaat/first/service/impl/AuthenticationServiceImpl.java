@@ -112,7 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public boolean setUsername(String username) {
         boolean isGoodUsername=true;
 
-        Optional<String> optional = Optional.of(username);
+        Optional<String> optional = Optional.ofNullable(username);
 
 
         if(username!=null&&username.isEmpty()&& username.length()>40)
