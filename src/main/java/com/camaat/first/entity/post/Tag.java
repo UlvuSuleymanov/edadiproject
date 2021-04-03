@@ -1,5 +1,6 @@
 package com.camaat.first.entity.post;
 
+import com.camaat.first.entity.Article;
 import com.camaat.first.entity.post.Post;
 import lombok.AllArgsConstructor;
  import lombok.NoArgsConstructor;
@@ -25,6 +26,13 @@ public class Tag {
     @LazyCollection(LazyCollectionOption.EXTRA)
     @ManyToMany(mappedBy = "tags")
     private Set<Post> posts = new HashSet<>();
+
+
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @ManyToMany(mappedBy = "tags")
+    private Set<Article> articles = new HashSet<>();
+
+
 
     public Tag(String tag) {
         this.tag = tag;

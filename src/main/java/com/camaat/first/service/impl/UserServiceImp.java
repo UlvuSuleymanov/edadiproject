@@ -84,9 +84,11 @@ public class UserServiceImp implements UserService {
     @Override
     public ImageResponseModel setImage(MultipartFile multipartFile) {
         Long userId = AuthUtil.getCurrentUserId();
+
         User user = userRepository.getOne(userId);
 
         String id = imageService.setImage(multipartFile,true);
+
         user.setPhotoUrl(id);
 
         ImageResponseModel imageResponseModel =new ImageResponseModel();

@@ -1,5 +1,6 @@
 package com.camaat.first.model.response;
 import com.camaat.first.entity.post.Post;
+ import com.camaat.first.utility.ImageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,11 +32,17 @@ public class PostResponseModel {
         postText=post.getPostText();
         authorName=post.getUser().getName();
         authorUsername=post.getUser().getUsername();
-        authorPhotoUrl=post.getUser().getPhotoUrl();
+        authorPhotoUrl= ImageUtil.getPhotoUrl(post.getUser().getPhotoUrl());
         date=post.getDate();
         postLikeCount=post.getPostVote().size();
         postCommentCount=post.getComments().size();
-        photoUrl=post.getPhotoUrl();
+
+        if(post.getPhotoUrl().equals("default")) {
+            photoUrl =  post.getPhotoUrl();
+        }
+        else{
+            photoUrl = ImageUtil.getPhotoUrl(post.getPhotoUrl());
+        }
         this.isLiked=isLiked;
 
     }

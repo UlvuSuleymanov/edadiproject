@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 @Data
@@ -19,14 +16,18 @@ import java.util.UUID;
 
 public class Image {
 
-
     @Id
-    @Type(type="uuid-char")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Date date;
+    private Long id;
+
+
+    @Type(type="uuid-char")
+    private UUID name;
 
     private String fileName;
+
+    private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

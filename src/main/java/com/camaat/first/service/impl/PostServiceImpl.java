@@ -177,7 +177,7 @@ public class PostServiceImpl implements PostService {
             String name = "postImage" + id;
             s3Service.setPhoto(name, file);
             file.delete();
-            return ImageUtil.generatePhotoUrl(name);
+            return ImageUtil.getPhotoUrl(name);
         } catch (IOException e) {
             e.printStackTrace();
         }

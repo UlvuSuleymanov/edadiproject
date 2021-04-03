@@ -275,7 +275,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String token = jwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities());
 
-        return  new SignInResponseModel(user.getUsername(),token,true,true, ImageUtil.generatePhotoUrl(user.getPhotoUrl()) );
+        return  new SignInResponseModel(user.getUsername(),token,true,true, ImageUtil.getPhotoUrl(user.getPhotoUrl()) );
 
 
 

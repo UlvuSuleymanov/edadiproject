@@ -1,6 +1,7 @@
 package com.camaat.first.model.response;
 
 import com.camaat.first.entity.post.Comment;
+import com.camaat.first.utility.ImageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class CommentResponseModel {
         this.commentText=comment.getCommentText();
         this.likeCount=comment.getCommentVotes().size();
         this.birthDay=comment.getDate();
-        this.authorPhotoUrl=comment.getUser().getPhotoUrl();
+        this.authorPhotoUrl= ImageUtil.getPhotoUrl(comment.getUser().getPhotoUrl());
         this.author=comment.getUser().getUsername();
         this.isLiked=isLiked;
     }
