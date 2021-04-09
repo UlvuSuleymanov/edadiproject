@@ -21,7 +21,9 @@ public class UniSpeciality {
     private Long id;
 
     private String nameAz;
-    private String nameEng;
+    private String nameEn;
+
+    private String code;
 
 
     @OneToMany(fetch = FetchType.LAZY,  mappedBy = "uniSpeciality",orphanRemoval = false)

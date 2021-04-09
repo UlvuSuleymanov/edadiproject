@@ -1,5 +1,6 @@
 package com.camaat.first.model.response;
 
+import com.camaat.first.entity.university.UniSpeciality;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,16 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class SpecialitySummaryResModel {
     private Long id;
-    private  String name;
     private  String nameAz;
-    private  String nameEng;
+    private  String nameEn;
+    private  String code;
+
+    public SpecialitySummaryResModel(UniSpeciality uniSpeciality){
+        id=uniSpeciality.getId();
+        nameAz=uniSpeciality.getNameAz();
+        nameEn=uniSpeciality.getNameEn();
+        code=uniSpeciality.getCode();
+    }
+
 
 }

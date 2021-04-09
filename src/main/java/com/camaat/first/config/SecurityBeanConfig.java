@@ -28,8 +28,11 @@ public class SecurityBeanConfig {
         return new  WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("*")
-                .allowedMethods("PUT","GET","DELETE","POST");
+                registry.addMapping("/api/**")
+                        .allowedOrigins("*")
+                        .allowedHeaders("*")
+
+                        .allowedMethods("PUT","GET","DELETE","POST");
             }
         };
     }

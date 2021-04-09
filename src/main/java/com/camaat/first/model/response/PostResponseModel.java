@@ -37,12 +37,14 @@ public class PostResponseModel {
         postLikeCount=post.getPostVote().size();
         postCommentCount=post.getComments().size();
 
-        if(post.getPhotoUrl().equals("default")) {
+        if(post.getPhotoUrl()!=null&& post.getPhotoUrl().equals("default")) {
             photoUrl =  post.getPhotoUrl();
         }
+
         else{
             photoUrl = ImageUtil.getPhotoUrl(post.getPhotoUrl());
         }
+
         this.isLiked=isLiked;
 
     }

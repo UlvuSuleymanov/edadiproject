@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/uni/{abbr}/speciality")
+@RequestMapping("/api/university/{abbr}/speciality")
 public class UniSpecialityController {
     private  final UniSpecialityService uniSpecialityService;
 

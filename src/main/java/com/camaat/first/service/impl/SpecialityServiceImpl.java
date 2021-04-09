@@ -36,6 +36,6 @@ public class SpecialityServiceImpl implements SpecialityService {
         SpecialitySummaryResModel specialitySummaryResModel = new SpecialitySummaryResModel();
 
       return    specialitySummaryResModel.setId(speciality.getId())
-                .setName(speciality.getNameAze());
+                .setNameAz(speciality.getNameAze());
     }
 }

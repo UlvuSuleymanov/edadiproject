@@ -24,15 +24,7 @@ public class UniSpecialityServiceImpl implements UniSpecialityService{
         this.uniSpecialityRepository = uniSpecialityRepository;
     }
 
-    @Override
-    public SpecialitySummaryResModel createUniSpecialityResponseModel(UniSpeciality uniSpeciality) {
-        SpecialitySummaryResModel specialitySummaryResModel = new SpecialitySummaryResModel();
-        specialitySummaryResModel.setId(uniSpeciality.getId())
 
-                .setName(uniSpeciality.getNameAz());
-
-        return specialitySummaryResModel;
-    }
 
     @Override
     public List<SpecialitySummaryResModel> getSpecialitiesOfUni(String abbr) {
@@ -45,15 +37,16 @@ public class UniSpecialityServiceImpl implements UniSpecialityService{
 
         if(universityOptional.isPresent()) {
             specialities=universityOptional.get().getUniSpecialityList();
+
+
         }
-        specialitySummaryResModelList = specialities
-                .stream()
-                .map(uniSpeciality -> createUniSpecialityResponseModel(uniSpeciality))
+
+        return  specialities.stream()
+                .map(uniSpeciality -> new SpecialitySummaryResModel(uniSpeciality))
                 .collect(Collectors.toList());
 
 
 
-       return specialitySummaryResModelList;
 
     }
 

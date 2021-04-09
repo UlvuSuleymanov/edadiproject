@@ -151,22 +151,26 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseModel toResponse(Post post) {
 
-        boolean authenticated = AuthUtil.userIsAuthenticated();
-        Long userId = null;
+   if(post!=null) {
+
+       boolean authenticated = AuthUtil.userIsAuthenticated();
+       Long userId = null;
 
 
-        if (authenticated) {
-            userId = AuthUtil.getCurrentUserId();
-        }
-        boolean isLiked = false;
-        if (authenticated) {
-            isLiked = checkUserIsLiked(userId, post.getId());
+       if (authenticated) {
+           userId = AuthUtil.getCurrentUserId();
+       }
 
-        }
+       boolean isLiked = false;
+       if (authenticated) {
+           isLiked = checkUserIsLiked(userId, post.getId());
 
-        return new PostResponseModel(post, isLiked);
+       }
 
+       return new PostResponseModel(post, isLiked);
 
+   }
+   return null;
     }
 
 
@@ -245,6 +249,8 @@ public class PostServiceImpl implements PostService {
 
 
         if (post.isPresent()) {
+            System.out.println("present");
+
             return toResponse(post.get());
         }
 
