@@ -1,5 +1,6 @@
 package com.camaat.first.controller;
 
+import com.camaat.first.entity.User;
 import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.repository.UserRepository;
 import com.camaat.first.service.AuthenticationService;
@@ -16,12 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -42,24 +42,22 @@ public class PostController {
     }
 
 
-    @PostMapping(value = "/{username}/post")
-    @PreAuthorize(value = "#username == authentication.name")
-    public ResponseEntity addPost(@RequestParam(value = "post") String newPostJson,
-                                  @RequestParam(value = "image", required = false) MultipartFile multipartFile,
-                                  @PathVariable String username) {
-        try {
+    @PostMapping(value = "/post")
+//    @PreAuthorize(value = "#username == authentication.name")
+        public ResponseEntity addPost( @RequestBody PostRequestModel postRequestModel,
+                                       @RequestParam(value = "image", required = false) MultipartFile multipartFile,
+                                       @AuthenticationPrincipal String username
+                                   ) {
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            PostRequestModel postRequestModel = objectMapper.readValue(newPostJson, PostRequestModel.class);
-            postRequestModel.setMultipartFile(multipartFile);
+        System.out.println(username);
+
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            PostRequestModel postRequestModel = objectMapper.readValue(newPostJson, PostRequestModel.class);
+          //  postRequestModel.setMultipartFile(multipartFile);
             Post post = postService.createPost(postRequestModel, username);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -103,10 +101,6 @@ public class PostController {
     ) {
 
 
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials().toString());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-        System.out.println(SecurityContextHolder.getContext());
 
 
         List<PostResponseModel> postResponseModelList = postService.getPosts(page, size, sort);

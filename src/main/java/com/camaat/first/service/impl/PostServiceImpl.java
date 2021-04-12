@@ -2,14 +2,11 @@ package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.post.Post;
 import com.camaat.first.entity.post.PostVote;
-import com.camaat.first.entity.post.Tag;
 import com.camaat.first.entity.User;
+import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.entity.university.University;
 import com.camaat.first.model.response.PostResponseModel;
-import com.camaat.first.repository.PostRepository;
-import com.camaat.first.repository.PostVoteRepository;
-import com.camaat.first.repository.UniversityRepository;
-import com.camaat.first.repository.UserRepository;
+import com.camaat.first.repository.*;
 import com.camaat.first.service.ImageService;
 import com.camaat.first.utility.AuthUtil;
  import com.camaat.first.utility.ImageEnum;
@@ -26,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -40,9 +38,17 @@ public class PostServiceImpl implements PostService {
     private final S3Service s3Service;
     private final ImageService imageService;
     private final PostVoteRepository postVoteRepository;
+    private final SpecialityRepository specialityRepository;
 
     @Autowired
-    public PostServiceImpl(UserRepository userRepository, PostRepository postRepository, TagServiceImpl tagService, UniversityRepository universityRepository, S3Service s3Service, ImageService imageService, PostVoteRepository postVoteRepository) {
+    public PostServiceImpl(UserRepository userRepository,
+                           PostRepository postRepository,
+                           TagServiceImpl tagService,
+                           UniversityRepository universityRepository,
+                           S3Service s3Service,
+                           ImageService imageService,
+                           PostVoteRepository postVoteRepository,
+                           SpecialityRepository specialityRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.tagService = tagService;
@@ -50,6 +56,7 @@ public class PostServiceImpl implements PostService {
         this.s3Service = s3Service;
         this.imageService = imageService;
         this.postVoteRepository = postVoteRepository;
+        this.specialityRepository = specialityRepository;
     }
 
 
@@ -61,26 +68,50 @@ public class PostServiceImpl implements PostService {
                 new UsernameNotFoundException("User not found with username or email : ")
         );
         Date date = new Date();
+
         Post post = new Post();
-
-
-        post.setDate(date);
         post.setUser(user);
-        post.setUniversity(universityRepository.getOne(1L));
-        post.setPostText(postRequestModel.getPostText());
-        post.setPostTitle(postRequestModel.getPostTitle());
-        user.getPosts().add(post);
-        Post savedPost = postRepository.save(post);
+        post.setDate(date);
+        post.setPostText(postRequestModel.getText());
 
-        Set<Tag> tagSet = tagService.addTags(postRequestModel.getTags(), savedPost);
-        post.setTags(tagSet);
-        String photoUrl = ImageEnum.DEFAULT_IMAGE_NAME.getName();
-        if (postRequestModel.getMultipartFile() != null) {
-            photoUrl = savePostPicture(savedPost.getId(), postRequestModel.getMultipartFile());
+        switch (postRequestModel.getType()){
+            case "university":
+                University university = universityRepository.findById(postRequestModel.getId()).orElseThrow(() ->
+                        new UsernameNotFoundException("University not found with  id : ")
+                );
+                post.setUniversity(university);
+
+                break;
+
+            case "speciality":
+                Speciality speciality = specialityRepository.findById(postRequestModel.getId()).orElseThrow(() ->
+                        new EntityNotFoundException("Speciality not found with  id : ")
+                );
+                post.setSpeciality(speciality);
+                break;
+
+            case "uni-speciality":
+                break;
         }
-        post.setPhotoUrl(photoUrl);
-        userRepository.save(user);
-        return post;
+
+
+
+
+
+      //  post.setUniversity(universityRepository.getOne(1L));
+      //  post.setPostText(postRequestModel.getText());
+      //  post.setPostTitle("title");
+      //  user.getPosts().add(post);
+     //   Post savedPost = postRepository.save(post);
+
+      //  Set<Tag> tagSet = tagService.addTags(postRequestModel.getTags(), savedPost);
+    //    post.setTags(tagSet);
+      //  String photoUrl = ImageEnum.DEFAULT_IMAGE_NAME.getName();
+//        if (postRequestModel.getMultipartFile() != null) {
+//            photoUrl = savePostPicture(savedPost.getId(), postRequestModel.getMultipartFile());
+//        }
+    //    post.setPhotoUrl(photoUrl);
+     return     postRepository.save(post);
 
 
     }
