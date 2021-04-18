@@ -1,6 +1,7 @@
 package com.camaat.first.model.response;
 
 import com.camaat.first.entity.university.University;
+import com.camaat.first.utility.ImageUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class  UniResponseModel {
         this.nameAz=university.getNameAz();
         this.nameEn=university.getNameEn();
         this.info=university.getInfo();
-        this.url=university.getPhotoUrl();
+        this.url= ImageUtil.getPhotoUrl(university.getAbbr());
     }
 
 }

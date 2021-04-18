@@ -1,23 +1,18 @@
 package com.camaat.first.controller;
 
-import com.camaat.first.entity.User;
-import com.camaat.first.entity.post.PostVote;
+ import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.repository.UserRepository;
-import com.camaat.first.service.AuthenticationService;
-import com.camaat.first.service.TagService;
+ import com.camaat.first.service.TagService;
 import com.camaat.first.utility.AuthUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.camaat.first.entity.post.Post;
+ import com.camaat.first.entity.post.Post;
 import com.camaat.first.model.request.PostRequestModel;
 import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.repository.PostRepository;
 import com.camaat.first.service.PostService;
-import com.camaat.first.utility.DataParser;
-import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+ import org.springframework.security.core.annotation.AuthenticationPrincipal;
  import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,7 +54,7 @@ public class PostController {
 
 
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return   ResponseEntity.ok(new PostResponseModel(post,false));
     }
 
 

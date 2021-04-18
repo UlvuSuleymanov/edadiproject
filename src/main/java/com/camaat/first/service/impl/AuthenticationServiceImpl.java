@@ -1,8 +1,8 @@
 package com.camaat.first.service.impl;
 
 import com.camaat.first.entity.*;
+import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.entity.university.SpecialityOffer;
-import com.camaat.first.entity.university.UniSpeciality;
 import com.camaat.first.entity.university.University;
 import com.camaat.first.model.request.SignInRequestModel;
 import com.camaat.first.model.request.SignUpRequestModel;
@@ -33,11 +33,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UniversityRepository universityRepository;
     private final SpecialityService specialityService;
     private final SpecialityOfferRepository specialityOfferRepository;
-    private final UniSpecialityRepository uniSpecialityRepository;
 
     private  User user;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder, JwtBean jwtBean, SpecialityRepository specialityRepository, UniversityRepository universityRepository, SpecialityService specialityService, SpecialityOfferRepository specialityOfferRepository, UniSpecialityRepository uniSpecialityRepository) {
+    public AuthenticationServiceImpl(UserRepository userRepository,
+                                     UserService userService,
+                                     PasswordEncoder passwordEncoder,
+                                     JwtBean jwtBean,
+                                     SpecialityRepository specialityRepository,
+                                     UniversityRepository universityRepository,
+                                     SpecialityService specialityService,
+                                     SpecialityOfferRepository specialityOfferRepository
+                                   ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -46,8 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.universityRepository = universityRepository;
         this.specialityService = specialityService;
         this.specialityOfferRepository = specialityOfferRepository;
-        this.uniSpecialityRepository = uniSpecialityRepository;
-    }
+     }
 
 
 
@@ -218,7 +224,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return false;
         }
 
-        Optional<UniSpeciality> specialityOptional=uniSpecialityRepository.findById(specialityId);
+        Optional<com.camaat.first.entity.university.Speciality> specialityOptional=specialityRepository.findById(specialityId);
 
         boolean isGood=false;
         if(specialityOptional.isPresent()){

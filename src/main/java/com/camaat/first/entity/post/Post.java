@@ -2,7 +2,6 @@ package com.camaat.first.entity.post;
 
 import com.camaat.first.entity.*;
 import com.camaat.first.entity.university.Speciality;
-import com.camaat.first.entity.university.UniSpeciality;
 import com.camaat.first.entity.university.University;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,7 +42,7 @@ public class Post {
     private Speciality speciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UniSpeciality uniSpeciality;
+    private Speciality uniSpeciality;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "post")
     private List<Image> image =new ArrayList<>();

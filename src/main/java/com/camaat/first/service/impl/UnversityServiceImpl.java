@@ -8,7 +8,8 @@ import com.camaat.first.model.request.UniRequestModel;
 import com.camaat.first.repository.UniversityRepository;
 import com.camaat.first.service.SpecialityService;
 import com.camaat.first.service.UniversityService;
-import org.springframework.stereotype.Service;
+ import com.camaat.first.utility.ImageUtil;
+ import org.springframework.stereotype.Service;
 
  import java.util.List;
  import java.util.Optional;
@@ -53,6 +54,7 @@ public class UnversityServiceImpl implements UniversityService {
        return   uniSummaryModel.setAbbr(university.getAbbr())
                 .setId(university.getId())
                 .setAbbr(university.getAbbr())
+                .setUrl(ImageUtil.getPhotoUrl(university.getAbbr()) )
                 .setName(university.getNameAz());
     }
 

@@ -13,5 +13,6 @@ public class UniSummaryModel {
     private Long id;
     private String abbr;
     private String name;
+    private String url;
 
 }

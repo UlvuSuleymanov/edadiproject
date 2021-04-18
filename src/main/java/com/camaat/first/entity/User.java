@@ -3,7 +3,7 @@ package com.camaat.first.entity;
 import com.camaat.first.entity.post.Comment;
 import com.camaat.first.entity.post.Post;
 import com.camaat.first.entity.post.PostVote;
-import com.camaat.first.entity.university.UniSpeciality;
+import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.entity.university.University;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -40,7 +40,7 @@ public class User {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private UniSpeciality uniSpeciality;
+    private Speciality uniSpeciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private University university;

@@ -1,13 +1,8 @@
 package com.camaat.first.controller;
 
-import com.camaat.first.model.response.SpecialitySummaryResModel;
 import com.camaat.first.service.SpecialityService;
- import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
- import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/speciality")
@@ -20,9 +15,9 @@ public class SpecialityController {
 
 
     @GetMapping()
-    ResponseEntity getGeneralSpecialityList(){
-    List<SpecialitySummaryResModel> specialitySummaryResModelList=specialityService.getSpecialities();
-    return ResponseEntity.ok(specialitySummaryResModelList);
+    ResponseEntity getUniSpecialities(@RequestParam String abbr,@RequestParam Integer group){
+
+            return ResponseEntity.ok(specialityService.getSpecialitiesOfUni(abbr,group));
     }
 
 }

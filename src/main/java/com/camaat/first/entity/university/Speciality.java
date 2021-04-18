@@ -1,5 +1,6 @@
 package com.camaat.first.entity.university;
 
+import com.camaat.first.entity.User;
 import com.camaat.first.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,30 +14,30 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Speciality {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nameAze;
-    private String nameEng;
+    private String nameAz;
+    private String nameEn;
 
 
+    private String code;
 
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality",orphanRemoval = false)
+
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "uniSpeciality",orphanRemoval = false)
     private List<Post> postList= new ArrayList<>();;
 
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality",orphanRemoval = false)
-    private List<UniSpeciality> uniSpecialityList=new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "uniSpeciality",orphanRemoval = false)
+    private List<User> userList= new ArrayList<>();;
 
 
-//    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality",orphanRemoval = false)
-//    private List<User> userList= new ArrayList<>();;
-//
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    private  University university;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private University university;
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Speciality speciality;
 
 }
