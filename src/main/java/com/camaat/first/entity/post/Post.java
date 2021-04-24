@@ -41,8 +41,7 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private Speciality speciality;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Speciality uniSpeciality;
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "post")
     private List<Image> image =new ArrayList<>();

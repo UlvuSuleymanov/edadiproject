@@ -20,8 +20,7 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
-    @Column(unique = true)
-    private String abbr;
+     private String abbr;
 
     private String abbrAz;
     private String nameAz;
@@ -30,13 +29,14 @@ public class University {
     private String photoUrl;
     private String info;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
     private List<Post> postList= new ArrayList<>();;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
     private List<User> userList= new ArrayList<>();;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "university")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
     private List<Speciality> specialities= new ArrayList<>();;
 
 }

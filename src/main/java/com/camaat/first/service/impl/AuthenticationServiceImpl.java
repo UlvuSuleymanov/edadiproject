@@ -234,7 +234,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
        if(isGood){
-           user.setUniSpeciality(specialityOptional.get());
+           user.setSpeciality(specialityOptional.get());
         }
 
        return isGood;

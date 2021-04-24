@@ -14,13 +14,15 @@ public class SpecialitySummaryResModel {
     private Long id;
     private  String nameAz;
     private  String nameEn;
-    private  String code;
+    private  Long code;
+    private  Long group;
 
     public SpecialitySummaryResModel(Speciality uniSpeciality){
         id=uniSpeciality.getId();
         nameAz=uniSpeciality.getNameAz();
         nameEn=uniSpeciality.getNameEn();
-        code=uniSpeciality.getCode();
+        code=uniSpeciality.getSpecialityCode();
+        group=uniSpeciality.getSpecialityGroup();
     }
 
 

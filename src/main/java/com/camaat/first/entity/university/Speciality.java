@@ -24,20 +24,18 @@ public class Speciality {
     private String nameEn;
 
 
-    private String code;
+    private Long specialityCode;
+    private Long specialityGroup;
 
+        @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality")
+        private List<Post> postList= new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "uniSpeciality",orphanRemoval = false)
-    private List<Post> postList= new ArrayList<>();;
-
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "uniSpeciality",orphanRemoval = false)
-    private List<User> userList= new ArrayList<>();;
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality")
+    private List<User> userList= new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     private University university;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Speciality speciality;
 
 }

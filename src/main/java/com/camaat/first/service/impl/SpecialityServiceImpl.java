@@ -2,7 +2,8 @@ package com.camaat.first.service.impl;
 
   import com.camaat.first.entity.university.Speciality;
   import com.camaat.first.entity.university.University;
- import com.camaat.first.model.response.SpecialitySummaryResModel;
+  import com.camaat.first.model.response.SpecialityResponseModel;
+  import com.camaat.first.model.response.SpecialitySummaryResModel;
   import com.camaat.first.repository.SpecialityRepository;
   import com.camaat.first.repository.UniversityRepository;
  import com.camaat.first.service.SpecialityService;
@@ -27,31 +28,34 @@ public class SpecialityServiceImpl implements SpecialityService {
 
 
     @Override
-    public List<SpecialitySummaryResModel> getSpecialitiesOfUni(String abbr,Integer group) {
+    public List<SpecialitySummaryResModel> getSpecialities(String abbr,Long group) {
+
 
 
         Optional<University> universityOptional = universityRepository.findByAbbr(abbr);
+
         List<Speciality> specialities= new ArrayList<>();
 
         List<SpecialitySummaryResModel> specialitySummaryResModelList = new ArrayList<>();
 
         if(universityOptional.isPresent()) {
-            specialities=universityOptional.get().getSpecialities();
 
+             if(group==0)
+                specialities=universityOptional.get().getSpecialities();
+
+             else
+                specialities=specialityRepository.getSpeciality(universityOptional.get().getId(), group);
 
         }
 
         return  specialities.stream()
-                .map(uniSpeciality -> new SpecialitySummaryResModel(uniSpeciality))
+                .map(speciality -> new SpecialitySummaryResModel(speciality))
                 .collect(Collectors.toList());
 
 
 
 
     }
-
-
-
 
 
 

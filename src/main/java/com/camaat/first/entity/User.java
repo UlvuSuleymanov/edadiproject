@@ -40,7 +40,7 @@ public class User {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private Speciality uniSpeciality;
+    private Speciality speciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private University university;
