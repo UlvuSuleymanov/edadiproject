@@ -1,4 +1,4 @@
-package com.camaat.first.utility;
+package com.camaat.first.constants;
 
 public enum ImageEnum {
     DEFAULT_IMAGE_NAME("default"),

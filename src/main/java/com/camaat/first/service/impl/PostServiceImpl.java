@@ -9,7 +9,6 @@ import com.camaat.first.model.response.PostResponseModel;
 import com.camaat.first.repository.*;
 import com.camaat.first.service.ImageService;
 import com.camaat.first.utility.AuthUtil;
- import com.camaat.first.utility.ImageEnum;
 import com.camaat.first.utility.ImageUtil;
  import com.camaat.first.model.request.PostRequestModel;
 import com.camaat.first.model.response.SearchResultResponseModel;

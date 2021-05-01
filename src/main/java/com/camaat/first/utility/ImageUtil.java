@@ -1,6 +1,8 @@
 package com.camaat.first.utility;
 
 
+import com.camaat.first.constants.ImageEnum;
+
 public class ImageUtil {
 
 

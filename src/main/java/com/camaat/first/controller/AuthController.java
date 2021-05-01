@@ -9,7 +9,10 @@ package com.camaat.first.controller;
 
   import org.springframework.beans.factory.annotation.Autowired;
   import org.springframework.http.ResponseEntity;
+  import org.springframework.validation.annotation.Validated;
   import org.springframework.web.bind.annotation.*;
+
+  import javax.validation.Valid;
 
 
 @RestController
@@ -30,15 +33,17 @@ package com.camaat.first.controller;
 
     @PostMapping(value = "/signin")
     public ResponseEntity<?> login(@RequestBody SignInRequestModel signInRequestModel){
-    SignInResponseModel signUpResponseModel=   authenticationService.signIn(signInRequestModel);
+  //  SignInResponseModel signUpResponseModel=   authenticationService.signIn(signInRequestModel);
 
-    return  ResponseEntity.ok(signUpResponseModel);
+        SignInResponseModel signUpResponseModel= null;
+
+        return  ResponseEntity.ok(signUpResponseModel);
 
      }
 
 
     @PostMapping(value = "/signup")
-    public ResponseEntity addUser(@RequestBody final SignUpRequestModel signUpRequestModel){
+    public ResponseEntity addUser( @Validated @RequestBody final SignUpRequestModel signUpRequestModel){
 
 
       SignUpResponseModel signUpResponseModel = new SignUpResponseModel();

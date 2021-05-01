@@ -1,7 +1,8 @@
-package com.camaat.first.utility;
+package com.camaat.first.constants;
 
 public enum  UserEnum {
-    DEFAULT_USER_IMAGE_NAME("default");
+
+    DEFAULT_IMAGE_NAME("default");
 
 
     private  final  String imageName;

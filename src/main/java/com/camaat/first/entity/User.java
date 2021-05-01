@@ -1,10 +1,12 @@
 package com.camaat.first.entity;
 
+import com.camaat.first.constants.UserEnum;
 import com.camaat.first.entity.post.Comment;
 import com.camaat.first.entity.post.Post;
 import com.camaat.first.entity.post.PostVote;
 import com.camaat.first.entity.university.Speciality;
 import com.camaat.first.entity.university.University;
+import com.camaat.first.model.request.SignUpRequestModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +38,7 @@ public class User {
 
     private  String photoUrl;
 
-    private Date birthDay;
+    private Date profileBirthDay;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,6 +82,14 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public User(SignUpRequestModel signUpRequestModel){
+        username=signUpRequestModel.getUsername();
+        name=signUpRequestModel.getName();
+        email=signUpRequestModel.getEmail();
+        profileBirthDay = new Date();
+        photoUrl= UserEnum.DEFAULT_IMAGE_NAME.getImageName();
     }
 
 

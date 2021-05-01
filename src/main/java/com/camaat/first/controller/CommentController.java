@@ -59,10 +59,11 @@ import java.util.List;
 
     @PostMapping("/api/comments/{commentId}/dislike")
         public  ResponseEntity disLikePost(@PathVariable Long commentId){
-        Long userId = AuthUtil.getCurrentUserId();
-      commentService.disLikeComment(commentId,userId);
-         return new ResponseEntity(HttpStatus.OK);    }
 
+        Long userId = AuthUtil.getCurrentUserId();
+
+        commentService.disLikeComment(commentId,userId);
+         return new ResponseEntity(HttpStatus.OK);    }
 
 
 

@@ -215,6 +215,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
 
+
+
     @Override
     public boolean setSpeciality(Long specialityId) {
         Optional<Long> id = Optional.ofNullable(specialityId);

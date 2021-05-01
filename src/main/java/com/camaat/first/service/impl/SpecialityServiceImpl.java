@@ -2,8 +2,7 @@ package com.camaat.first.service.impl;
 
   import com.camaat.first.entity.university.Speciality;
   import com.camaat.first.entity.university.University;
-  import com.camaat.first.model.response.SpecialityResponseModel;
-  import com.camaat.first.model.response.SpecialitySummaryResModel;
+   import com.camaat.first.model.response.SpecialitySummaryResModel;
   import com.camaat.first.repository.SpecialityRepository;
   import com.camaat.first.repository.UniversityRepository;
  import com.camaat.first.service.SpecialityService;

@@ -55,30 +55,14 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,"/api/**").permitAll()
 
-                .antMatchers(POST, "/api/auth/**").permitAll()
-              //  .antMatchers(GET,"/api/university/{abbr}/posts").permitAll()
-//                .antMatchers(GET,"/api/user/{username}").permitAll()
-//
-//                .antMatchers(GET,"/api/user/check/**").permitAll()
-//
-//                .antMatchers(GET,"/api/tag").permitAll()
-//
-//                .antMatchers(GET,"/api/posts").permitAll()
-//
-//                .antMatchers(GET,"/api/speciality").permitAll()
-//
-//                .antMatchers(GET,"/api/post/{postId}").permitAll()
-//
-//                .antMatchers(GET,"/api/uni/{abbr}/speciality").permitAll()
-//
-//                .antMatchers(GET,"/api/uni").permitAll()
-//
-//                .antMatchers(GET,"/api/uni/**").permitAll()
-//
-//                .antMatchers(GET,"/api/post/{postId}/comments").permitAll()
 
-                 .anyRequest().authenticated()
+                .antMatchers(POST, "/api/auth/**").permitAll()
+
+
+                .anyRequest().authenticated()
                 .and()
+
+
 
                 .addFilterAfter(new JwtVerifierFilter(jwtBean, userPrincipalService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests();
