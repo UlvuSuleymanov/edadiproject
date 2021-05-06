@@ -1,0 +1,22 @@
+package az.edadi.back.entity;
+
+    public enum UserAuthority {
+        USER_READ("user:read"),
+        USER_UPDATE("user:update"),
+        ADMIN_READ("admin:read"),
+        ADMIN_UPDATE("admin:update");
+
+
+
+
+
+        private final String permission;
+
+        UserAuthority(String permission) {
+            this.permission = permission;
+        }
+
+        public String getPermission() {
+            return permission;
+        }
+}
