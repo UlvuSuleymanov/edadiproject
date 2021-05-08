@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,10 +22,15 @@ public class Article {
     @Column(length = 60)
     private String title;
 
-    @Lob
-    @Column(length = 20000)
-    private String content;
+    private String slug;
 
+    @Lob
+     private String content;
+
+    private Date date;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "article_tag",

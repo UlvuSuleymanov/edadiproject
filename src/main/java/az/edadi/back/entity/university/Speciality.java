@@ -30,8 +30,8 @@ public class Speciality {
         @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality")
         private List<Post> postList= new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality")
-    private List<User> userList= new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "speciality")
+//    private List<User> userList= new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.EAGER)

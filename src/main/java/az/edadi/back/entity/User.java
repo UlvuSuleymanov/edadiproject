@@ -40,16 +40,19 @@ public class User {
 
     private Date profileBirthDay;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Speciality speciality;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private University university;
+//    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Speciality speciality;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private University university;
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Post> posts =new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<Article> articles =new ArrayList<>();
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")

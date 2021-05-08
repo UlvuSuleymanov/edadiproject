@@ -1,6 +1,6 @@
 package az.edadi.back.service;
 import az.edadi.back.entity.User;
-import az.edadi.back.model.ImageResponseModel;
+import az.edadi.back.model.response.ImageResponseModel;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.response.UserResponseModel;
 import org.springframework.web.multipart.MultipartFile;

@@ -33,8 +33,8 @@ public class University {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
     private List<Post> postList= new ArrayList<>();;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
-    private List<User> userList= new ArrayList<>();;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
+//    private List<User> userList= new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
     private List<Speciality> specialities= new ArrayList<>();;

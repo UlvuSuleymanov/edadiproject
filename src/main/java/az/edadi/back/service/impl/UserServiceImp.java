@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
   import az.edadi.back.entity.User;
   import az.edadi.back.service.ImageService;
   import az.edadi.back.service.UserService;
-  import az.edadi.back.model.ImageResponseModel;
+  import az.edadi.back.model.response.ImageResponseModel;
  import az.edadi.back.model.response.UserResponseModel;
 import az.edadi.back.repository.UserRepository;
   import az.edadi.back.model.UserPrincipalModel;

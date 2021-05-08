@@ -1,5 +1,5 @@
 package az.edadi.back.controller;
-  import az.edadi.back.model.ImageResponseModel;
+  import az.edadi.back.model.response.ImageResponseModel;
   import az.edadi.back.model.response.UserResponseModel;
   import az.edadi.back.repository.UserRepository;
   import az.edadi.back.service.UserService;
