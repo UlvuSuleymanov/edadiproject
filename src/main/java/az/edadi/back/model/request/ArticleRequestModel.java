@@ -8,6 +8,5 @@ import java.util.List;
 public class ArticleRequestModel {
     private String title;
     private String body;
-    private String author;
-    private List <String> tags;
+     private List <String> tags;
 }

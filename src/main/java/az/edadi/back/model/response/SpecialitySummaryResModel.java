@@ -16,6 +16,7 @@ public class SpecialitySummaryResModel {
     private  String nameEn;
     private  Long code;
     private  Long group;
+    private  String university;
 
     public SpecialitySummaryResModel(Speciality uniSpeciality){
         id=uniSpeciality.getId();
@@ -23,6 +24,7 @@ public class SpecialitySummaryResModel {
         nameEn=uniSpeciality.getNameEn();
         code=uniSpeciality.getSpecialityCode();
         group=uniSpeciality.getSpecialityGroup();
+        university=uniSpeciality.getUniversity().getAbbrAz();
     }
 
 

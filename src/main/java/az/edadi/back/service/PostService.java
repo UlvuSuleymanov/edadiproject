@@ -13,6 +13,9 @@ public interface PostService {
 
      Post createPost(PostRequestModel postRequestModel, String username);
      List<PostResponseModel> getPosts(Integer page, Integer size, String sort);
+
+
+     List<PostResponseModel> getSpecialityyPosts(Long code, Integer page,Integer size, String sort);
      List<PostResponseModel> getUniversityPosts(String uniAbbr, Integer page,Integer size, String sort);
      PostResponseModel toResponse(Post post);
      String savePostPicture(Long id, MultipartFile multipartFile);

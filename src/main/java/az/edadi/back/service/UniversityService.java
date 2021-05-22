@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UniversityService {
     University createUni(UniRequestModel uniRequestModel);
-    List<UniSummaryModel> getUnisList();
+    List<UniResponseModel> getUnisList();
 
-    UniSummaryModel getUniSummaryResponseModel(University university);
+//    UniSummaryModel getUniSummaryResponseModel(University university);
 
 
     UniResponseModel getUni(String abbrName);

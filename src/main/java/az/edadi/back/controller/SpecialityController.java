@@ -23,9 +23,9 @@ public class SpecialityController {
 
 
     @GetMapping
-    ResponseEntity getSpecialities(@RequestParam String abbr, @RequestParam Long group){
+     ResponseEntity getSpecialities(@RequestParam Long group){
 
-            return ResponseEntity.ok(specialityService.getSpecialities(abbr,group));
+            return ResponseEntity.ok(specialityService.getSpecialities(group));
     }
 
     @GetMapping("/{code}")

@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
   import az.edadi.back.entity.User;
+  import az.edadi.back.exception.UserNotFoundException;
   import az.edadi.back.service.ImageService;
   import az.edadi.back.service.UserService;
   import az.edadi.back.model.response.ImageResponseModel;
@@ -38,28 +39,14 @@ public class UserServiceImp implements UserService {
      }
 
 
-
     @Override
-    public UserResponseModel createUserSerponseModel(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        UserResponseModel userResponseModel = new UserResponseModel();
+    public UserResponseModel getUserByUsername(String username) {
+      User user = userRepository.findByUsername(username)
+              .orElseThrow(()->new UserNotFoundException());
 
-
-
-      if(userOptional.isPresent()){
-          User user = userOptional.get();
-             userResponseModel.setName(user.getName())
-                     .setUsername(user.getUsername())
-                     .setPostCount(user.getPosts().size())
-                     .setImageUrl(ImageServiceImpl.getFullImage(user.getPhotoUrl()))
-                     .setCommentCount(user.getComments().size());
-
-         }
-
-        return  userResponseModel;
-
-
+      return new UserResponseModel(user);
     }
+
 
 
 
@@ -90,6 +77,7 @@ public class UserServiceImp implements UserService {
         String id = imageService.setImage(multipartFile,true);
 
         user.setPhotoUrl(id);
+        userRepository.save(user);
 
         ImageResponseModel imageResponseModel =new ImageResponseModel();
         imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(id));

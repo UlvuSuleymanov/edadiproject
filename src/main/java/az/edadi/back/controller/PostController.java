@@ -29,7 +29,10 @@ public class PostController {
     private final TagService tagService;
 
     @Autowired
-    public PostController(PostRepository questionRepository, PostService postService, UserRepository userRepository, TagService tagService) {
+    public PostController(PostRepository questionRepository,
+                          PostService postService,
+                          UserRepository userRepository,
+                          TagService tagService) {
         this.postRepository = questionRepository;
         this.postService = postService;
         this.userRepository = userRepository;
@@ -66,6 +69,16 @@ public class PostController {
 
 
     return ResponseEntity.ok().body(postService.getUniversityPosts(abbr,page,size,sort));
+    }
+
+    @GetMapping(value = "/speciality/{code}/posts")
+    ResponseEntity getSpecialityPosts(@PathVariable Long code,
+                                     @RequestParam Integer page,
+                                     @RequestParam Integer size,
+                                     @RequestParam String sort){
+
+
+        return ResponseEntity.ok().body(postService.getSpecialityyPosts(code,page,size,sort));
     }
 
 
@@ -116,9 +129,7 @@ public class PostController {
 
     @DeleteMapping("/post/{postId}/like")
     public ResponseEntity disLikePost(@PathVariable Long postId) {
-
         Long userId = AuthUtil.getCurrentUserId();
-
 
         postService.disLikePost(postId, userId);
         return new ResponseEntity(HttpStatus.OK);

@@ -142,6 +142,37 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
+
+
+    @Override
+    public List<PostResponseModel> getSpecialityyPosts(Long code, Integer page, Integer size, String sort) {
+        Pageable pageable = PageRequest.of(page, size);
+        Optional<List<Post>> postList = Optional.empty();
+
+
+        switch (sort) {
+            case "mostCommented":
+                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
+                break;
+            case "mostLiked":
+                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
+                break;
+            case "three":
+                System.out.println("mostLiked");
+                break;
+            default:
+                postList = Optional.of(postRepository.findAll(pageable).toList());
+        }
+        if (postList.isPresent()) {
+            return postsToResponseModels(postList.get());
+        }
+
+        return null;
+    }
+
+
+
+
     @Override
     public List<PostResponseModel> getUniversityPosts(String uniAbbr,
                                                       Integer page,
@@ -177,6 +208,7 @@ public class PostServiceImpl implements PostService {
 
 
     }
+
 
     @Override
     public PostResponseModel toResponse(Post post) {

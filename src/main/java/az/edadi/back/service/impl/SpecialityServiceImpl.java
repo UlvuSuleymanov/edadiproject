@@ -27,31 +27,20 @@ public class SpecialityServiceImpl implements SpecialityService {
 
 
     @Override
-    public List<SpecialitySummaryResModel> getSpecialities(String abbr,Long group) {
+    public List<SpecialitySummaryResModel> getSpecialities(Long group) {
 
 
 
-        Optional<University> universityOptional = universityRepository.findByAbbr(abbr);
 
         List<Speciality> specialities= new ArrayList<>();
 
-        List<SpecialitySummaryResModel> specialitySummaryResModelList = new ArrayList<>();
+        specialities=specialityRepository.getSpeciality(group);
 
-        if(universityOptional.isPresent()) {
 
-             if(group==0)
-                specialities=universityOptional.get().getSpecialities();
-
-             else
-                specialities=specialityRepository.getSpeciality(universityOptional.get().getId(), group);
-
-        }
 
         return  specialities.stream()
                 .map(speciality -> new SpecialitySummaryResModel(speciality))
                 .collect(Collectors.toList());
-
-
 
 
     }

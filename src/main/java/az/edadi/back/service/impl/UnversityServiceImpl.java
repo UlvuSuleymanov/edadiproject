@@ -36,11 +36,11 @@ public class UnversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public List<UniSummaryModel> getUnisList() {
+    public List<UniResponseModel> getUnisList() {
         List<University> universityList = universityRepository.findAll();
-        List<UniSummaryModel> uniResponseModels=universityList
+        List<UniResponseModel> uniResponseModels=universityList
                 .stream()
-                .map(university -> getUniSummaryResponseModel(university))
+                .map(university -> new UniResponseModel(university))
                 .collect(Collectors.toList());
 
      return uniResponseModels;
@@ -48,15 +48,15 @@ public class UnversityServiceImpl implements UniversityService {
     }
 
 
-    @Override
-    public UniSummaryModel getUniSummaryResponseModel(University university) {
-        UniSummaryModel uniSummaryModel = new UniSummaryModel();
-       return   uniSummaryModel.setAbbr(university.getAbbr())
-                .setId(university.getId())
-                .setAbbr(university.getAbbr())
-                .setUrl(ImageUtil.getPhotoUrl(university.getAbbr()) )
-                .setName(university.getNameAz());
-    }
+//    @Override
+//    public UniSummaryModel getUniSummaryResponseModel(University university) {
+//        UniSummaryModel uniSummaryModel = new UniSummaryModel();
+//       return   uniSummaryModel.setAbbr(university.getAbbr())
+//                .setId(university.getId())
+//                .setAbbr(university.getAbbr())
+//                .setUrl(ImageUtil.getPhotoUrl(university.getAbbr()) )
+//                .setName(university.getNameAz());
+//    }
 
 
 

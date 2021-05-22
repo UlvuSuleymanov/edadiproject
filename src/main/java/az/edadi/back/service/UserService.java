@@ -8,16 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
-      /**
-       * The Creator is God. But figuratively this method create a user.
-       * First method check user details
-       * if all values are suitable method save user :)
-       * @param
-       * @return
-       */
 
+     UserResponseModel getUserByUsername(String username);
 
-      UserResponseModel createUserSerponseModel(String username);
 
 
       UserPrincipalModel createUserPrincipial(User user);

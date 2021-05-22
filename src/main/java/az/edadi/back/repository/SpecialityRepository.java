@@ -11,8 +11,12 @@ package az.edadi.back.repository;
 
 @Repository
 public interface SpecialityRepository extends JpaRepository<Speciality,Long> {
-   @Query("SELECT s FROM Speciality s WHERE s.university.id = :id and s.specialityGroup = :group")
-   List<Speciality> getSpeciality(Long id, Long group);
+//   @Query("SELECT s FROM Speciality s WHERE s.university.id = :id and s.specialityGroup = :group")
+//   List<Speciality> getSpeciality(Long id, Long group);
 
-   Optional<Speciality> findBySpecialityCode(Long code);
+    @Query("SELECT s FROM Speciality s WHERE s.specialityGroup = :group")
+    List<Speciality> getSpeciality(Long group);
+
+
+    Optional<Speciality> findBySpecialityCode(Long code);
 }

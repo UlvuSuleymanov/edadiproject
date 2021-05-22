@@ -15,13 +15,13 @@ package az.edadi.back.controller;
 
 @RestController
 @RequestMapping("/api/university")
-public class UniController {
+public class UniversityController {
     private  final UniversityRepository universityRepository;
     private  final UniversityService universityService;
     private final SpecialityService uniSpecialityService;
-    public UniController(UniversityRepository universityRepository,
-                         UniversityService universityService,
-                         SpecialityService uniSpecialityService) {
+    public UniversityController(UniversityRepository universityRepository,
+                                UniversityService universityService,
+                                SpecialityService uniSpecialityService) {
 
         this.universityRepository = universityRepository;
         this.universityService = universityService;
@@ -40,7 +40,7 @@ public class UniController {
 
     @GetMapping
     ResponseEntity getUniList(){
-     List<UniSummaryModel> uniResponseModelList = universityService.getUnisList();
+     List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
      return ResponseEntity.ok(uniResponseModelList);
 
     }

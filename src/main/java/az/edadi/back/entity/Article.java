@@ -1,6 +1,7 @@
 package az.edadi.back.entity;
 
 import az.edadi.back.entity.post.Tag;
+import az.edadi.back.model.request.ArticleRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,9 @@ public class Article {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags = new HashSet<>();
+
+
+
 
 
 

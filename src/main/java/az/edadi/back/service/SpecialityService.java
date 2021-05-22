@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SpecialityService {
 
-     List<SpecialitySummaryResModel> getSpecialities(String abbr,Long group);
+     List<SpecialitySummaryResModel> getSpecialities(Long group);
 //    SpecialityResponseModel getSpeciality(Long code);
 
 
