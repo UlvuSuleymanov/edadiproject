@@ -4,6 +4,7 @@ import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.PostVote;
 import az.edadi.back.repository.*;
+import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.service.S3Service;
 import az.edadi.back.entity.university.Speciality;
@@ -34,7 +35,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagServiceImpl tagService;
     private final UniversityRepository universityRepository;
-    private final S3Service s3Service;
+    private final FileService s3Service;
     private final ImageService imageService;
     private final PostVoteRepository postVoteRepository;
     private final SpecialityRepository specialityRepository;
@@ -44,7 +45,7 @@ public class PostServiceImpl implements PostService {
                            PostRepository postRepository,
                            TagServiceImpl tagService,
                            UniversityRepository universityRepository,
-                           S3Service s3Service,
+                           FileService s3Service,
                            ImageService imageService,
                            PostVoteRepository postVoteRepository,
                            SpecialityRepository specialityRepository) {
@@ -241,7 +242,7 @@ public class PostServiceImpl implements PostService {
         try {
             File file = imageService.convertMultiPartToFile(multipartFile);
             String name = "postImage" + id;
-            s3Service.setPhoto(name, file);
+            s3Service.save(name, file);
             file.delete();
             return ImageUtil.getPhotoUrl(name);
         } catch (IOException e) {

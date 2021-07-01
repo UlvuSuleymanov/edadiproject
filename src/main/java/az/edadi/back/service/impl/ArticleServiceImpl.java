@@ -9,10 +9,15 @@ import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ArticleService;
 import az.edadi.back.utility.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -36,8 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDate(new Date());
         article.setUser(user);
         article=articleRepository.save(article);
-
-        article.setSlug(createSlug(article.getTitle(),article.getId()));
+         article.setSlug(createSlug(article.getTitle(),article.getId()));
 
         return new ArticleResponseModel(articleRepository.save(article));
      }
@@ -49,6 +53,20 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(()->new EntityNotFoundException());
 
         return new ArticleResponseModel(article);
+    }
+
+    @Override
+    public List<ArticleResponseModel> getArticleList(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Article> articles = articleRepository.getArticles(pageable);
+        return
+                articles !=null ?
+                        articles.stream().map(
+                article -> new ArticleResponseModel(article))
+                .collect(Collectors.toList())
+
+        : Collections.emptyList();
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface ImageService {
 
-    String setImage(MultipartFile multipartFile, boolean  hasThumb);
+//    String setImage(MultipartFile multipartFile, boolean  hasThumb);
 
 
     File getSmallPicture(File file);

@@ -5,6 +5,8 @@ import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.response.UserResponseModel;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 
 public interface UserService {
 
@@ -15,7 +17,7 @@ public interface UserService {
 
       UserPrincipalModel createUserPrincipial(User user);
 
-      ImageResponseModel setImage(MultipartFile multipartFile);
+      ImageResponseModel setImage(MultipartFile multipartFile) throws IOException;
 
  //     String setPhoto(MultipartFile multipartFile ,String username);
 

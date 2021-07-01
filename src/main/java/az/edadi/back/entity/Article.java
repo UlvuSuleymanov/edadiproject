@@ -25,8 +25,10 @@ public class Article {
 
     private String slug;
 
+    private int status=1;
+
     @Lob
-     private String content;
+    private String content;
 
     private Date date;
 

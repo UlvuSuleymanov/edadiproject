@@ -10,6 +10,8 @@ package az.edadi.back.controller;
   import org.springframework.web.bind.annotation.*;
   import org.springframework.web.multipart.MultipartFile;
 
+  import java.io.IOException;
+
 
 @RestController
 @RequestMapping("api/user/")
@@ -26,19 +28,17 @@ package az.edadi.back.controller;
 
      @GetMapping("{username}")
      ResponseEntity getUserDetails(@PathVariable String username){
-
      return  ResponseEntity.ok(userService.getUserByUsername(username));
      }
 
 
     @PostMapping("{username}/image")
      public ResponseEntity setImage(@RequestParam("image") MultipartFile multipartFile,
-                                    @PathVariable String username){
+                                    @PathVariable String username) throws IOException {
 
         ImageResponseModel responseModel= userService.setImage(multipartFile);
-         return ResponseEntity.ok(HttpEntity.EMPTY);
+        return ResponseEntity.ok(HttpEntity.EMPTY);
     }
-
 
 
 

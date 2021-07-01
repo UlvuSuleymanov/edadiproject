@@ -13,7 +13,9 @@ public class ArticleResponseModel {
     private String title;
     private String slug;
     private String body;
-    private String author;
+    private String authorName;
+    private String authorUsername;
+
     private String authorPhotoUrl;
     private Date brithDay;
     private boolean isLiked;
@@ -23,7 +25,9 @@ public class ArticleResponseModel {
         title=article.getTitle();
         slug=article.getSlug();
         body=article.getContent();
-        author=article.getUser().getUsername();
+        authorUsername=article.getUser().getUsername();
+        authorName=article.getUser().getName();
+
         authorPhotoUrl= ImageUtil.getPhotoUrl(article.getUser().getPhotoUrl());
         brithDay=article.getDate();
     }

@@ -2,6 +2,7 @@ package az.edadi.back.service.impl;
 
   import az.edadi.back.entity.User;
   import az.edadi.back.exception.UserNotFoundException;
+  import az.edadi.back.service.FileService;
   import az.edadi.back.service.ImageService;
   import az.edadi.back.service.UserService;
   import az.edadi.back.model.response.ImageResponseModel;
@@ -17,9 +18,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
- import java.util.Optional;
- import java.util.stream.Collectors;
+  import java.io.File;
+  import java.io.IOException;
+  import java.util.List;
+  import java.util.UUID;
+  import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -27,16 +30,18 @@ public class UserServiceImp implements UserService {
     private final  PasswordEncoder passwordEncoder;
     private  final UserRepository userRepository;
     private final ImageService imageService;
+    private final FileService s3Service;
 
 
     @Autowired
     public UserServiceImp(PasswordEncoder passwordEncoder,
                           UserRepository userRepository,
-                          ImageService imageService) {
+                          ImageService imageService, FileService s3Service) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.imageService = imageService;
-     }
+        this.s3Service = s3Service;
+    }
 
 
     @Override
@@ -69,19 +74,33 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ImageResponseModel setImage(MultipartFile multipartFile) {
-        Long userId = AuthUtil.getCurrentUserId();
+    public ImageResponseModel setImage(MultipartFile multipartFile) throws IOException {
 
+        Long userId = AuthUtil.getCurrentUserId();
         User user = userRepository.getOne(userId);
 
-        String id = imageService.setImage(multipartFile,true);
+        String key= UUID.randomUUID().toString();
 
-        user.setPhotoUrl(id);
+        File orginalImage = imageService.convertMultiPartToFile(multipartFile);
+        s3Service.save(key,orginalImage);
+
+        File thumbImage =imageService.getSmallPicture(orginalImage);
+        s3Service.save("thumb"+key, thumbImage);
+
+        orginalImage.delete();
+        thumbImage.delete();
+
+
+
+
+
+        user.setPhotoUrl(key);
         userRepository.save(user);
 
+        /**/
         ImageResponseModel imageResponseModel =new ImageResponseModel();
-        imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(id));
-        imageResponseModel.setFullImageUrl(ImageServiceImpl.getFullImage(id));
+        imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(key));
+        imageResponseModel.setFullImageUrl(ImageServiceImpl.getFullImage(key));
 
         return imageResponseModel;
      }

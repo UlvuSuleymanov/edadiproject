@@ -1,6 +1,6 @@
 package az.edadi.back.constants;
 
-public enum  UserEnum {
+public enum     UserEnum {
 
     DEFAULT_IMAGE_NAME("default");
 

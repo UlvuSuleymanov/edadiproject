@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.service.FileService;
 import az.edadi.back.service.S3Service;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 @Service
-public class S3ServiceImpl implements S3Service {
+public class S3ServiceImpl implements FileService {
 	
 	private Logger logger = LoggerFactory.getLogger(S3ServiceImpl.class);
 
@@ -32,13 +33,11 @@ public class S3ServiceImpl implements S3Service {
 
 
     @Override
-	public String setPhoto(String keyName, File file) {
+	public String save(String keyName, File file) {
 
 		try {
 
-
   			s3client.putObject(new PutObjectRequest(bucketName, keyName, file));
-
 			return keyName;
 
 		} catch (AmazonServiceException ase) {
@@ -55,6 +54,11 @@ public class S3ServiceImpl implements S3Service {
      return null;
 	}
 
+
+	@Override
+	public String update(String key) {
+		return null;
+	}
 
 
 //
