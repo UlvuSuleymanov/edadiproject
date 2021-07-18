@@ -3,13 +3,11 @@ package az.edadi.back.service.impl;
  import az.edadi.back.entity.university.University;
  import az.edadi.back.model.request.UniRequestModel;
  import az.edadi.back.model.response.UniResponseModel;
- import az.edadi.back.model.response.UniSummaryModel;
- import az.edadi.back.repository.SpecialityRepository;
+  import az.edadi.back.repository.SpecialityRepository;
  import az.edadi.back.repository.UniversityRepository;
  import az.edadi.back.service.SpecialityService;
  import az.edadi.back.service.UniversityService;
- import az.edadi.back.utility.ImageUtil;
- import org.springframework.stereotype.Service;
+  import org.springframework.stereotype.Service;
 
  import java.util.List;
  import java.util.Optional;

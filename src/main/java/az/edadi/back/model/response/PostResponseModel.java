@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 import az.edadi.back.entity.post.Post;
-import az.edadi.back.utility.ImageUtil;
+import az.edadi.back.utility.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Accessors(chain = true)
 public class PostResponseModel {
     private Long id;
@@ -32,7 +31,7 @@ public class PostResponseModel {
         postText=post.getPostText();
         authorName=post.getUser().getName();
         authorUsername=post.getUser().getUsername();
-        authorPhotoUrl= ImageUtil.getPhotoUrl(post.getUser().getPhotoUrl());
+        authorPhotoUrl= PhotoUtil.getFullPhotoUrl(post.getUser().getPhotoUrl());
         date=post.getDate();
         postLikeCount=post.getPostVote().size();
         postCommentCount=post.getComments().size();
@@ -42,7 +41,7 @@ public class PostResponseModel {
         }
 
         else{
-            photoUrl = ImageUtil.getPhotoUrl(post.getPhotoUrl());
+            photoUrl = PhotoUtil.getFullPhotoUrl(post.getPhotoUrl());
         }
 
         this.isLiked=isLiked;

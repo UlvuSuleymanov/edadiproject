@@ -1,7 +1,8 @@
 package az.edadi.back.model.response;
 
 import az.edadi.back.entity.post.Comment;
-import az.edadi.back.utility.ImageUtil;
+
+import az.edadi.back.utility.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class CommentResponseModel {
         this.commentText=comment.getCommentText();
         this.likeCount=comment.getCommentVotes().size();
         this.birthDay=comment.getDate();
-        this.authorPhotoUrl= ImageUtil.getPhotoUrl(comment.getUser().getPhotoUrl());
+        this.authorPhotoUrl= PhotoUtil.getFullPhotoUrl(comment.getUser().getPhotoUrl());
         this.author=comment.getUser().getUsername();
         this.isLiked=isLiked;
     }

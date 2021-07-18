@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+  import az.edadi.back.config.S3Bean;
   import az.edadi.back.entity.User;
   import az.edadi.back.exception.UserNotFoundException;
   import az.edadi.back.service.FileService;
@@ -11,7 +12,8 @@ import az.edadi.back.repository.UserRepository;
   import az.edadi.back.model.UserPrincipalModel;
 
   import az.edadi.back.utility.AuthUtil;
- import org.springframework.beans.factory.annotation.Autowired;
+  import az.edadi.back.utility.PhotoUtil;
+  import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
  import org.springframework.security.crypto.password.PasswordEncoder;
@@ -99,11 +101,14 @@ public class UserServiceImp implements UserService {
 
         /**/
         ImageResponseModel imageResponseModel =new ImageResponseModel();
-        imageResponseModel.setUrl(ImageServiceImpl.getThumbImage(key));
-        imageResponseModel.setFullImageUrl(ImageServiceImpl.getFullImage(key));
+        imageResponseModel.setUrl(PhotoUtil.getFullPhotoUrl(key));
+        imageResponseModel.setFullPhotoUrl(PhotoUtil.getThumbPhotoUrl(key));
 
         return imageResponseModel;
      }
+
+
+
 
 
 }

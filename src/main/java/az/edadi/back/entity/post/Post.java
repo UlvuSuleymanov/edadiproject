@@ -4,6 +4,7 @@ import az.edadi.back.entity.Image;
 import az.edadi.back.entity.User;
  import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
+import az.edadi.back.model.request.PostRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -68,5 +69,11 @@ public class Post {
    )
    private Set<Tag> tags = new HashSet<>();
 
+
+    public  Post (PostRequestModel postRequestModel,User user) {
+        postText=postRequestModel.getText();
+        date=new Date();
+        this.user=user;
+    }
 
 }

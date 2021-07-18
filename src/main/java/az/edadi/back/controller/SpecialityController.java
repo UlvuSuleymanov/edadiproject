@@ -1,9 +1,11 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.model.response.SpecialityResponseModel;
 import az.edadi.back.model.response.SpecialitySummaryResModel;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.service.SpecialityService;
 import az.edadi.back.entity.university.Speciality;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +24,10 @@ public class SpecialityController {
     }
 
 
-    @GetMapping
-     ResponseEntity getSpecialities(@RequestParam Long group){
+     @GetMapping
+     ResponseEntity getSpecialities(@RequestParam String group) throws InterruptedException {
 
-            return ResponseEntity.ok(specialityService.getSpecialities(group));
+            return ResponseEntity.ok(specialityService.getSpecialities(Long.valueOf(group)));
     }
 
     @GetMapping("/{code}")
@@ -34,7 +36,7 @@ public class SpecialityController {
 
 
      if(speciality.isPresent())
-        return ResponseEntity.ok(new SpecialitySummaryResModel(speciality.get()));
+        return ResponseEntity.ok(new SpecialityResponseModel(speciality.get()));
 
 
         return new ResponseEntity(HttpStatus.NOT_FOUND);

@@ -6,19 +6,16 @@ import az.edadi.back.repository.SpecialityOfferRepository;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
-import az.edadi.back.security.jwt.JwtBean;
-import az.edadi.back.security.jwt.JwtProvider;
+ import az.edadi.back.security.jwt.JwtProvider;
 import az.edadi.back.service.SpecialityService;
 import az.edadi.back.service.UserService;
- import az.edadi.back.entity.university.Speciality;
-import az.edadi.back.entity.university.SpecialityOffer;
-import az.edadi.back.entity.university.University;
+
  import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.SignInResponseModel;
  import az.edadi.back.service.AuthenticationService;
-import az.edadi.back.utility.ImageUtil;
 
+import az.edadi.back.utility.PhotoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
          return new SignInResponseModel(
                  user.getUsername(),
                  jwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities()),
-                 ImageUtil.getPhotoUrl(user.getPhotoUrl())
+                 PhotoUtil.getFullPhotoUrl(user.getPhotoUrl())
 
 
          );

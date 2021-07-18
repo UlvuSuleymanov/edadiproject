@@ -1,7 +1,7 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.utility.ImageUtil;
 import az.edadi.back.entity.university.University;
+import az.edadi.back.utility.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class  UniResponseModel {
         this.nameAz=university.getNameAz();
         this.nameEn=university.getNameEn();
         this.info=university.getInfo();
-        this.url= ImageUtil.getPhotoUrl(university.getAbbr());
+        this.url= PhotoUtil.getUniversityPhoto(university.getAbbr());
     }
 
 }

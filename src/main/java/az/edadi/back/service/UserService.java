@@ -19,7 +19,9 @@ public interface UserService {
 
       ImageResponseModel setImage(MultipartFile multipartFile) throws IOException;
 
- //     String setPhoto(MultipartFile multipartFile ,String username);
+
+
+    //     String setPhoto(MultipartFile multipartFile ,String username);
 
 //      SignInResponseModel login (SignInRequestModel signInRequestModel);
 //      User userBuilder(SignUpRequestModel signUpRequestModel);

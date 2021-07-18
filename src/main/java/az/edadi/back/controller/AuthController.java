@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 
     @PostMapping(value = "/signin")
-    public ResponseEntity<?> login(@RequestBody SignInRequestModel signInRequestModel){
+    public ResponseEntity<?> login (@RequestBody SignInRequestModel signInRequestModel){
         SignInResponseModel signUpResponseModel=   authenticationService.login(signInRequestModel);
         return  ResponseEntity.ok(signUpResponseModel);
      }

@@ -1,14 +1,12 @@
 package az.edadi.back.entity;
 
-import az.edadi.back.constants.UserEnum;
-import az.edadi.back.entity.post.Comment;
+import az.edadi.back.constants.PhotoEnum;
+ import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.PostVote;
-import az.edadi.back.entity.university.Speciality;
-import az.edadi.back.entity.university.University;
+
 import az.edadi.back.model.request.SignUpRequestModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -92,7 +90,7 @@ public class User {
         name=signUpRequestModel.getName();
         email=signUpRequestModel.getEmail();
         profileBirthDay = new Date();
-        photoUrl= UserEnum.DEFAULT_IMAGE_NAME.getImageName();
+        photoUrl= PhotoEnum.USER_DEFAULT_PHOTO.getName();
     }
 
 

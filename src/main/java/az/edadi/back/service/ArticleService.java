@@ -1,7 +1,9 @@
 package az.edadi.back.service;
 
+import az.edadi.back.entity.Article;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
+import az.edadi.back.model.response.ArticleSummaryResponseModel;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public interface ArticleService {
 
     ArticleResponseModel getArticle(String slug);
 
-    List<ArticleResponseModel> getArticleList(int page,int size,String sort);
+    List<ArticleSummaryResponseModel> getArticleList(int page, int size, String sort);
 
+    Article parseHtml(String articleText);
 }

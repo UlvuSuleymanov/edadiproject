@@ -20,8 +20,9 @@ public class Speciality {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nameAz;
-    private String nameEn;
+    private String name;
+
+    private String type;
 
 
     private Long specialityCode;

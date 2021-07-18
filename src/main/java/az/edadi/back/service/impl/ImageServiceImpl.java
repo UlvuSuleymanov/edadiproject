@@ -20,7 +20,7 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
 
 
-     private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
 
@@ -32,45 +32,14 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     public ImageServiceImpl(
                             UserRepository userRepository,
-                            ImageRepository imageRepository,
-                            @Value("${aws.photoUrl}") String url) {
+                            ImageRepository imageRepository) {
 
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
-        this.photoUrl=url;
 
     }
 
-//    @Override
-//    @Transactional
-//    public String setImage(MultipartFile  multipartFile, boolean  hasThumb) {
-//
-//
-//        UUID uuid =  UUID.randomUUID();
-//
-//
-//        File file= null;
-//        try {
-//            file = convertMultiPartToFile(multipartFile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        s3Service.setPhoto(uuid.toString(),file);
-//
-//        if(hasThumb) {
-//            File smallImage = getSmallPicture(file);
-//            s3Service.setPhoto("thumb" + uuid.toString(), smallImage);
-//            smallImage.delete();
-//
-//        }
-//
-//        file.delete();
-//
-//
-//
-//      return   uuid.toString();
-//    }
+
 
     @Override
     public File getSmallPicture(File file) {
@@ -95,13 +64,7 @@ public class ImageServiceImpl implements ImageService {
         return convFile;
     }
 
-    public static String getThumbImage(String name) {
-        return photoUrl+"thumb"+name;
-     }
 
-    public static String getFullImage(String name) {
-        return photoUrl+name;
-    }
 
 
 

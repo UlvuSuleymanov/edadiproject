@@ -11,18 +11,16 @@ import lombok.NoArgsConstructor;
 public class SpecialityResponseModel {
     private Long code;
     private Long id;
-    private String nameAz;
-    private String nameEn;
-    private String university_abbr;
-    private String university_name;
+    private String name;
+    private String universityAbbr;
+    private String universityName;
 
     public  SpecialityResponseModel(Speciality speciality){
         code=speciality.getSpecialityCode();
         id=speciality.getId();
-        nameAz=speciality.getNameAz();
-        nameEn=speciality.getNameEn();
-        university_abbr=speciality.getUniversity().getAbbr();
-        university_name=speciality.getUniversity().getNameAz();
+        name=speciality.getName();
+        universityAbbr=speciality.getUniversity().getAbbr();
+        universityName=speciality.getUniversity().getNameAz();
     }
 
 

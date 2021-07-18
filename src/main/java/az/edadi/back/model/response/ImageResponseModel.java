@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ImageResponseModel {
 
     private String url;
-    private String fullImageUrl;
+    private String fullPhotoUrl;
 
  }

@@ -1,12 +1,9 @@
 package az.edadi.back.controller;
   import az.edadi.back.model.response.ImageResponseModel;
-  import az.edadi.back.model.response.UserResponseModel;
   import az.edadi.back.repository.UserRepository;
   import az.edadi.back.service.UserService;
   import org.springframework.beans.factory.annotation.Autowired;
-  import org.springframework.http.HttpEntity;
   import org.springframework.http.ResponseEntity;
-  import org.springframework.security.access.prepost.PreAuthorize;
   import org.springframework.web.bind.annotation.*;
   import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +34,7 @@ package az.edadi.back.controller;
                                     @PathVariable String username) throws IOException {
 
         ImageResponseModel responseModel= userService.setImage(multipartFile);
-        return ResponseEntity.ok(HttpEntity.EMPTY);
+        return ResponseEntity.ok(responseModel);
     }
 
 

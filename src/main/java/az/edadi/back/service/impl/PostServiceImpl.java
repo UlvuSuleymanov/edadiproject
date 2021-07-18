@@ -6,20 +6,18 @@ import az.edadi.back.entity.post.PostVote;
 import az.edadi.back.repository.*;
 import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
-import az.edadi.back.service.S3Service;
-import az.edadi.back.entity.university.Speciality;
+ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.response.PostResponseModel;
- import az.edadi.back.utility.AuthUtil;
-import az.edadi.back.utility.ImageUtil;
- import az.edadi.back.model.request.PostRequestModel;
+import az.edadi.back.utility.AuthUtil;
+import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.SearchResultResponseModel;
 import az.edadi.back.service.PostService;
-
+import az.edadi.back.utility.PhotoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
- import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,16 +61,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(PostRequestModel postRequestModel, String username) {
 
-
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username or email : ")
         );
-        Date date = new Date();
 
-        Post post = new Post();
-        post.setUser(user);
-        post.setDate(date);
-        post.setPostText(postRequestModel.getText());
+        Post post = new Post(postRequestModel,user);
 
         switch (postRequestModel.getType()){
             case "university":
@@ -90,8 +83,6 @@ public class PostServiceImpl implements PostService {
                 post.setSpeciality(speciality);
                 break;
 
-            case "uni-speciality":
-                break;
         }
 
 
@@ -244,7 +235,7 @@ public class PostServiceImpl implements PostService {
             String name = "postImage" + id;
             s3Service.save(name, file);
             file.delete();
-            return ImageUtil.getPhotoUrl(name);
+            return PhotoUtil.getFullPhotoUrl(name);
         } catch (IOException e) {
             e.printStackTrace();
         }

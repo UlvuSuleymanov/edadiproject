@@ -1,29 +1,23 @@
-package az.edadi.back.model.response;
+package az.edadi.back.model;
 
+import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.User;
 import az.edadi.back.utility.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 @Data
-@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseModel {
-
-    private String username;
+public class MediaAuthor {
     private String name;
+    private String username;
     private String photoUrl;
-    private int postCount;
-    private int commentCount;
 
-    public UserResponseModel(User user){
-        username=user.getUsername();
+    public MediaAuthor(User user){
         name=user.getName();
+        username=user.getUsername();
         photoUrl= PhotoUtil.getThumbPhotoUrl(user.getPhotoUrl());
     }
-
 }
-

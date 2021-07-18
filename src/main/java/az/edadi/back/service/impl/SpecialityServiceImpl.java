@@ -6,6 +6,7 @@ package az.edadi.back.service.impl;
    import az.edadi.back.model.response.SpecialitySummaryResModel;
   import az.edadi.back.repository.SpecialityRepository;
   import az.edadi.back.repository.UniversityRepository;
+  import org.springframework.cache.annotation.Cacheable;
   import org.springframework.stereotype.Service;
 
  import java.util.ArrayList;
@@ -27,10 +28,8 @@ public class SpecialityServiceImpl implements SpecialityService {
 
 
     @Override
+    @Cacheable("speciality")
     public List<SpecialitySummaryResModel> getSpecialities(Long group) {
-
-
-
 
         List<Speciality> specialities= new ArrayList<>();
 

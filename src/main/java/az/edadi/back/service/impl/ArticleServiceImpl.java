@@ -4,10 +4,14 @@ import az.edadi.back.entity.Article;
 import az.edadi.back.entity.User;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
+import az.edadi.back.model.response.ArticleSummaryResponseModel;
 import az.edadi.back.repository.ArticleRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ArticleService;
 import az.edadi.back.utility.AuthUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,15 +37,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleResponseModel addArticle(ArticleRequestModel articleRequestModel) {
-      Long userId = AuthUtil.getCurrentUserId();
-        Article article = new Article();
+        Long userId = AuthUtil.getCurrentUserId();
         User user = userRepository.getOne(userId);
+
+        // set title & description
+        Article article = parseHtml(articleRequestModel.getBody());
         article.setTitle(articleRequestModel.getTitle());
         article.setContent(articleRequestModel.getBody());
         article.setDate(new Date());
         article.setUser(user);
         article=articleRepository.save(article);
-         article.setSlug(createSlug(article.getTitle(),article.getId()));
+        article.setSlug(createSlug(article.getTitle(),article.getId()));
 
         return new ArticleResponseModel(articleRepository.save(article));
      }
@@ -56,17 +62,29 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponseModel> getArticleList(int page, int size, String sort) {
+    public List<ArticleSummaryResponseModel> getArticleList(int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size);
 
         List<Article> articles = articleRepository.getArticles(pageable);
         return
                 articles !=null ?
                         articles.stream().map(
-                article -> new ArticleResponseModel(article))
+                              article -> new ArticleSummaryResponseModel(article))
                 .collect(Collectors.toList())
 
         : Collections.emptyList();
+    }
+
+    @Override
+    public Article parseHtml(String articleText) {
+        Article article = new Article();
+        Document body = Jsoup.parse(articleText);
+//        Element title = body.select("h1").first();
+        Element firstP = body.select("p").first();
+
+//        article.setTitle(title.text());
+        article.setDescription(firstP.text());
+        return article;
     }
 
     @Override

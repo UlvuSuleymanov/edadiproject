@@ -2,6 +2,7 @@ package az.edadi.back.controller;
 
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
+import az.edadi.back.model.response.ArticleSummaryResponseModel;
 import az.edadi.back.service.ArticleService;
 import az.edadi.back.utility.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class ArticleController {
                                @RequestParam(defaultValue = "10") Integer size,
                                @RequestParam(defaultValue = "new") String sort){
 
-        List<ArticleResponseModel> articleResponseModel = articleService.getArticleList(page,size,sort);
+        List<ArticleSummaryResponseModel> articleResponseModel = articleService.getArticleList(page,size,sort);
 
 
         return ResponseEntity.ok(articleResponseModel);

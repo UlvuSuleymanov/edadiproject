@@ -25,6 +25,8 @@ public class Article {
 
     private String slug;
 
+    private String description;
+
     private int status=1;
 
     @Lob
