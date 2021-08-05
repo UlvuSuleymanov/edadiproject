@@ -40,7 +40,6 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
          httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
          httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
          httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-
          String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
 
          if(requestHeader!=null && requestHeader!="") {

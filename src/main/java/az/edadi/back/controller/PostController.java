@@ -78,7 +78,7 @@ public class PostController {
                                      @RequestParam String sort){
 
 
-        return ResponseEntity.ok().body(postService.getSpecialityyPosts(code,page,size,sort));
+        return ResponseEntity.ok().body(postService.getSpecialityPosts(code,page,size,sort));
     }
 
 

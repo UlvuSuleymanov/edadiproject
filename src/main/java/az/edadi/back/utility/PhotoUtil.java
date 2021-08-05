@@ -3,7 +3,6 @@ import az.edadi.back.constants.PhotoEnum;
 
 public class PhotoUtil {
 
-
     public static String getFullPhotoUrl(String name)
     {
         return PhotoEnum.ROOT_PHOTO_URL.getName()+ name;
@@ -15,8 +14,6 @@ public class PhotoUtil {
     }
 
     public static String getUniversityPhoto(String name){ return PhotoEnum.ROOT_PHOTO_URL.getName()+"university/"+ name; }
-
-
 
 
 }

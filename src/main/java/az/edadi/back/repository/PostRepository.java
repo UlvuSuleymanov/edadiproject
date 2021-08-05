@@ -25,10 +25,19 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
  List<Post> getTopLikedUniversityPost(Long id,Pageable pageable);
 
 
+ @Query("SELECT p FROM Post p  where p.speciality.specialityCode=?1")
+ List<Post> getSpecialityPosts(Long code, Pageable pageable);
 
 
- @Query("Select new az.edadi.back.model.response.SearchResultResponseModel(p.id,p.postTitle) from Post p where p.postTitle like %:title%")
- List<SearchResultResponseModel> getPostLikeTitle(String title, Pageable pageable);
+
+
+
+
+ @Query("Select p from Post p where p.university.id=?1 and p.text like %?2%")
+ List<Post> searchUniversityPostsLikeText( Long id, String text, Pageable pageable);
+
+ @Query("Select p from Post p where p.speciality.id=?1 and p.text like %?2%")
+ List<Post> searchSpecialityPostsLikeText(Long id, String text, Pageable pageable);
 
 
 

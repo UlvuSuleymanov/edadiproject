@@ -23,6 +23,7 @@ public class SecurityBeanConfig {
         return new JwtBean();
     }
 
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new  WebMvcConfigurer() {
@@ -31,8 +32,7 @@ public class SecurityBeanConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
                         .allowedHeaders("*")
-
-                        .allowedMethods("PUT","GET","DELETE","POST");
+                        .allowedMethods("*");
             }
         };
     }

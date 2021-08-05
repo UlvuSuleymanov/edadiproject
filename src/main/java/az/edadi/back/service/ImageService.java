@@ -13,7 +13,6 @@ public interface ImageService {
     File getSmallPicture(File file);
 
 
-    File convertMultiPartToFile(MultipartFile multipartFile) throws IOException;
 
 
 }

@@ -19,7 +19,6 @@ public class AuthExceptionsHandler  {
 @ExceptionHandler({EntityNotFoundException.class})
 @ResponseBody
 public ResponseEntity handleLoginDetails(){
-
     return new ResponseEntity(HttpStatus.NOT_FOUND);
 }
 
@@ -27,7 +26,6 @@ public ResponseEntity handleLoginDetails(){
  @ExceptionHandler({UsernameOrPasswordNotCorrectException.class})
  @ResponseBody
  public ResponseEntity handleConstraintViolation(){
-
       return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 }

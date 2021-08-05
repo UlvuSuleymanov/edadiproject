@@ -85,8 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
          return new SignInResponseModel(
                  user.getUsername(),
                  jwtProvider.jwtBuilder(user.getUsername(),user.getId(), user.getAuthorities()),
-                 PhotoUtil.getFullPhotoUrl(user.getPhotoUrl())
-
+                 PhotoUtil.getThumbPhotoUrl(user.getPhotoUrl())
 
          );
 

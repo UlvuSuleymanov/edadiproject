@@ -2,6 +2,7 @@ package az.edadi.back.model.response;
 
 import az.edadi.back.entity.post.Comment;
 
+import az.edadi.back.model.MediaAuthor;
 import az.edadi.back.utility.PhotoUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,7 @@ public class CommentResponseModel {
     private  String commentText;
     private int likeCount;
     private Date birthDay;
-    private String authorPhotoUrl;
-    private  String author;
+    private MediaAuthor author;
     private boolean isLiked;
 
     public CommentResponseModel(Comment comment, boolean isLiked){
@@ -28,8 +28,9 @@ public class CommentResponseModel {
         this.commentText=comment.getCommentText();
         this.likeCount=comment.getCommentVotes().size();
         this.birthDay=comment.getDate();
-        this.authorPhotoUrl= PhotoUtil.getFullPhotoUrl(comment.getUser().getPhotoUrl());
-        this.author=comment.getUser().getUsername();
+        this.author=new MediaAuthor(comment.getUser());
+//        this.authorPhotoUrl= PhotoUtil.getFullPhotoUrl(comment.getUser().getPhotoUrl());
+//        this.author=comment.getUser().getUsername();
         this.isLiked=isLiked;
     }
 }

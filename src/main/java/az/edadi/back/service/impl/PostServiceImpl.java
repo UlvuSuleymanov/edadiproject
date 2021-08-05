@@ -11,7 +11,6 @@ import az.edadi.back.entity.university.University;
 import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.model.request.PostRequestModel;
-import az.edadi.back.model.response.SearchResultResponseModel;
 import az.edadi.back.service.PostService;
 import az.edadi.back.utility.PhotoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,6 +61,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post createPost(PostRequestModel postRequestModel, String username) {
 
+
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username or email : ")
         );
@@ -73,7 +74,6 @@ public class PostServiceImpl implements PostService {
                         new UsernameNotFoundException("University not found with  id : ")
                 );
                 post.setUniversity(university);
-
                 break;
 
             case "speciality":
@@ -87,21 +87,6 @@ public class PostServiceImpl implements PostService {
 
 
 
-
-
-      //  post.setUniversity(universityRepository.getOne(1L));
-      //  post.setPostText(postRequestModel.getText());
-      //  post.setPostTitle("title");
-      //  user.getPosts().add(post);
-     //   Post savedPost = postRepository.save(post);
-
-      //  Set<Tag> tagSet = tagService.addTags(postRequestModel.getTags(), savedPost);
-    //    post.setTags(tagSet);
-      //  String photoUrl = ImageEnum.DEFAULT_IMAGE_NAME.getName();
-//        if (postRequestModel.getMultipartFile() != null) {
-//            photoUrl = savePostPicture(savedPost.getId(), postRequestModel.getMultipartFile());
-//        }
-    //    post.setPhotoUrl(photoUrl);
      return     postRepository.save(post);
 
 
@@ -137,30 +122,32 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostResponseModel> getSpecialityyPosts(Long code, Integer page, Integer size, String sort) {
+    public List<PostResponseModel> getSpecialityPosts(Long code, Integer page, Integer size, String sort) {
         Pageable pageable = PageRequest.of(page, size);
-        Optional<List<Post>> postList = Optional.empty();
+        List<Post> postList = postRepository.getSpecialityPosts(code,pageable);
 
+        return postList.stream()
+                .map(post -> toResponse(post))
+                .collect(Collectors.toList());
 
-        switch (sort) {
-            case "mostCommented":
-                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
-                break;
-            case "mostLiked":
-                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
-                break;
-            case "three":
-                System.out.println("mostLiked");
-                break;
-            default:
-                postList = Optional.of(postRepository.findAll(pageable).toList());
-        }
-        if (postList.isPresent()) {
-            return postsToResponseModels(postList.get());
-        }
+//        switch (sort) {
+//            case "mostCommented":
+//                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
+//                break;
+//            case "mostLiked":
+//                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
+//                break;
+//            case "three":
+//                System.out.println("mostLiked");
+//                break;
+//            default:
+////                postList = Optional.of(postRepository.findAll(pageable).toList());
+//        }
+//        if (postList.isPresent()) {
+//            return postsToResponseModels(postList.get());
+//        }
 
-        return null;
-    }
+     }
 
 
 
@@ -231,10 +218,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public String savePostPicture(Long id, MultipartFile multipartFile) {
         try {
-            File file = imageService.convertMultiPartToFile(multipartFile);
+            File file = s3Service.convertMultiPartToFile(multipartFile);
             String name = "postImage" + id;
             s3Service.save(name, file);
-            file.delete();
             return PhotoUtil.getFullPhotoUrl(name);
         } catch (IOException e) {
             e.printStackTrace();
@@ -289,12 +275,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<SearchResultResponseModel> searchPostTitle(String postTitle) {
+    public List<PostResponseModel> searchPost(String text, String type, String id) {
         Pageable pageable = PageRequest.of(0, 10);
 
-        List<SearchResultResponseModel> searchResult = postRepository.getPostLikeTitle(postTitle, pageable);
+        List<Post> postList = new ArrayList<>();
+        switch (type) {
+            case "university":
+                postList = postRepository.searchUniversityPostsLikeText(Long.valueOf(id), text, pageable);
+                break;
+            case "speciality":
+                postList = postRepository.searchSpecialityPostsLikeText(Long.valueOf(id), text, pageable);
+        }
 
-        return searchResult;
+             return postList.stream()
+                    .map(post -> toResponse(post))
+                    .collect(Collectors.toList());
+
+
+
     }
 
     @Override

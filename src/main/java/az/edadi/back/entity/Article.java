@@ -2,7 +2,6 @@ package az.edadi.back.entity;
 
 import az.edadi.back.entity.post.Tag;
 import az.edadi.back.model.request.ArticleRequestModel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Article {
@@ -34,6 +32,8 @@ public class Article {
 
     private Date date;
 
+    private String coverUrl;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
@@ -45,7 +45,13 @@ public class Article {
     private Set<Tag> tags = new HashSet<>();
 
 
+  public Article(ArticleRequestModel articleRequestModel){
+      title=articleRequestModel.getTitle();
+      content=articleRequestModel.getBody();
+      date=new Date();
+      description=articleRequestModel.getDescription();
 
+  }
 
 
 

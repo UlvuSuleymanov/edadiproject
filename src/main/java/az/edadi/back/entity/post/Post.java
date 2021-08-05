@@ -25,12 +25,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Post {
+public class    Post {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   private String postTitle;
-   private String postText;
+   private String text;
+//   private String postText;
    private String photoUrl;
    private Date date;
 
@@ -71,7 +71,7 @@ public class Post {
 
 
     public  Post (PostRequestModel postRequestModel,User user) {
-        postText=postRequestModel.getText();
+        text=postRequestModel.getText();
         date=new Date();
         this.user=user;
     }

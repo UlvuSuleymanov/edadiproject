@@ -83,7 +83,7 @@ public class UserServiceImp implements UserService {
 
         String key= UUID.randomUUID().toString();
 
-        File orginalImage = imageService.convertMultiPartToFile(multipartFile);
+        File orginalImage = s3Service.convertMultiPartToFile(multipartFile);
         s3Service.save(key,orginalImage);
 
         File thumbImage =imageService.getSmallPicture(orginalImage);

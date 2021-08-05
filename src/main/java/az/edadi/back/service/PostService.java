@@ -15,7 +15,7 @@ public interface PostService {
      List<PostResponseModel> getPosts(Integer page, Integer size, String sort);
 
 
-     List<PostResponseModel> getSpecialityyPosts(Long code, Integer page,Integer size, String sort);
+     List<PostResponseModel> getSpecialityPosts(Long code, Integer page,Integer size, String sort);
      List<PostResponseModel> getUniversityPosts(String uniAbbr, Integer page,Integer size, String sort);
      PostResponseModel toResponse(Post post);
      String savePostPicture(Long id, MultipartFile multipartFile);
@@ -23,7 +23,9 @@ public interface PostService {
      void  disLikePost(long postId, Long userId);
      boolean checkUserIsLiked(Long userId,Long postId);
      List<PostResponseModel> postsToResponseModels(List<Post> posts);
-     List<SearchResultResponseModel> searchPostTitle(String postTitle);
+
+     List<PostResponseModel> searchPost(String text, String type, String id);
+
      PostResponseModel getPost(Long postId);
 
 }

@@ -5,6 +5,7 @@ import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.PostVote;
 
+import az.edadi.back.entity.roommate.RoommateAd;
 import az.edadi.back.model.request.SignUpRequestModel;
  import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,6 +53,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Article> articles =new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<RoommateAd> roommateAds =new ArrayList<>();
+
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Image> images =new ArrayList<>();
@@ -91,6 +95,9 @@ public class User {
         email=signUpRequestModel.getEmail();
         profileBirthDay = new Date();
         photoUrl= PhotoEnum.USER_DEFAULT_PHOTO.getName();
+    }
+    public User(Long id){
+     this.id=id;
     }
 
 

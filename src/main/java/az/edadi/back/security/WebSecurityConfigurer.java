@@ -26,12 +26,17 @@ import static org.springframework.http.HttpMethod.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
+     private  final  UserPrincipalService userPrincipalService;
+     private  final  PasswordEncoder passwordEncoder;
+     private  final    JwtBean jwtBean;
+
      @Autowired
-     UserPrincipalService userPrincipalService;
-     @Autowired
-     PasswordEncoder passwordEncoder;
-     @Autowired
-     JwtBean jwtBean;
+    public WebSecurityConfigurer(UserPrincipalService userPrincipalService, PasswordEncoder passwordEncoder, JwtBean jwtBean) {
+        this.userPrincipalService = userPrincipalService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtBean = jwtBean;
+    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
