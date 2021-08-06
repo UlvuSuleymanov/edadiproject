@@ -11,8 +11,11 @@ import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,8 +48,19 @@ public class RoomMateServiceImpl implements RoomMateService {
     }
 
     @Override
-    public List<RoommateResponseModel> getRoommates(int page, int size) {
-        return roomMateRepository.findAll()
+    public List<RoommateResponseModel> getRoommates(Long regionId,int page) {
+
+        Pageable pageable = PageRequest.of(page, 30);
+        List<RoommateAd> roommateAds=new ArrayList<>();
+
+        
+        if(regionId.intValue()!=0)
+           roommateAds=roomMateRepository.getRoommatesByRegion(regionId,pageable);
+         else
+           roommateAds=roomMateRepository.findAll(pageable).getContent();
+
+        System.out.println(roommateAds.size());
+        return roommateAds
                 .stream()
                 .map(roommateAd -> new RoommateResponseModel(roommateAd))
                 .collect(Collectors.toList());

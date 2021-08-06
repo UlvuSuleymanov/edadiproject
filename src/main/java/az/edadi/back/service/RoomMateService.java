@@ -11,7 +11,7 @@ public interface RoomMateService {
 
     RoommateResponseModel addRoommate(RoommateRequestModel roommateRequestModel);
 
-    List<RoommateResponseModel> getRoommates(int page,int size);
+    List<RoommateResponseModel> getRoommates(Long regionId,int page);
 
 
 }

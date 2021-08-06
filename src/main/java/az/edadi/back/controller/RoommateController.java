@@ -30,8 +30,10 @@ public class RoommateController {
     }
 
     @GetMapping
-    List<RoommateResponseModel> getRoommateAds(@RequestParam(required = false) String roommateSort){
-         return roomMateService.getRoommates(1,1);
+    List<RoommateResponseModel> getRoommateAds(@RequestParam(defaultValue = "0") Long regionId,
+                                               @RequestParam(defaultValue = "1") int page){
+
+         return roomMateService.getRoommates(regionId,page);
     }
 
 }
