@@ -1,12 +1,14 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.User;
+import az.edadi.back.exception.UserNotFoundException;
 import az.edadi.back.exception.UsernameOrPasswordNotCorrectException;
 import az.edadi.back.repository.SpecialityOfferRepository;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
  import az.edadi.back.security.jwt.JwtProvider;
+import az.edadi.back.service.MailService;
 import az.edadi.back.service.SpecialityService;
 import az.edadi.back.service.UserService;
 
@@ -16,12 +18,18 @@ import az.edadi.back.model.response.SignInResponseModel;
  import az.edadi.back.service.AuthenticationService;
 
 import az.edadi.back.utility.PhotoUtil;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -35,6 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UniversityRepository universityRepository;
     private final SpecialityService specialityService;
     private final SpecialityOfferRepository specialityOfferRepository;
+    private final MailService mailService;
 
      @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository,
@@ -44,8 +53,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                      SpecialityRepository specialityRepository,
                                      UniversityRepository universityRepository,
                                      SpecialityService specialityService,
-                                     SpecialityOfferRepository specialityOfferRepository
-                                   ) {
+                                     SpecialityOfferRepository specialityOfferRepository,
+                                     MailService mailService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
@@ -54,6 +63,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.universityRepository = universityRepository;
         this.specialityService = specialityService;
         this.specialityOfferRepository = specialityOfferRepository;
+        this.mailService = mailService;
      }
 
 
@@ -67,7 +77,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
+    @Override
+    public String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException {
+        Optional<User> user = userRepository.findByUsernameOrEmail(usernamOrEmail,usernamOrEmail);
+        if(!user.isPresent())
+            throw new UserNotFoundException();
 
+        String token = jwtProvider.jwtBuilder(user.get().getId());
+        String link = "http://edadi.az/recover?token="+token;
+        Map<String,String> mailModel = new HashMap<>();
+        mailModel.put("name",user.get().getName());
+        mailModel.put("link",link);
+        mailService.sendResetPasswordMail(user.get().getEmail(), mailModel);
+
+        return getSecureEmail(user.get().getEmail());
+
+
+    }
+
+    String getSecureEmail(String email){
+         char c[]=email.toCharArray();
+         int length=c.length;
+
+         for(int i=1;i<length-1;i++){
+            if(c[i]=='.' || c[i+1]=='@' ||c[i]=='@'  )
+                continue;
+            c[i]='*';
+         }
+         c[length-1]='*';
+         return String.valueOf(c);
+    }
 
 
     @Override

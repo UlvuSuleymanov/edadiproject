@@ -86,10 +86,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Article parseHtml(String articleText) {
         Article article = new Article();
         Document body = Jsoup.parse(articleText);
-//        Element title = body.select("h1").first();
         Element firstP = body.select("p").first();
-
-//        article.setTitle(title.text());
         article.setDescription(firstP.text());
         return article;
     }

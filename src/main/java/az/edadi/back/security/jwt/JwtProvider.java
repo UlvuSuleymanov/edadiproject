@@ -22,21 +22,33 @@ public class JwtProvider {
 
 
     public  String jwtBuilder(String username,
-                                    Long id,
-                                    Set<UserAuthority> authorities
-                                    ) {
-         Date birthDay  = new Date();
-         Date deathDate = new Date(System.currentTimeMillis() + jwtBean.getLifeTime());
+                                Long id,
+                                Set<UserAuthority> authorities
+    ) {
+        Date birthDay  = new Date();
+        Date deathDate = new Date(System.currentTimeMillis() + jwtBean.getLifeTime());
 
-         return Jwts.builder()
-                 .setSubject(username)
-                 .claim("authorities",authorities)
-                 .claim("id",id)
-                 .setExpiration(deathDate)
-                 .setIssuedAt(birthDay)
-                 .signWith(SignatureAlgorithm.HS512, jwtBean.getSecretKey())
-                 .compact();
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("authorities",authorities)
+                .claim("id",id)
+                .setExpiration(deathDate)
+                .setIssuedAt(birthDay)
+                .signWith(SignatureAlgorithm.HS512, jwtBean.getSecretKey())
+                .compact();
 
+
+    }
+    public  String jwtBuilder(Long id) {
+        Date birthDay  = new Date();
+        Date deathDate = new Date(System.currentTimeMillis() + 1800000);
+
+        return Jwts.builder()
+                .claim("id",id)
+                .setExpiration(deathDate)
+                .setIssuedAt(birthDay)
+                .signWith(SignatureAlgorithm.HS512, jwtBean.getSecretKey())
+                .compact();
 
     }
 
@@ -58,7 +70,9 @@ public class JwtProvider {
      }
 
 
-         public static boolean checkToken(String token, JwtBean jwtBean) {
+
+
+     public static boolean checkToken(String token, JwtBean jwtBean) {
         try {
 
             Jwts.parser().setSigningKey(jwtBean.getSecretKey()).parseClaimsJws(token);

@@ -59,7 +59,6 @@ public class RoomMateServiceImpl implements RoomMateService {
          else
            roommateAds=roomMateRepository.findAll(pageable).getContent();
 
-        System.out.println(roommateAds.size());
         return roommateAds
                 .stream()
                 .map(roommateAd -> new RoommateResponseModel(roommateAd))

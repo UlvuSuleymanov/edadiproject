@@ -1,17 +1,21 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.model.request.PasswordRecoverRequest;
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.model.response.SignUpResponseModel;
 import az.edadi.back.service.AuthenticationService;
 import az.edadi.back.service.UserService;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 
 
 @RestController
@@ -43,6 +47,18 @@ import org.springframework.web.bind.annotation.*;
       SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
       authenticationService.register(signUpRequestModel);
       return  new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/recover")
+    public ResponseEntity sendToken(@RequestBody PasswordRecoverRequest emailOrUsername) throws MessagingException, IOException, TemplateException {
+    return ResponseEntity.ok(authenticationService.sendTokenByEmail(emailOrUsername.getUsernameOrEmail()));
+    }
+
+    @PutMapping(value = "/recover")
+    public ResponseEntity recoverPassword(@RequestParam String token){
+
+        SignUpResponseModel signUpResponseModel = new SignUpResponseModel();
+        return  new ResponseEntity(HttpStatus.OK);
     }
 
 
