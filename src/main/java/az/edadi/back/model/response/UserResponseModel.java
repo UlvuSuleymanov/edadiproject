@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseModel {
+public class    UserResponseModel {
 
     private String username;
     private String name;

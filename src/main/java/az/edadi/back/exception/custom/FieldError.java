@@ -1,4 +1,4 @@
-package az.edadi.back.exception;
+package az.edadi.back.exception.custom;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

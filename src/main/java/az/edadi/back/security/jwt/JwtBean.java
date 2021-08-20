@@ -1,29 +1,18 @@
 package az.edadi.back.security.jwt;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
- public class JwtBean {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class JwtBean {
 
     private String title;
-    private Long lifeTime;
     private String secretKey;
+    private Long accessTokenSessionTime;
+    private Long refreshTokenSessionTime;
 
-      public String getTitle() { return title; }
 
-      public Long getLifeTime() {
-        return lifeTime;
-    }
-
-      public String getSecretKey() {
-        return secretKey;
-    }
-
-      public void setTitle(String title) { this.title = title; }
-
-      public void setLifeTime(Long lifeTime) {
-          this.lifeTime = lifeTime;
-      }
-
-      public void setSecretKey(String secretKey) {
-          this.secretKey = secretKey;
-      }
-  }
+}

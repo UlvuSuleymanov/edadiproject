@@ -2,6 +2,7 @@ package az.edadi.back.model.request;
 
 import az.edadi.back.validation.NotDublicateEmail;
 import az.edadi.back.validation.NotDublicateUsername;
+import az.edadi.back.validation.Password;
 import az.edadi.back.validation.Username;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
@@ -9,28 +10,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
- import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonRootName("newUser")
- public class SignUpRequestModel {
+public class SignUpRequestModel {
 
-     @NotDublicateUsername(message = "Username is exists")
-     @Username(message = "invalid username string")
-     private  String username;
+    @NotDublicateUsername(message = "Username is exists")
+    @Username(message = "invalid username string")
+    private String username;
 
-     @Size(min = 6,max = 20)
-     private String password;
+    @Password
+    private String password;
 
 
-     @Size(min = 3,max = 35)
-     private  String name;
+    @NotBlank
+    private String name;
 
-     @Email
-     @NotDublicateEmail
-     private String email;
+    @Email
+    @NotDublicateEmail
+    private String email;
 
 
 }

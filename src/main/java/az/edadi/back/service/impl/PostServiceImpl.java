@@ -1,17 +1,18 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.PostVote;
+import az.edadi.back.entity.university.Speciality;
+import az.edadi.back.entity.university.University;
+import az.edadi.back.model.request.PostRequestModel;
+import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.repository.*;
 import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
- import az.edadi.back.entity.university.Speciality;
-import az.edadi.back.entity.university.University;
-import az.edadi.back.model.response.PostResponseModel;
-import az.edadi.back.utility.AuthUtil;
-import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.service.PostService;
+import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.PhotoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -37,6 +41,7 @@ public class PostServiceImpl implements PostService {
     private final ImageService imageService;
     private final PostVoteRepository postVoteRepository;
     private final SpecialityRepository specialityRepository;
+    private final TopicRepository topicRepository;
 
     @Autowired
     public PostServiceImpl(UserRepository userRepository,
@@ -46,7 +51,7 @@ public class PostServiceImpl implements PostService {
                            FileService s3Service,
                            ImageService imageService,
                            PostVoteRepository postVoteRepository,
-                           SpecialityRepository specialityRepository) {
+                           SpecialityRepository specialityRepository, TopicRepository topicRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.tagService = tagService;
@@ -55,6 +60,7 @@ public class PostServiceImpl implements PostService {
         this.imageService = imageService;
         this.postVoteRepository = postVoteRepository;
         this.specialityRepository = specialityRepository;
+        this.topicRepository = topicRepository;
     }
 
 
@@ -66,9 +72,9 @@ public class PostServiceImpl implements PostService {
                 new UsernameNotFoundException("User not found with username or email : ")
         );
 
-        Post post = new Post(postRequestModel,user);
+        Post post = new Post(postRequestModel, user);
 
-        switch (postRequestModel.getType()){
+        switch (postRequestModel.getType()) {
             case "university":
                 University university = universityRepository.findById(postRequestModel.getId()).orElseThrow(() ->
                         new UsernameNotFoundException("University not found with  id : ")
@@ -82,12 +88,17 @@ public class PostServiceImpl implements PostService {
                 );
                 post.setSpeciality(speciality);
                 break;
+            case "topic":
+                Topic topic = topicRepository.findById(postRequestModel.getId()).orElseThrow(() ->
+                        new UsernameNotFoundException("Topic not found with  id : ")
+                );
+                post.setTopic(topic);
+                break;
 
         }
 
 
-
-     return     postRepository.save(post);
+        return postRepository.save(post);
 
 
     }
@@ -119,12 +130,17 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
+    @Override
+    public List<PostResponseModel> getTopicPosts(Long id, Integer page, Integer size, String sort) {
+        Topic topic = topicRepository.getById(id);
+        return postsToResponseModels(topic.getPosts());
+    }
 
 
     @Override
     public List<PostResponseModel> getSpecialityPosts(Long code, Integer page, Integer size, String sort) {
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postList = postRepository.getSpecialityPosts(code,pageable);
+        List<Post> postList = postRepository.getSpecialityPosts(code, pageable);
 
         return postList.stream()
                 .map(post -> toResponse(post))
@@ -147,9 +163,7 @@ public class PostServiceImpl implements PostService {
 //            return postsToResponseModels(postList.get());
 //        }
 
-     }
-
-
+    }
 
 
     @Override
@@ -192,26 +206,26 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseModel toResponse(Post post) {
 
-   if(post!=null) {
+        if (post != null) {
 
-       boolean authenticated = AuthUtil.userIsAuthenticated();
-       Long userId = null;
+            boolean authenticated = AuthUtil.userIsAuthenticated();
+            Long userId = null;
 
 
-       if (authenticated) {
-           userId = AuthUtil.getCurrentUserId();
-       }
+            if (authenticated) {
+                userId = AuthUtil.getCurrentUserId();
+            }
 
-       boolean isLiked = false;
-       if (authenticated) {
-           isLiked = checkUserIsLiked(userId, post.getId());
+            boolean isLiked = false;
+            if (authenticated) {
+                isLiked = checkUserIsLiked(userId, post.getId());
 
-       }
+            }
 
-       return new PostResponseModel(post, isLiked);
+            return new PostResponseModel(post, isLiked);
 
-   }
-   return null;
+        }
+        return null;
     }
 
 
@@ -278,19 +292,24 @@ public class PostServiceImpl implements PostService {
     public List<PostResponseModel> searchPost(String text, String type, String id) {
         Pageable pageable = PageRequest.of(0, 10);
 
+
         List<Post> postList = new ArrayList<>();
+
+
         switch (type) {
             case "university":
                 postList = postRepository.searchUniversityPostsLikeText(Long.valueOf(id), text, pageable);
                 break;
             case "speciality":
                 postList = postRepository.searchSpecialityPostsLikeText(Long.valueOf(id), text, pageable);
+            case "topic":
+                postList = postRepository.searchTopicPostsLikeText(Long.valueOf(id), text, pageable);
+
         }
 
-             return postList.stream()
-                    .map(post -> toResponse(post))
-                    .collect(Collectors.toList());
-
+        return postList.stream()
+                .map(post -> toResponse(post))
+                .collect(Collectors.toList());
 
 
     }

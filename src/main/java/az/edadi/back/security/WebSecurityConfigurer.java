@@ -2,6 +2,7 @@ package az.edadi.back.security;
 
 import az.edadi.back.security.jwt.JwtBean;
 import az.edadi.back.security.jwt.JwtVerifierFilter;
+import az.edadi.back.service.JwtService;
 import az.edadi.back.service.UserPrincipalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,13 +30,18 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
      private  final  UserPrincipalService userPrincipalService;
      private  final  PasswordEncoder passwordEncoder;
      private  final    JwtBean jwtBean;
+     private  final JwtService jwtService;
 
      @Autowired
-    public WebSecurityConfigurer(UserPrincipalService userPrincipalService, PasswordEncoder passwordEncoder, JwtBean jwtBean) {
+    public WebSecurityConfigurer(UserPrincipalService userPrincipalService,
+                                 PasswordEncoder passwordEncoder,
+                                 JwtBean jwtBean,
+                                 JwtService jwtService) {
         this.userPrincipalService = userPrincipalService;
         this.passwordEncoder = passwordEncoder;
         this.jwtBean = jwtBean;
-    }
+         this.jwtService = jwtService;
+     }
 
 
     @Override
@@ -64,7 +70,9 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET,"/add/**").permitAll()
 
-                .antMatchers(POST, "/api/auth/**").permitAll()
+                .antMatchers(POST,"/api/auth/**").permitAll()
+                .antMatchers(PUT,"/api/auth/recovery").permitAll()
+
 
 
 
@@ -74,7 +82,7 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
 
 
-                .addFilterAfter(new JwtVerifierFilter(jwtBean, userPrincipalService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JwtVerifierFilter(jwtBean, jwtService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests();
     }
 

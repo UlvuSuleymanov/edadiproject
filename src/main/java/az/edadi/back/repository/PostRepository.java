@@ -39,6 +39,8 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
  @Query("Select p from Post p where p.speciality.id=?1 and p.text like %?2%")
  List<Post> searchSpecialityPostsLikeText(Long id, String text, Pageable pageable);
 
+ @Query("Select p from Post p where p.topic.id=?1 and p.text like %?2%")
+ List<Post> searchTopicPostsLikeText(Long id, String text, Pageable pageable);
 
 
 }

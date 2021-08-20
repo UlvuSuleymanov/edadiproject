@@ -1,8 +1,7 @@
 package az.edadi.back.service.impl;
 
-  import az.edadi.back.config.S3Bean;
   import az.edadi.back.entity.User;
-  import az.edadi.back.exception.UserNotFoundException;
+  import az.edadi.back.exception.custom.UserNotFoundException;
   import az.edadi.back.service.FileService;
   import az.edadi.back.service.ImageService;
   import az.edadi.back.service.UserService;

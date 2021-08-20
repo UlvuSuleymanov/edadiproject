@@ -73,12 +73,22 @@ public class PostController {
 
     @GetMapping(value = "/speciality/{code}/posts")
     ResponseEntity getSpecialityPosts(@PathVariable Long code,
-                                     @RequestParam Integer page,
-                                     @RequestParam Integer size,
-                                     @RequestParam String sort){
+                                      @RequestParam Integer page,
+                                      @RequestParam Integer size,
+                                      @RequestParam String sort){
 
 
         return ResponseEntity.ok().body(postService.getSpecialityPosts(code,page,size,sort));
+    }
+
+    @GetMapping(value = "/topic/{id}/posts")
+    ResponseEntity getTopicPosts(@PathVariable Long id,
+                                      @RequestParam(required = false) Integer page,
+                                      @RequestParam(required = false) Integer size,
+                                      @RequestParam(required = false) String sort){
+
+
+        return ResponseEntity.ok().body(postService.getTopicPosts(id,page,size,sort));
     }
 
 
