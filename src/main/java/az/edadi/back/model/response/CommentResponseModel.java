@@ -26,7 +26,7 @@ public class CommentResponseModel {
     public CommentResponseModel(Comment comment, boolean isLiked){
         this.commentId=comment.getId();
         this.commentText=comment.getCommentText();
-        this.likeCount=comment.getCommentVotes().size();
+//        this.likeCount=comment.getCommentVotes().size();
         this.birthDay=comment.getDate();
         this.author=new MediaAuthor(comment.getUser());
 //        this.authorPhotoUrl= PhotoUtil.getFullPhotoUrl(comment.getUser().getPhotoUrl());

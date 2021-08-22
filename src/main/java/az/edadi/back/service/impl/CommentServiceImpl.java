@@ -2,8 +2,9 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Comment;
-import az.edadi.back.entity.post.CommentVote;
 import az.edadi.back.entity.post.Post;
+import az.edadi.back.entity.post.Vote;
+import az.edadi.back.repository.VoteRepository;
 import az.edadi.back.service.CommentService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.model.request.CommentRequestModel;
@@ -12,7 +13,6 @@ import az.edadi.back.repository.CommentRepository;
 import az.edadi.back.repository.PostRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.utility.AuthUtil;
-import az.edadi.back.repository.CommentVoteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -29,8 +29,7 @@ public class CommentServiceImpl  implements CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final ImageService imageService;
-    private final CommentVoteRepository commentVoteRepository;
+    private  final VoteRepository voteRepository;
 
 
     @Autowired
@@ -38,12 +37,11 @@ public class CommentServiceImpl  implements CommentService {
                               PostRepository postRepository,
                               CommentRepository commentRepository,
                               ImageService imageService,
-                              CommentVoteRepository commentVoteRepository) {
+                              VoteRepository voteRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
-        this.imageService = imageService;
-        this.commentVoteRepository = commentVoteRepository;
+        this.voteRepository = voteRepository;
     }
 
     @Override
@@ -90,23 +88,25 @@ public class CommentServiceImpl  implements CommentService {
     }
 
     @Override
-    public Long likeComment(Long commentId, Long userId) {
-        CommentVote commentVote = new CommentVote();
-        commentVote.setDate(new Date());
-        commentVote.setUser(userRepository.getOne(userId));
-        commentVote.setComment(commentRepository.getOne(commentId));
+    public void likeComment(Long commentId, Long userId) {
+        Optional<Vote> vote =voteRepository.getCommentVoteByIds(userId,commentId);
+        if(!vote.isPresent()){
+            Optional<Comment> comment = commentRepository.findById(commentId);
 
-        return commentVoteRepository.save(commentVote).getId();
+            if (comment.isPresent()) {
+                Vote v = new Vote(User.builder().id(userId).build(), comment.get());
+                voteRepository.save(v);
+            }
+        }
+
     }
 
 
     @Override
     public void disLikeComment(Long commentId, Long userId){
-        Optional<CommentVote> commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
-        if(commentVote.isPresent()){
-            commentVoteRepository.delete(commentVote.get());
-        }
-
+        Optional<Vote> vote =voteRepository.getCommentVoteByIds(userId,commentId);
+         if(vote.isPresent())
+           voteRepository.delete(vote.get());
      }
 
     @Override
@@ -138,12 +138,12 @@ public class CommentServiceImpl  implements CommentService {
 
     @Override
     public boolean userLiked(Long commentId, Long userId) {
-        Optional<CommentVote> commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
-
-        if(commentVote.isPresent())
-        {
-            return true;
-        }
+//        Optional<CommentVote> commentVote = commentVoteRepository.getCommentVoteByIds(userId,commentId);
+//
+//        if(commentVote.isPresent())
+//        {
+//            return true;
+//        }
 
         return false;
 

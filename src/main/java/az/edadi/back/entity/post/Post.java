@@ -55,7 +55,7 @@ public class    Post {
 
     @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
-    private List<PostVote> postVote=new ArrayList<>();
+    private List<Vote> votes=new ArrayList<>();
 
 
 

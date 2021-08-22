@@ -81,7 +81,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserNotFoundException();
 
         String token = jwtService.generateResetPasswordToken(user.get());
-        String link = "http://edadi.az/recover?token=" + token;
+        String link = "http://edadi.az/recovery?token=" + token;
         Map<String, String> mailModel = new HashMap<>();
         mailModel.put("name", user.get().getName());
         mailModel.put("link", link);

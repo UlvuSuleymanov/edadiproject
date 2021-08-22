@@ -1,13 +1,14 @@
 package az.edadi.back.entity;
 
 import az.edadi.back.constants.PhotoEnum;
- import az.edadi.back.entity.post.Comment;
+import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
-import az.edadi.back.entity.post.PostVote;
 
+import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.roommate.RoommateAd;
 import az.edadi.back.model.request.SignUpRequestModel;
- import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,7 +65,7 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<PostVote> postVote=new ArrayList<>();
+    private List<Vote> votes=new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Topic> topics =new ArrayList<>();

@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
-import az.edadi.back.entity.post.PostVote;
+ import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.PostRequestModel;
@@ -39,7 +39,7 @@ public class PostServiceImpl implements PostService {
     private final UniversityRepository universityRepository;
     private final FileService s3Service;
     private final ImageService imageService;
-    private final PostVoteRepository postVoteRepository;
+    private final VoteRepository voteRepository;
     private final SpecialityRepository specialityRepository;
     private final TopicRepository topicRepository;
 
@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
                            UniversityRepository universityRepository,
                            FileService s3Service,
                            ImageService imageService,
-                           PostVoteRepository postVoteRepository,
+                           VoteRepository voteRepository,
                            SpecialityRepository specialityRepository, TopicRepository topicRepository) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
         this.universityRepository = universityRepository;
         this.s3Service = s3Service;
         this.imageService = imageService;
-        this.postVoteRepository = postVoteRepository;
+        this.voteRepository = voteRepository;
         this.specialityRepository = specialityRepository;
         this.topicRepository = topicRepository;
     }
@@ -244,32 +244,32 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostVote likePost(long postId, Long userId) {
+    public Vote likePost(long postId, Long userId) {
         Post post = postRepository.getOne(postId);
         User user = userRepository.getOne(userId);
 
-        PostVote postVote = postVoteRepository.getPostVoteByIds(userId, postId);
+        Vote postVote = voteRepository.getPostVoteByIds(userId, postId);
         if (postVote == null) {
-            postVote = new PostVote();
+            postVote = new Vote();
             postVote.setUser(user);
             postVote.setPost(post);
             postVote.setDate(new Date());
         }
-        return postVoteRepository.save(postVote);
+        return voteRepository.save(postVote);
 
 
     }
 
     @Override
     public void disLikePost(long postId, Long userId) {
-        PostVote postVote = postVoteRepository.getPostVoteByIds(userId, postId);
-        postVoteRepository.delete(postVote);
+        Vote postVote = voteRepository.getPostVoteByIds(userId, postId);
+        voteRepository.delete(postVote);
     }
 
 
     @Override
     public boolean checkUserIsLiked(Long userId, Long postId) {
-        return postVoteRepository.getPostVoteByIds(userId, postId) != null;
+        return voteRepository.getPostVoteByIds(userId, postId) != null;
 
     }
 

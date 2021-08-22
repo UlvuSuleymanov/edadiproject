@@ -1,7 +1,7 @@
 package az.edadi.back.controller;
 
  import az.edadi.back.entity.post.Post;
- import az.edadi.back.entity.post.PostVote;
+  import az.edadi.back.entity.post.Vote;
  import az.edadi.back.repository.PostRepository;
  import az.edadi.back.repository.UserRepository;
  import az.edadi.back.service.PostService;
@@ -132,7 +132,7 @@ public class PostController {
     public ResponseEntity likePost(@PathVariable Long postId) {
 
         Long userId =  AuthUtil.getCurrentUserId();
-         PostVote postVote = postService.likePost(postId, userId);
+         Vote postVote = postService.likePost(postId, userId);
         return ResponseEntity.ok(postVote);
     }
 

@@ -15,13 +15,13 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
  @Query("SELECT p FROM Post p ORDER BY SIZE(p.comments) DESC")
  List<Post> getTopCommentPost(Pageable pageable);
 
- @Query("SELECT p FROM Post p ORDER BY SIZE(p.postVote) DESC")
+ @Query("SELECT p FROM Post p ORDER BY SIZE(p.votes) DESC")
  List<Post> getTopLikedPost(Pageable pageable);
 
  @Query("SELECT p FROM Post p where p.university.id=:id ORDER BY SIZE(p.comments) DESC")
  List<Post> getTopCommentUniversityPost(Long id,Pageable pageable);
 
- @Query("SELECT p FROM Post p  where p.university.id=?1 ORDER BY SIZE(p.postVote) DESC")
+ @Query("SELECT p FROM Post p  where p.university.id=?1 ORDER BY SIZE(p.votes) DESC")
  List<Post> getTopLikedUniversityPost(Long id,Pageable pageable);
 
 

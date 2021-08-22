@@ -35,10 +35,10 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
      private Post post;
 
-    @LazyCollection(LazyCollectionOption.EXTRA)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "comment")
-    private List<CommentVote> commentVotes = new ArrayList<>();
 
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "comment")
+    private List<Vote> votes=new ArrayList<>();
 
 
 }

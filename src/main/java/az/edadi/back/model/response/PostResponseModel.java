@@ -29,7 +29,7 @@ public class PostResponseModel {
 //        postTitle=post.getPostTitle();
        text=post.getText();
         date=post.getDate();
-        postLikeCount=post.getPostVote().size();
+        postLikeCount=post.getVotes().size();
         postCommentCount=post.getComments().size();
         author=new MediaAuthor(post.getUser());
         this.isLiked=isLiked;
