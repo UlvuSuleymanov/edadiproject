@@ -44,7 +44,15 @@ public class SpecialityServiceImpl implements SpecialityService {
 
     }
 
+    @Override
+    public List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId, Long group) {
 
+        List<Speciality> specialities= specialityRepository.getUniSpecialities(uniId,group);
+
+        return  specialities.stream()
+                .map(speciality -> new SpecialitySummaryResModel(speciality))
+                .collect(Collectors.toList());
+    }
 
 
 }

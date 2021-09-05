@@ -17,6 +17,11 @@ public interface SpecialityRepository extends JpaRepository<Speciality,Long> {
     @Query("SELECT s FROM Speciality s WHERE s.specialityGroup = :group")
     List<Speciality> getSpeciality(Long group);
 
+    @Query("SELECT s FROM Speciality s WHERE s.specialityGroup = :group and s.university.id= :uniId")
+    List<Speciality> getUniSpecialities(Long uniId,Long group);
+
+
+
 
     Optional<Speciality> findBySpecialityCode(Long code);
 }
