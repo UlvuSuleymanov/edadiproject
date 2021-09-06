@@ -11,6 +11,4 @@ public interface CommentService {
     List<CommentResponseModel> getComments(Long postId, int page, int size, String sort);
     void likeComment(Long commentId,Long userId);
     void disLikeComment(Long commentId,Long userId);
-    List<CommentResponseModel> commentsToResponseModels(List<Comment>comments);
-    boolean userLiked(Long commentId,Long userId);
-}
+  }

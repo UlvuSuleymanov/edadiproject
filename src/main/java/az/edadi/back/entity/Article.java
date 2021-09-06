@@ -25,7 +25,7 @@ public class Article {
 
     private String description;
 
-    private int status=1;
+    private int status=0;
 
     @Lob
     private String content;

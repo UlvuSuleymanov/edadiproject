@@ -25,14 +25,14 @@ import static org.springframework.http.HttpMethod.*;
 @EnableWebSecurity
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-     private  final  UserPrincipalService userPrincipalService;
-     private  final  PasswordEncoder passwordEncoder;
-     private  final    JwtBean jwtBean;
-     private  final JwtService jwtService;
+    private final UserPrincipalService userPrincipalService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtBean jwtBean;
+    private final JwtService jwtService;
 
-     @Autowired
+    @Autowired
     public WebSecurityConfigurer(UserPrincipalService userPrincipalService,
                                  PasswordEncoder passwordEncoder,
                                  JwtBean jwtBean,
@@ -40,8 +40,8 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
         this.userPrincipalService = userPrincipalService;
         this.passwordEncoder = passwordEncoder;
         this.jwtBean = jwtBean;
-         this.jwtService = jwtService;
-     }
+        this.jwtService = jwtService;
+    }
 
 
     @Override
@@ -66,26 +66,21 @@ public class WebSecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
 //                .antMatchers(GET,"/api/search/**").permitAll()
 
-                .antMatchers(GET,"/api/**").permitAll()
+                .antMatchers(GET, "/api/**").permitAll()
 
-                .antMatchers(GET,"/add/**").permitAll()
+                .antMatchers(GET, "/add/**").permitAll()
 
-                .antMatchers(POST,"/api/auth/**").permitAll()
-                .antMatchers(PUT,"/api/auth/recovery").permitAll()
-
-
-
+                .antMatchers(POST, "/api/auth/**").permitAll()
+                .antMatchers(PUT, "/api/auth/recovery").permitAll()
 
 
                 .anyRequest().authenticated()
                 .and()
 
 
-
                 .addFilterAfter(new JwtVerifierFilter(jwtBean, jwtService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests();
     }
-
 
 
 }

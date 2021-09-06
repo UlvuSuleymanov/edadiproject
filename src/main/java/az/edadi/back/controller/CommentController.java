@@ -49,14 +49,14 @@ public class CommentController {
     }
 
 
-    @PostMapping("/api/comments/{commentId}/like")
+    @PostMapping("/api/comment/{commentId}/like")
     public ResponseEntity likePost(@PathVariable Long commentId) {
         Long userId = AuthUtil.getCurrentUserId();
         commentService.likeComment(commentId, userId);
         return new  ResponseEntity( HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/comments/{commentId}/like")
+    @DeleteMapping("/api/comment    /{commentId}/like")
     public ResponseEntity disLikePost(@PathVariable Long commentId) {
 
         Long userId = AuthUtil.getCurrentUserId();
