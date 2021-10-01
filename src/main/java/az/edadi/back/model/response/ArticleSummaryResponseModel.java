@@ -1,5 +1,6 @@
 package az.edadi.back.model.response;
 
+import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.Article;
 import az.edadi.back.model.MediaAuthor;
 import az.edadi.back.utility.PhotoUtil;
@@ -26,6 +27,6 @@ public class ArticleSummaryResponseModel {
         description=article.getDescription();
         birthDay =article.getDate();
         author=new MediaAuthor(article.getUser());
-        imageUrl= PhotoUtil.getFullPhotoUrl(article.getCoverUrl());
+        imageUrl= PhotoEnum.ROOT_PHOTO_URL.getName()+"blog/"+article.getCoverUrl();
     }
 }

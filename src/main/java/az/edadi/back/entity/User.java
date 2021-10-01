@@ -6,6 +6,7 @@ import az.edadi.back.entity.post.Post;
 
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
 import az.edadi.back.model.request.SignUpRequestModel;
 import lombok.AllArgsConstructor;
@@ -38,13 +39,13 @@ public class User {
 
     private String password;
 
-    private  String photoUrl;
+    private String imageName;
 
     private Date profileBirthDay;
 
 //    @JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Speciality speciality;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Speciality speciality;
 //
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    private University university;
@@ -71,10 +72,12 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Topic> topics =new ArrayList<>();
 
+
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();
 
-
+     private String photoUrl;
 
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -101,7 +104,7 @@ public class User {
         name=signUpRequestModel.getName();
         email=signUpRequestModel.getEmail().toLowerCase();
         profileBirthDay = new Date();
-        photoUrl= PhotoEnum.USER_DEFAULT_PHOTO.getName();
+        imageName= PhotoEnum.USER_DEFAULT_PHOTO.getName();
     }
     public User(Long id){
         this.id=id;

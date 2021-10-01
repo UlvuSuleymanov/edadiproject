@@ -25,7 +25,7 @@ public class  UniResponseModel {
         this.nameAz=university.getNameAz();
         this.nameEn=university.getNameEn();
         this.info=university.getInfo();
-        this.url= PhotoUtil.getUniversityPhoto(university.getAbbr());
+        this.url= PhotoUtil.getUniversityPhoto(university.getPhotoUrl());
     }
 
 }

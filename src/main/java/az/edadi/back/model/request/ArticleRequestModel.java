@@ -22,5 +22,4 @@ public class ArticleRequestModel {
 
     private List <String> tags;
 
-    private MultipartFile multipartFile;
 }

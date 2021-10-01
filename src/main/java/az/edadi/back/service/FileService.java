@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.IOException;
 
 public interface FileService {
-     String save(String key, File file);
+     String saveProfilePhoto(String key, File file, String folder);
+
      String update (String key);
+     void deleteProfileImage(String key);
      File convertMultiPartToFile(MultipartFile multipartFile) throws IOException;
 
 }

@@ -1,7 +1,7 @@
 package az.edadi.back.model.response;
 
 import az.edadi.back.entity.User;
-import az.edadi.back.utility.PhotoUtil;
+import az.edadi.back.model.ImageModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +11,18 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class    UserResponseModel {
+public class UserResponseModel {
 
     private String username;
     private String name;
-    private String photoUrl;
+    private ImageModel image;
     private int postCount;
     private int commentCount;
 
-    public UserResponseModel(User user){
-        username=user.getUsername();
-        name=user.getName();
-        photoUrl= PhotoUtil.getThumbPhotoUrl(user.getPhotoUrl());
+    public UserResponseModel(User user) {
+        username = user.getUsername();
+        name = user.getName();
+        image = new ImageModel(user.getImageName(),"user");
     }
 
 }

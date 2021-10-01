@@ -1,7 +1,6 @@
 package az.edadi.back.service;
 
 
-import java.io.File;
 
 public interface S3Service extends FileService{
 

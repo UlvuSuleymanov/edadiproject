@@ -2,6 +2,7 @@ package az.edadi.back.entity;
 
 import az.edadi.back.entity.post.Tag;
 import az.edadi.back.model.request.ArticleRequestModel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +26,7 @@ public class Article {
 
     private String description;
 
-    private int status=0;
+    private int status=1;
 
     @Lob
     private String content;

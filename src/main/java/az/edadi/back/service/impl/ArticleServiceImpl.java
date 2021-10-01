@@ -6,6 +6,7 @@ import az.edadi.back.entity.User;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
 import az.edadi.back.model.response.ArticleSummaryResponseModel;
+import az.edadi.back.model.response.SimpleImageResponse;
 import az.edadi.back.repository.ArticleRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ArticleService;
@@ -19,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -51,10 +54,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = new Article(articleRequestModel);
         article.setUser(user);
-        article.setCoverUrl(setPhoto(articleRequestModel));
         article=articleRepository.save(article);
         article.setSlug(createSlug(article.getTitle(),article.getId()));
-
+        article.setCoverUrl(getCoverImageName(articleRequestModel.getBody()));
         return new ArticleResponseModel(articleRepository.save(article));
      }
 
@@ -91,21 +93,6 @@ public class ArticleServiceImpl implements ArticleService {
         return article;
     }
 
-    @Override
-    public String setPhoto(ArticleRequestModel articleRequestModel) throws IOException {
-        if(articleRequestModel.getMultipartFile()!=null){
-
-            File file = fileService.convertMultiPartToFile(articleRequestModel.getMultipartFile());
-            String uuid= UUID.randomUUID().toString();
-            fileService.save(uuid,file);
-            file.delete();
-            return uuid;
-        }
-        else
-            return PhotoEnum.ARTICLE_DEFAULT_PHOTO.getName();
-
-
-    }
 
     @Override
     public String createSlug(String title,Long id) {
@@ -115,10 +102,34 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
+        File file = fileService.convertMultiPartToFile(multipartFile);
+        String name = UUID.randomUUID().toString();
+        fileService.saveProfilePhoto(name,file,"/blog");
+        file.delete();
+        SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
+        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName()+"blog/"+name);
+        return simpleImageResponse;
+
+    }
+
+    @Override
     public Long getIdFromSlug(String slug) {
         String crumbs[]=slug.split("-");
         String id = crumbs[crumbs.length-1];
         return Long.valueOf(id);
+    }
+
+    @Override
+    public String getCoverImageName(String html) {
+        Document doc = Jsoup.parse(html);
+        Optional<Element> image = Optional.ofNullable(doc.select("img").first());
+
+        if(image.isPresent()) {
+            String url= image.get().attr("src");
+            return url.split("/")[url.split("/").length - 1];
+        }
+        return null;
     }
 
 

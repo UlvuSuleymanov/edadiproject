@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
- import az.edadi.back.entity.post.Vote;
+import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.PostRequestModel;
@@ -234,7 +234,7 @@ public class PostServiceImpl implements PostService {
         try {
             File file = s3Service.convertMultiPartToFile(multipartFile);
             String name = "postImage" + id;
-            s3Service.save(name, file);
+            s3Service.saveProfilePhoto(name, file, "/blog");
             return PhotoUtil.getFullPhotoUrl(name);
         } catch (IOException e) {
             e.printStackTrace();

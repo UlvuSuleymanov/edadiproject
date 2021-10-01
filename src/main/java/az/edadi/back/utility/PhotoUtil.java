@@ -13,7 +13,6 @@ public class PhotoUtil {
         return PhotoEnum.ROOT_PHOTO_URL.getName()+"thumb"+name;
     }
 
-    public static String getUniversityPhoto(String name){ return PhotoEnum.ROOT_PHOTO_URL.getName()+"university/"+ name; }
-
+    public static String getUniversityPhoto(String name){ return PhotoEnum.DOMAIN.getName()+"/image/university/"+ name; }
 
 }
