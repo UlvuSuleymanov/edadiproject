@@ -2,7 +2,7 @@ package az.edadi.back.model.response;
 
 import az.edadi.back.entity.User;
 import az.edadi.back.model.JwtTokenResponseModel;
-import az.edadi.back.model.MediaAuthor;
+import az.edadi.back.model.UserSummary;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 public class SignInResponseModel {
 
     private JwtTokenResponseModel token;
-    private MediaAuthor author;
+    private UserSummary author;
 
     public  SignInResponseModel(User user, JwtTokenResponseModel jwtTokenResponseModel){
         token=jwtTokenResponseModel;
-        author=new MediaAuthor(user);
+        author=new UserSummary(user);
     }
 
 }

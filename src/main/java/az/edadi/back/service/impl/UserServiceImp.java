@@ -2,10 +2,13 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.User;
+import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.custom.UserNotFoundException;
 import az.edadi.back.model.ImageModel;
 import az.edadi.back.model.UserPrincipalModel;
+import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.model.response.UserResponseModel;
+import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,16 +34,18 @@ public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final ImageService imageService;
     private final FileService s3Service;
+    private final SpecialityRepository specialityRepository;
 
 
     @Autowired
     public UserServiceImp(PasswordEncoder passwordEncoder,
                           UserRepository userRepository,
-                          ImageService imageService, FileService s3Service) {
+                          ImageService imageService, FileService s3Service, SpecialityRepository specialityRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.s3Service = s3Service;
+        this.specialityRepository = specialityRepository;
     }
 
 
@@ -89,6 +95,17 @@ public class UserServiceImp implements UserService {
 
         return imageModel;
 
+    }
+
+    @Override
+    public void setSpeciality(SetSpecialityRequestModel setSpecialityRequestModel) {
+        Optional<Speciality> speciality = specialityRepository.findById(setSpecialityRequestModel.getSpecialityId());
+        Optional<User> user = userRepository.findById(AuthUtil.getCurrentUserId());
+
+       if(user.isPresent() && speciality.isPresent()){
+            user.get().setSpeciality(speciality.get());
+            userRepository.save(user.get());
+       }
     }
 
 

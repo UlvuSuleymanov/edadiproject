@@ -12,19 +12,19 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class SpecialitySummaryResModel {
     private Long id;
-    private  String name;
-    private  Long code;
-    private  Long group;
-    private  String university;
+    private String name;
+    private Long code;
+    private Long group;
+    private String university;
     public String type;
 
-    public SpecialitySummaryResModel(Speciality uniSpeciality){
-        id=uniSpeciality.getId();
-        name=uniSpeciality.getName();
-        code=uniSpeciality.getSpecialityCode();
-        group=uniSpeciality.getSpecialityGroup();
-        university=uniSpeciality.getUniversity().getAbbrAz();
-        type=uniSpeciality.getType();
+    public SpecialitySummaryResModel(Speciality uniSpeciality) {
+        id = uniSpeciality.getId();
+        name = uniSpeciality.getName();
+        code = uniSpeciality.getSpecialityCode();
+        group = uniSpeciality.getSpecialityGroup();
+        university = uniSpeciality.getUniversity().getAbbrAz();
+        type = uniSpeciality.getType();
     }
 
 

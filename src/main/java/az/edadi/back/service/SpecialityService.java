@@ -9,7 +9,9 @@ public interface SpecialityService {
 
      List<SpecialitySummaryResModel> getSpecialities(Long group);
 
-     List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId,Long group);
+     List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId);
+
+     List<SpecialitySummaryResModel> getUniversitySpecialitiesWithGroup(Long uniId,Long group);
 
 
 

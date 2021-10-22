@@ -1,6 +1,7 @@
 package az.edadi.back.entity;
 
 import az.edadi.back.constants.PhotoEnum;
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 
@@ -43,13 +44,8 @@ public class User {
 
     private Date profileBirthDay;
 
-//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Speciality speciality;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private University university;
-
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Post> posts =new ArrayList<>();
@@ -71,13 +67,11 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Topic> topics =new ArrayList<>();
-
-
-
+    
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();
 
-     private String photoUrl;
+    private String photoUrl;
 
 
     @ElementCollection(fetch = FetchType.EAGER)

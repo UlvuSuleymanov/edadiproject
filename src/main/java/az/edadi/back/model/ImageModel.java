@@ -18,12 +18,13 @@ public class ImageModel {
 
         switch (type) {
             case "user":
-                rootUrl = rootUrl + "user/";
+                rootUrl = rootUrl + PhotoEnum.USER_IMAGE_FOLDER.getName()+"/";
                 break;
             case "article":
-                rootUrl = rootUrl + "article/";
+                rootUrl = rootUrl + PhotoEnum.BLOG_IMAGE_FOLDER.getName()+"/";
                 break;
         }
+
 
         urlS = rootUrl + PhotoEnum.IMAGE_SIZE_S.getName() + imageName;
         urlM = rootUrl + PhotoEnum.IMAGE_SIZE_M.getName() + imageName;

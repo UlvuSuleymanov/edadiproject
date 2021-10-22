@@ -90,7 +90,7 @@ public class PostServiceImpl implements PostService {
                 break;
             case "topic":
                 Topic topic = topicRepository.findById(postRequestModel.getId()).orElseThrow(() ->
-                        new UsernameNotFoundException("Topic not found with  id : ")
+                        new EntityNotFoundException("Topic not found with  id : ")
                 );
                 post.setTopic(topic);
                 break;
@@ -99,6 +99,17 @@ public class PostServiceImpl implements PostService {
 
 
         return postRepository.save(post);
+
+
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isPresent() && AuthUtil.userIsAuthenticated() && post.get().getUser().getId().equals(AuthUtil.getCurrentUserId()))
+        {
+            postRepository.delete(post.get());
+        }
 
 
     }

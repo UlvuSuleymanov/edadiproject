@@ -11,12 +11,12 @@ import java.util.concurrent.Executors;
 @EnableAsync
 public class AsyncConfig {
 
-    @Bean("sendMailExecutor")
+    @Bean(name = "sendMailExecutor")
     Executor mailExecutor() {
         return Executors.newFixedThreadPool(10);
     }
 
-    @Bean("deleteFileExecutor")
+    @Bean(name = "deleteFileExecutor")
     Executor deleteFile() {
         return Executors.newFixedThreadPool(30);
     }

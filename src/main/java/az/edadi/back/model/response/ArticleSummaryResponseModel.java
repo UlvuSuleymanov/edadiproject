@@ -2,8 +2,7 @@ package az.edadi.back.model.response;
 
 import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.Article;
-import az.edadi.back.model.MediaAuthor;
-import az.edadi.back.utility.PhotoUtil;
+import az.edadi.back.model.UserSummary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,7 @@ public class ArticleSummaryResponseModel {
     private  String slug;
     private  String description;
     private  String imageUrl;
-    private MediaAuthor author;
+    private UserSummary author;
     private Date birthDay;
 
     public ArticleSummaryResponseModel(Article article){
@@ -26,7 +25,7 @@ public class ArticleSummaryResponseModel {
         slug=article.getSlug();
         description=article.getDescription();
         birthDay =article.getDate();
-        author=new MediaAuthor(article.getUser());
-        imageUrl= PhotoEnum.ROOT_PHOTO_URL.getName()+"blog/"+article.getCoverUrl();
+        author=new UserSummary(article.getUser());
+        imageUrl= PhotoEnum.ROOT_PHOTO_URL.getName()+PhotoEnum.BLOG_IMAGE_FOLDER.getName()+"/"+article.getCoverUrl();
     }
 }

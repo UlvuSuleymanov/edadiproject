@@ -45,7 +45,7 @@ public class SpecialityController {
     @GetMapping(value = "/api/university/{uniId}/speciality")
     ResponseEntity getUniversitySpecialities(@PathVariable Long uniId, @RequestParam String group) throws InterruptedException {
 
-        return ResponseEntity.ok(specialityService.getUniversitySpecialities(uniId, Long.valueOf(group)));
+        return ResponseEntity.ok(specialityService.getUniversitySpecialitiesWithGroup(uniId, Long.valueOf(group)));
     }
 
 

@@ -1,12 +1,8 @@
 package az.edadi.back.service;
 
 import az.edadi.back.entity.User;
-import az.edadi.back.entity.UserAuthority;
 import az.edadi.back.model.JwtTokenResponseModel;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-
-import java.util.Set;
 
 public interface JwtService {
 

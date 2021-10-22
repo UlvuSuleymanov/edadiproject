@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+  import az.edadi.back.model.response.SpecialityResponseModel;
   import az.edadi.back.service.SpecialityService;
   import az.edadi.back.entity.university.Speciality;
   import az.edadi.back.entity.university.University;
@@ -10,7 +11,8 @@ package az.edadi.back.service.impl;
   import org.springframework.stereotype.Service;
 
  import java.util.ArrayList;
- import java.util.List;
+  import java.util.Collections;
+  import java.util.List;
  import java.util.Optional;
   import java.util.stream.Collectors;
 
@@ -28,15 +30,10 @@ public class SpecialityServiceImpl implements SpecialityService {
 
 
     @Override
-    @Cacheable("speciality")
+    @Cacheable("specialities")
     public List<SpecialitySummaryResModel> getSpecialities(Long group) {
-
         List<Speciality> specialities= new ArrayList<>();
-
         specialities=specialityRepository.getSpeciality(group);
-
-
-
         return  specialities.stream()
                 .map(speciality -> new SpecialitySummaryResModel(speciality))
                 .collect(Collectors.toList());
@@ -45,10 +42,24 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
-    public List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId, Long group) {
+    public List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId) {
+        Optional<University> university = universityRepository.findById(uniId);
+        if(university.isPresent())
+            return university.get().getSpecialities().stream()
+            .map(speciality -> new SpecialitySummaryResModel(speciality))
+            .collect(Collectors.toList());
+
+        return Collections.emptyList();
+    }
+
+
+
+    @Override
+    public List<SpecialitySummaryResModel> getUniversitySpecialitiesWithGroup(Long uniId, Long group) {
+        if(group==0)
+          return getUniversitySpecialities(uniId);
 
         List<Speciality> specialities= specialityRepository.getUniSpecialities(uniId,group);
-
         return  specialities.stream()
                 .map(speciality -> new SpecialitySummaryResModel(speciality))
                 .collect(Collectors.toList());

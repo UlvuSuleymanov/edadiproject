@@ -11,7 +11,7 @@ import java.util.List;
 public interface PostService {
 
      Post createPost(PostRequestModel postRequestModel, String username);
-
+     void deletePost(Long postId);
      List<PostResponseModel> getPosts(Integer page, Integer size, String sort);
      List<PostResponseModel> getTopicPosts(Long id, Integer page,Integer size, String sort);
      List<PostResponseModel> getSpecialityPosts(Long code, Integer page,Integer size, String sort);

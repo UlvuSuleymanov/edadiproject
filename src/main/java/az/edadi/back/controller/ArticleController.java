@@ -1,7 +1,5 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.constants.PhotoEnum;
-import az.edadi.back.constants.Property;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
 import az.edadi.back.model.response.ArticleSummaryResponseModel;
@@ -38,12 +36,10 @@ public class ArticleController {
     public SimpleImageResponse upload(@RequestBody MultipartFile upload) throws IOException {
 
         Long id = AuthUtil.getCurrentUserId();
-        System.out.println(id);
         return articleService.addPhoto(upload);
     }
 
-    @Autowired
-    private Property property;
+
 
     @GetMapping
     ResponseEntity getArticles(@RequestParam(defaultValue = "1") Integer page,

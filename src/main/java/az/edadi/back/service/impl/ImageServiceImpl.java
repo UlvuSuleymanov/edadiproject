@@ -72,7 +72,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Async
+    @Async("deleteFileExecutor")
     public void deleteFiles(String name) {
         fileService.deleteProfileImage(PhotoEnum.IMAGE_SIZE_L.getName() + name);
         fileService.deleteProfileImage(PhotoEnum.IMAGE_SIZE_M.getName() + name);

@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public List<CommentResponseModel> getComments(Long postId, int page, int size, String sort) {
+    public List<CommentResponseModel>   getComments(Long postId, int page, int size, String sort) {
 
         Pageable pageable = PageRequest.of(page, size);
         List<Comment> commentList = new ArrayList<>();

@@ -1,7 +1,7 @@
 package az.edadi.back.model.response;
 
 import az.edadi.back.entity.post.Comment;
-import az.edadi.back.model.MediaAuthor;
+import az.edadi.back.model.UserSummary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class CommentResponseModel {
     private String commentText;
     private int likeCount;
     private Date birthDay;
-    private MediaAuthor author;
+    private UserSummary author;
     private boolean isLiked;
 
     public CommentResponseModel(Comment comment, boolean isLiked) {
@@ -26,7 +26,7 @@ public class CommentResponseModel {
         this.commentText = comment.getCommentText();
         this.likeCount = comment.getVotes().size();
         this.birthDay = comment.getDate();
-        this.author = new MediaAuthor(comment.getUser());
+        this.author = new UserSummary(comment.getUser());
         this.isLiked = isLiked;
     }
 }

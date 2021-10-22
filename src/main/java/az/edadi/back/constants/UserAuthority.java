@@ -1,4 +1,4 @@
-package az.edadi.back.entity;
+package az.edadi.back.constants;
 
     public enum UserAuthority {
         USER_READ("user:read"),

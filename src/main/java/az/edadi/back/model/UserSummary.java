@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaAuthor {
+public class UserSummary {
     private String name;
     private String username;
     private ImageModel image;
 
-    public MediaAuthor(User user){
+    public UserSummary(User user){
         name=user.getName();
         username=user.getUsername();
         image= new ImageModel(user.getImageName(),"user");

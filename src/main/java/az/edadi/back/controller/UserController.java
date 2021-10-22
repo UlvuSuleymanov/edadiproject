@@ -1,9 +1,11 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.model.ImageModel;
+import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +39,11 @@ public class UserController {
         ImageModel responseModel = userService.setImage(multipartFile);
         return ResponseEntity.ok(responseModel);
     }
+    @PostMapping("/speciality")
+    public ResponseEntity setImage(@RequestBody SetSpecialityRequestModel speciality) {
+       userService.setSpeciality(speciality);
+       return ResponseEntity.ok(HttpStatus.OK);
+     }
 
 
 }

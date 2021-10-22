@@ -1,6 +1,6 @@
 package az.edadi.back.security.jwt;
 
-import az.edadi.back.entity.UserAuthority;
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.service.JwtService;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

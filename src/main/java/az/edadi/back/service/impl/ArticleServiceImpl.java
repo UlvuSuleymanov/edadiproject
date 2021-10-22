@@ -105,7 +105,7 @@ public class ArticleServiceImpl implements ArticleService {
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
         File file = fileService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileService.saveProfilePhoto(name,file,"/blog");
+        fileService.saveProfilePhoto(name,file,PhotoEnum.BLOG_IMAGE_FOLDER.getName());
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
         simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName()+"blog/"+name);

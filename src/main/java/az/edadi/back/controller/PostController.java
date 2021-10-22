@@ -1,4 +1,4 @@
-package az.edadi.back.controller;
+    package az.edadi.back.controller;
 
  import az.edadi.back.entity.post.Post;
   import az.edadi.back.entity.post.Vote;
@@ -47,11 +47,6 @@ public class PostController {
                                        @AuthenticationPrincipal String username
                                    ) {
 
-        System.out.println(username);
-
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            PostRequestModel postRequestModel = objectMapper.readValue(newPostJson, PostRequestModel.class);
-          //  postRequestModel.setMultipartFile(multipartFile);
             Post post = postService.createPost(postRequestModel, username);
 
 
@@ -99,6 +94,12 @@ public class PostController {
 
 
          return ResponseEntity.ok(postResponseModel);
+    }
+    @DeleteMapping("/post/{postId}")
+    public ResponseEntity deletePost(@PathVariable Long postId) {
+
+          postService.deletePost(postId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 //    @GetMapping(value = "/post/{postId}/{username}")

@@ -7,6 +7,7 @@ package az.edadi.back.controller;
  import az.edadi.back.model.response.UniResponseModel;
  import az.edadi.back.model.response.UniSummaryModel;
  import az.edadi.back.repository.UniversityRepository;
+ import org.springframework.cache.annotation.Cacheable;
  import org.springframework.http.HttpStatus;
  import org.springframework.http.ResponseEntity;
  import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +40,7 @@ public class UniversityController {
     }
 
     @GetMapping
+    @Cacheable("")
     ResponseEntity getUniList(){
      List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
      return ResponseEntity.ok(uniResponseModelList);

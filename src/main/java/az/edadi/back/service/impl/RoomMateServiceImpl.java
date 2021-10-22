@@ -13,6 +13,7 @@ import az.edadi.back.utility.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class RoomMateServiceImpl implements RoomMateService {
     @Override
     public List<RoommateResponseModel> getRoommates(Long regionId,int page) {
 
-        Pageable pageable = PageRequest.of(page, 30);
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
         List<RoommateAd> roommateAds=new ArrayList<>();
 
         
