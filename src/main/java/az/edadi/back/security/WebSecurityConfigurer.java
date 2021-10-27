@@ -49,16 +49,18 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userPrincipalService).passwordEncoder(passwordEncoder);
     }
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+      @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+        @Override
+        public AuthenticationManager authenticationManagerBean() throws Exception {
+            return super.authenticationManagerBean();
+        }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 cors().and().csrf().disable()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 

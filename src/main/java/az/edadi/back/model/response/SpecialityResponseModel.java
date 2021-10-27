@@ -15,7 +15,7 @@ public class SpecialityResponseModel {
     private String name;
     private String universityAbbr;
     private String universityName;
-    private boolean canAdd;
+    private boolean canAddSubject=false;
 
     public  SpecialityResponseModel(Speciality speciality){
         code=speciality.getSpecialityCode();
