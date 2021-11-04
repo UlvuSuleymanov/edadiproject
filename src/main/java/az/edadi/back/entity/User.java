@@ -9,6 +9,7 @@ import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.roommate.RoommateAd;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
+import az.edadi.back.entity.university.TextBook;
 import az.edadi.back.model.request.SignUpRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,6 +71,9 @@ public class User {
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<TextBook> textBooks =new ArrayList<>();
 
     private String photoUrl;
 

@@ -37,6 +37,7 @@ public class Speciality {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "speciality")
     private List<Subject> subjects = new ArrayList<>();
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     private University university;
 

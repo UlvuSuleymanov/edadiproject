@@ -6,28 +6,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject {
+public class TextBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Speciality speciality;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
-    private List<TextBook> textBooks = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Subject subject;
+
+    private String fileName;
+
 
 
 }
