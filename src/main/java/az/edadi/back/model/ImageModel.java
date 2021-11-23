@@ -7,28 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ImageModel {
     private String urlS;
-    private String urlM;
-    private String urlL;
+    private String url;
 
-    public ImageModel(String imageName, String type) {
-        String rootUrl = PhotoEnum.ROOT_PHOTO_URL.getName();
-
-        switch (type) {
-            case "user":
-                rootUrl = rootUrl + PhotoEnum.USER_IMAGE_FOLDER.getName()+"/";
-                break;
-            case "article":
-                rootUrl = rootUrl + PhotoEnum.BLOG_IMAGE_FOLDER.getName()+"/";
-                break;
-        }
-
-
+    public ImageModel(String imageName, PhotoEnum folder) {
+        String rootUrl = PhotoEnum.ROOT_PHOTO_URL.getName()+folder.getName()+"/";
         urlS = rootUrl + PhotoEnum.IMAGE_SIZE_S.getName() + imageName;
-        urlM = rootUrl + PhotoEnum.IMAGE_SIZE_M.getName() + imageName;
-        urlL = rootUrl + PhotoEnum.IMAGE_SIZE_L.getName() + imageName;
+        url = rootUrl + PhotoEnum.IMAGE_SIZE_L.getName() + imageName;
     }
 
 

@@ -1,5 +1,6 @@
 package az.edadi.back.model;
 
+import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class UserSummary {
     public UserSummary(User user){
         name=user.getName();
         username=user.getUsername();
-        image= new ImageModel(user.getImageName(),"user");
+        image= new ImageModel(user.getImageName(), PhotoEnum.USER_IMAGE_FOLDER);
     }
 }

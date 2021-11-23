@@ -103,12 +103,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
-        File file = fileService.convertMultiPartToFile(multipartFile);
+        File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileService.saveProfilePhoto(name,file,PhotoEnum.BLOG_IMAGE_FOLDER.getName());
+        fileService.saveFile(name,file,PhotoEnum.BLOG_IMAGE_FOLDER);
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
-        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName()+"blog/"+name);
+        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName()+PhotoEnum.BLOG_IMAGE_FOLDER.getName()+"/"+name);
         return simpleImageResponse;
 
     }

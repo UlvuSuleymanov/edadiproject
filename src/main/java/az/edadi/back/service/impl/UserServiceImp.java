@@ -78,19 +78,18 @@ public class UserServiceImp implements UserService {
     @Override
     public ImageModel setImage(MultipartFile multipartFile) throws IOException {
 
-
         Long userId = AuthUtil.getCurrentUserId();
         User user = userRepository.getById(userId);
 
         String name = UUID.randomUUID().toString();
-        ImageModel imageModel = imageService.saveImage(name, multipartFile);
+        ImageModel imageModel = imageService.saveProfilePhoto(name, multipartFile);
 
         String oldImageName = user.getImageName();
         user.setImageName(name);
         userRepository.save(user);
 
         if (!oldImageName.equals(PhotoEnum.USER_DEFAULT_PHOTO.getName())) {
-            imageService.deleteFiles(oldImageName);
+            imageService.deleteUserOldImages(oldImageName);
         }
 
         return imageModel;

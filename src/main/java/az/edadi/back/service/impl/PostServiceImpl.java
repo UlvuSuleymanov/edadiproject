@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
@@ -240,18 +241,18 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    @Override
-    public String savePostPicture(Long id, MultipartFile multipartFile) {
-        try {
-            File file = s3Service.convertMultiPartToFile(multipartFile);
-            String name = "postImage" + id;
-            s3Service.saveProfilePhoto(name, file, "/blog");
-            return PhotoUtil.getFullPhotoUrl(name);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "default";
-    }
+//    @Override
+//    public String savePostPicture(Long id, MultipartFile multipartFile) {
+//        try {
+//            File file = s3Service.convertMultiPartToFile(multipartFile);
+//            String name = "postImage" + id;
+//            s3Service.saveFile(name, file, PhotoEnum.BLOG_IMAGE_FOLDER);
+//            return PhotoUtil.getFullPhotoUrl(name);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return "default";
+//    }
 
 
     @Override
