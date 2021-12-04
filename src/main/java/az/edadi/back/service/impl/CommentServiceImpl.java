@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,26 +46,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment commentBuilder(CommentRequestModel commentRequestModel, Long postId) {
-
+    public CommentResponseModel addComment(CommentRequestModel commentRequestModel, Long postId) {
         Long id = AuthUtil.getCurrentUserId();
-
-        Post post = postRepository.getOne(postId);
-        User user = userRepository.getOne(id);
-
-
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException(
+                "No post found with this id"
+        ));
+        User user = userRepository.getById(id);
         Comment comment = new Comment();
         comment.setDate(new Date());
         comment.setUser(user);
         comment.setPost(post);
-        comment.setCommentText(commentRequestModel.getCommentText());
-        return comment;
+        comment.setCommentText(commentRequestModel.getText());
+        comment = commentRepository.save(comment);
+        return new CommentResponseModel(comment, false);
 
     }
 
 
     @Override
-    public List<CommentResponseModel>   getComments(Long postId, int page, int size, String sort) {
+    public List<CommentResponseModel> getComments(Long postId, int page, int size, String sort) {
 
         Pageable pageable = PageRequest.of(page, size);
         List<Comment> commentList = new ArrayList<>();

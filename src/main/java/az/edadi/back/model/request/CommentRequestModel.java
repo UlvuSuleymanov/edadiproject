@@ -9,6 +9,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CommentRequestModel {
     @NotBlank
-    @Size(min = 1, max = 400)
-    private String commentText;
+    @Size(min = 1, max = 500)
+    private String text;
  }

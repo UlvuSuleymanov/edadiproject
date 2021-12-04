@@ -1,4 +1,4 @@
-package az.edadi.back;
+package az.edadi.back.utility;
 
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;

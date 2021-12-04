@@ -1,6 +1,5 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.entity.post.Comment;
 import az.edadi.back.model.request.CommentRequestModel;
 import az.edadi.back.model.response.CommentResponseModel;
 import az.edadi.back.repository.CommentRepository;
@@ -28,12 +27,8 @@ public class CommentController {
     @PostMapping(value = "/api/post/{postId}/comment")
     public ResponseEntity addComment(@PathVariable Long postId,
                                      @RequestBody CommentRequestModel commentRequestModel) {
-
-
-        Comment comment = commentService.commentBuilder(commentRequestModel, postId);
-        comment = commentRepository.save(comment);
-
-        return ResponseEntity.ok(new CommentResponseModel(comment, false));
+        CommentResponseModel commentResponseModel = commentService.addComment(commentRequestModel, postId);
+        return ResponseEntity.ok(commentResponseModel);
 
     }
 
@@ -53,7 +48,7 @@ public class CommentController {
     public ResponseEntity likePost(@PathVariable Long commentId) {
         Long userId = AuthUtil.getCurrentUserId();
         commentService.likeComment(commentId, userId);
-        return new  ResponseEntity( HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/api/comment    /{commentId}/like")

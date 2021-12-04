@@ -10,22 +10,21 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 
 @Data
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentResponseModel {
-    private Long commentId;
-    private String commentText;
+    private Long id;
+    private String text;
     private int likeCount;
-    private Date birthDay;
+    private Date date;
     private UserSummary author;
     private boolean isLiked;
 
     public CommentResponseModel(Comment comment, boolean isLiked) {
-        this.commentId = comment.getId();
-        this.commentText = comment.getCommentText();
+        this.id = comment.getId();
+        this.text = comment.getCommentText();
         this.likeCount = comment.getVotes().size();
-        this.birthDay = comment.getDate();
+        this.date = comment.getDate();
         this.author = new UserSummary(comment.getUser());
         this.isLiked = isLiked;
     }
