@@ -62,6 +62,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 cors().and().csrf().disable()
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
 
                 .authorizeRequests()
@@ -73,14 +74,16 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, "/add/**").permitAll()
 
                 .antMatchers(POST, "/api/auth/**").permitAll()
+
                 .antMatchers(PUT, "/api/auth/recovery").permitAll()
 
+                .antMatchers(GET,"/ws/**","/ws").permitAll()
 
                 .anyRequest().authenticated()
+
                 .and()
 
-
-                .addFilterAfter(new JwtVerifierFilter(jwtBean, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtVerifierFilter(jwtBean, jwtService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests();
     }
 
