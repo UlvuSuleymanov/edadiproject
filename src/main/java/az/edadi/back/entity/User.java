@@ -2,6 +2,8 @@ package az.edadi.back.entity;
 
 import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.entity.message.ChatRoom;
+import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 
@@ -45,38 +47,47 @@ public class User {
 
     private Date profileBirthDay;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Speciality speciality;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany( cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Post> posts =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Article> articles =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<RoommateAd> roommateAds =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Image> images =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Vote> votes=new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Topic> topics =new ArrayList<>();
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<TextBook> textBooks =new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<Message> messages =new ArrayList<>();
 
     private String photoUrl;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_chat_room",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_room_id"))
+    private List<ChatRoom> chatRooms;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "id"))
