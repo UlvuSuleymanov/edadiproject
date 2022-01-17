@@ -1,26 +1,30 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.model.request.MessageRequestModel;
-import az.edadi.back.repository.UserRepository;
+import az.edadi.back.model.response.MessageResponseModel;
+import az.edadi.back.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
+@RestController
 public class MessageController {
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private MessageService messageService;
 
-    @Autowired
-    private UserRepository userRepository;
+    @GetMapping("api/message/me")
+    ResponseEntity getChatRoomMessages(){
+        return ResponseEntity.noContent().build();
+    }
 
-    @MessageMapping("/reply")
-    public String greeting(@Payload MessageRequestModel msgReq) throws Exception {
-        simpMessagingTemplate.convertAndSendToUser(msgReq.getTo(), "/queue/messages", msgReq.getMessage());
-        return msgReq.getMessage();
+
+    @PostMapping("api/message")
+    public MessageResponseModel greeting(@RequestBody MessageRequestModel messageRequestModel) {
+        return  messageService.sendChatMessage(messageRequestModel);
     }
 }

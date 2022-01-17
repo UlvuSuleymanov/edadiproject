@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.custom.UserNotFoundException;
 import az.edadi.back.exception.custom.UsernameOrPasswordNotCorrectException;
-import az.edadi.back.model.JwtTokenResponseModel;
+import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.repository.SpecialityOfferRepository;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;

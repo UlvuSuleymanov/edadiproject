@@ -1,4 +1,4 @@
-package az.edadi.back.model;
+package az.edadi.back.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

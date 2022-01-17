@@ -13,6 +13,6 @@ public class UserExceptionHandler {
     @ExceptionHandler({UserNotFoundException.class})
     @ResponseBody
     public ResponseEntity handleLoginDetails() {
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity("User not found",HttpStatus.NOT_FOUND);
     }
 }

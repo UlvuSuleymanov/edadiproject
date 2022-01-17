@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSummary {
+    private Long id;
     private String name;
     private String username;
     private ImageModel image;
 
     public UserSummary(User user){
+        id=user.getId();
         name=user.getName();
         username=user.getUsername();
         image= new ImageModel(user.getImageName(), PhotoEnum.USER_IMAGE_FOLDER);

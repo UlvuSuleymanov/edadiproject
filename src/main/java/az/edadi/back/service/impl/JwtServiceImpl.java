@@ -1,7 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.User;
-import az.edadi.back.model.JwtTokenResponseModel;
+import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.security.jwt.JwtBean;
 import az.edadi.back.service.JwtService;
 import az.edadi.back.utility.DataParser;

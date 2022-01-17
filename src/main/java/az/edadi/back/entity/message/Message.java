@@ -1,6 +1,7 @@
 package az.edadi.back.entity.message;
 
 import az.edadi.back.entity.User;
+import az.edadi.back.model.request.MessageRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,15 @@ public class Message {
 
     private Date date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne
-    private ChatRoom chatRoom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Thread thread;
 
-
-
-
+    public Message(MessageRequestModel messageRequestModel){
+        text=messageRequestModel.getMessage();
+        date=new Date();
+    }
 
 }

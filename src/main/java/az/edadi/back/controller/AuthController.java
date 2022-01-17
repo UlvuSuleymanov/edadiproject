@@ -1,6 +1,6 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.model.JwtTokenResponseModel;
+import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.model.request.NewPasswordRequestModel;
 import az.edadi.back.model.request.PasswordRecoverRequest;
 import az.edadi.back.model.request.SignInRequestModel;

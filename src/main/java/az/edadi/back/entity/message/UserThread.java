@@ -6,23 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class ChatRoom {
+public class UserThread {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    private List<User> users;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "chatRoom")
-    private List<Message> messages = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Thread thread;
 
 }

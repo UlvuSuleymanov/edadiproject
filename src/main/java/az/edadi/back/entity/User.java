@@ -2,8 +2,9 @@ package az.edadi.back.entity;
 
 import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.entity.message.ChatRoom;
+import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.Message;
+import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 
@@ -80,24 +81,17 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Message> messages =new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<UserThread> userThreads = new ArrayList<>();
+
     private String photoUrl;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_chat_room",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "chat_room_id"))
-    private List<ChatRoom> chatRooms;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "authorities")
     @Enumerated(EnumType.STRING)
     private Set<UserAuthority> authorities = new HashSet<>();
-
-
-
-
 
 
 
