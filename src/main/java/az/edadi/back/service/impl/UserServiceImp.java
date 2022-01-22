@@ -33,18 +33,18 @@ public class UserServiceImp implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final ImageService imageService;
-    private final FileService s3Service;
+    private final FileService fileService;
     private final SpecialityRepository specialityRepository;
 
 
     @Autowired
     public UserServiceImp(PasswordEncoder passwordEncoder,
                           UserRepository userRepository,
-                          ImageService imageService, FileService s3Service, SpecialityRepository specialityRepository) {
+                          ImageService imageService, FileService fileService, SpecialityRepository specialityRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.imageService = imageService;
-        this.s3Service = s3Service;
+        this.fileService = fileService;
         this.specialityRepository = specialityRepository;
     }
 

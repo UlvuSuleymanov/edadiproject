@@ -1,7 +1,7 @@
+server:
+  port: 5000
 spring:
-  server:
-    port: 5000
-    error:
+  error:
       includeMessage: always
       includeBindingErrors: always
   servlet:
