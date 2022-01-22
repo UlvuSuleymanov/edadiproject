@@ -11,6 +11,8 @@ import az.edadi.back.repository.UserRepository;
 import az.edadi.back.repository.UserThreadRepository;
 import az.edadi.back.service.MessageService;
 import az.edadi.back.utility.AuthUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -38,7 +40,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageResponseModel sendChatMessage(MessageRequestModel messageRequestModel) {
+    public MessageResponseModel sendChatMessage(MessageRequestModel messageRequestModel) throws JsonProcessingException {
         List<UserThread> threadList = userThreadRepository.findByThreadId(messageRequestModel.getThreadId());
         User currentUser= userRepository.getById(AuthUtil.getCurrentUserId());
         if(threadList.size()<2 || checkUserInThread(threadList))
@@ -67,15 +69,17 @@ public class MessageServiceImpl implements MessageService {
         return false;
     }
 
-    void sendNotifications(List<UserThread> threads, MessageResponseModel message) {
+    void sendNotifications(List<UserThread> threads, MessageResponseModel message) throws JsonProcessingException {
         Long currentUserId = AuthUtil.getCurrentUserId();
+
+        ObjectMapper mapper = new ObjectMapper();
 
         for (UserThread userThread : threads)
             if (!userThread.getUser().getId().equals(currentUserId))
                 simpMessagingTemplate.convertAndSendToUser(
                         String.valueOf(userThread.getUser().getId()),
                         "/queue/messages",
-                        message.toString());
+                        mapper.writeValueAsString(message));
 
     }
 }
