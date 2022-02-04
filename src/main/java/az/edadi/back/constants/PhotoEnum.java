@@ -4,8 +4,8 @@ public enum PhotoEnum {
 
     ROOT_PHOTO_URL("https://edadiaz.s3.eu-central-1.amazonaws.com/public"),
 
-    USER_DEFAULT_PHOTO("/default"),
-    ARTICLE_DEFAULT_PHOTO("/default"),
+    USER_DEFAULT_PHOTO("default"),
+    ARTICLE_DEFAULT_PHOTO("default"),
 
     USER_IMAGE_FOLDER("/user"),
     BLOG_IMAGE_FOLDER("/blog"),
