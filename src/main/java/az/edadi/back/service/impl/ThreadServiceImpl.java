@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.UserThread;
-import az.edadi.back.exception.custom.UserNotFoundException;
+import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.ThreadRequestModel;
 import az.edadi.back.model.response.ThreadResponseModel;
 import az.edadi.back.repository.ThreadRepository;

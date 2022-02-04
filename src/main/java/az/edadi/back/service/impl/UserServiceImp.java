@@ -3,7 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.university.Speciality;
-import az.edadi.back.exception.custom.UserNotFoundException;
+import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.ImageModel;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;

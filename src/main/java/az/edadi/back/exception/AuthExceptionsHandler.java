@@ -1,7 +1,7 @@
 package az.edadi.back.exception;
 
-import az.edadi.back.exception.custom.UserNotFoundException;
-import az.edadi.back.exception.custom.UsernameOrPasswordNotCorrectException;
+import az.edadi.back.exception.model.UserNotFoundException;
+import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package az.edadi.back.exception.custom;
+package az.edadi.back.exception.model;
 
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;

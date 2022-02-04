@@ -1,9 +1,6 @@
 server:
   port: 5000
 spring:
-  error:
-      includeMessage: always
-      includeBindingErrors: always
   servlet:
     multipart:
       maxFileSize: 25MB
