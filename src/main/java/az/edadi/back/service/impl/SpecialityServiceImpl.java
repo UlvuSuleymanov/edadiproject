@@ -85,7 +85,7 @@ public class SpecialityServiceImpl implements SpecialityService {
         if(AuthUtil.userIsAuthenticated())
         {
             Optional<User> user = userRepository.findById(AuthUtil.getCurrentUserId());
-            if(user.isPresent() && user.get().getSpeciality().getId().longValue()==speciality.get().getId().longValue())
+            if(user.isPresent() && user.get().getSpeciality()!=null&& user.get().getSpeciality().getId().longValue()==speciality.get().getId().longValue())
             {
                 responseModel.setCanAddSubject(true);
             }

@@ -3,27 +3,38 @@ package az.edadi.back.controller;
 import az.edadi.back.model.request.ThreadRequestModel;
 import az.edadi.back.model.response.ThreadResponseModel;
 import az.edadi.back.service.ThreadService;
+import az.edadi.back.utility.AuthUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
+@RequestMapping("api/thread")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ThreadController {
+
     private final ThreadService threadService;
 
-    public ThreadController(ThreadService threadService) {
-        this.threadService = threadService;
-    }
-
-    @PostMapping("api/thread")
-    ResponseEntity createThread(@RequestBody ThreadRequestModel threadRequestModel){
-
+    @PostMapping
+    ResponseEntity createThread(@RequestBody ThreadRequestModel threadRequestModel) {
+        log.info("User {} send request to a create a thread", AuthUtil.getCurrentUserId());
         return ResponseEntity.ok(threadService.createThread(threadRequestModel));
     }
-    @GetMapping("api/thread/me")
-    ResponseEntity getThreads(@RequestParam(defaultValue = "0") Long page){
-      List<ThreadResponseModel> threadResponseModelList= threadService.getThreads(page.intValue());
-        return   ResponseEntity.ok(threadResponseModelList);
+
+    @GetMapping
+    ResponseEntity getThreads(@RequestParam(defaultValue = "0") Long page) {
+        List<ThreadResponseModel> threadResponseModelList = threadService.getThreads(page.intValue());
+        return ResponseEntity.ok(threadResponseModelList);
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity getThread(@PathVariable Long id) {
+        return ResponseEntity.ok(threadService.getThread(id));
+    }
+
 }

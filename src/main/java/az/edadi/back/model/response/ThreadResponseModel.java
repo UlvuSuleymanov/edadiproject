@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class ThreadResponseModel {
     private Long threadId;
     private List<UserSummary> users;
+    private List<MessageResponseModel> messages;
 
     public ThreadResponseModel(Thread thread) {
         threadId=thread.getId();
