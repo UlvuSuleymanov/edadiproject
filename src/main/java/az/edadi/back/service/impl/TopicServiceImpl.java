@@ -48,7 +48,7 @@ public class TopicServiceImpl implements TopicService {
 
         Pageable pageable = PageRequest.of(page, 40, Sort.by("date").descending());
 
-        return topicRepository.findAll()
+        return topicRepository.findAll(pageable)
                 .stream()
                 .map(topic -> new SummaryModel(topic.getId(), topic.getTitle()))
                 .collect(Collectors.toList());

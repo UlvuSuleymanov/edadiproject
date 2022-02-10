@@ -13,6 +13,8 @@ import az.edadi.back.service.ArticleService;
 import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.utility.AuthUtil;
+import az.edadi.back.utility.SlugUtil;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,19 +34,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ArticleServiceImpl implements ArticleService {
 
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final ImageService imageService;
     private final FileService fileService;
-    @Autowired
-    public ArticleServiceImpl(UserRepository userRepository, ArticleRepository articleRepository, ImageService imageService, FileService fileService) {
-        this.userRepository = userRepository;
-        this.articleRepository = articleRepository;
-        this.imageService = imageService;
-        this.fileService = fileService;
-    }
 
     @Override
     public ArticleResponseModel addArticle(ArticleRequestModel articleRequestModel) throws IOException {
@@ -54,17 +50,17 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = new Article(articleRequestModel);
         article.setUser(user);
-        article=articleRepository.save(article);
-        article.setSlug(createSlug(article.getTitle(),article.getId()));
+        article = articleRepository.save(article);
+        article.setSlug(SlugUtil.createSlug(article.getTitle(), article.getId()));
         article.setCoverUrl(getCoverImageName(articleRequestModel.getBody()));
         return new ArticleResponseModel(articleRepository.save(article));
-     }
+    }
 
     @Override
     public ArticleResponseModel getArticle(String slug) {
-        Long id = getIdFromSlug(slug);
+        Long id = SlugUtil.getId(slug);
         Article article = articleRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException());
+                .orElseThrow(() -> new EntityNotFoundException());
 
         return new ArticleResponseModel(article);
     }
@@ -75,12 +71,12 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Article> articles = articleRepository.getArticles(pageable);
         return
-                articles !=null ?
+                articles != null ?
                         articles.stream().map(
-                              article -> new ArticleSummaryResponseModel(article))
-                .collect(Collectors.toList())
+                                article -> new ArticleSummaryResponseModel(article))
+                                .collect(Collectors.toList())
 
-        : Collections.emptyList();
+                        : Collections.emptyList();
     }
 
     @Override
@@ -95,38 +91,25 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public String createSlug(String title,Long id) {
-     title = title.trim().replaceAll("\\s{2,}", "-");
-     title=title.replace(" ","-");
-     return title+"-"+id;
-    }
-
-    @Override
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
         File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileService.saveFile(name,file,PhotoEnum.BLOG_IMAGE_FOLDER);
+        fileService.saveFile(name, file, PhotoEnum.BLOG_IMAGE_FOLDER);
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
-        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName()+PhotoEnum.BLOG_IMAGE_FOLDER.getName()+"/"+name);
+        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName() + PhotoEnum.BLOG_IMAGE_FOLDER.getName() + "/" + name);
         return simpleImageResponse;
 
     }
 
-    @Override
-    public Long getIdFromSlug(String slug) {
-        String crumbs[]=slug.split("-");
-        String id = crumbs[crumbs.length-1];
-        return Long.valueOf(id);
-    }
 
     @Override
     public String getCoverImageName(String html) {
         Document doc = Jsoup.parse(html);
         Optional<Element> image = Optional.ofNullable(doc.select("img").first());
 
-        if(image.isPresent()) {
-            String url= image.get().attr("src");
+        if (image.isPresent()) {
+            String url = image.get().attr("src");
             return url.split("/")[url.split("/").length - 1];
         }
         return null;

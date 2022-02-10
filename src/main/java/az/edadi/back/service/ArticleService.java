@@ -12,14 +12,9 @@ import java.util.List;
 
 public interface ArticleService {
 
-
     ArticleResponseModel addArticle(ArticleRequestModel articleRequestModel) throws IOException;
 
-    String createSlug(String title,Long id );
-
     SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException;
-
-    Long getIdFromSlug(String slug);
 
     String getCoverImageName(String html);
 
@@ -28,4 +23,5 @@ public interface ArticleService {
     List<ArticleSummaryResponseModel> getArticleList(int page, int size, String sort);
 
     Article parseHtml(String articleText);
+
 }

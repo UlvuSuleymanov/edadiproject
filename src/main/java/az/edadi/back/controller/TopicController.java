@@ -19,7 +19,7 @@ public class TopicController {
     }
 
     @GetMapping
-    ResponseEntity getTopics(@RequestParam(defaultValue = "1") int page) {
+    ResponseEntity getTopics(@RequestParam(defaultValue = "0") int page) {
         return ResponseEntity.ok(topicService.getTopicList(page));
     }
 
