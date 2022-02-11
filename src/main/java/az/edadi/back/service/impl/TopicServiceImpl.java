@@ -57,7 +57,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicResponseModel getTopic(String slug) {
-
         Long id = SlugUtil.getId(slug);
         Topic topic = topicRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("No Topic found with the id " + id)

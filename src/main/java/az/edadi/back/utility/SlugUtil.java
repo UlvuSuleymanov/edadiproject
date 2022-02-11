@@ -2,9 +2,9 @@ package az.edadi.back.utility;
 
 public class SlugUtil {
 
-    public static String createSlug(String title, Long id){
-        title = title.trim().replaceAll("\\s{2,}", "-");
-        title=title.replace(" ","-");
+    public static String createSlug(String title, Long id) {
+        title=title.replaceAll("[?&%=!.,')(]","");
+        title = title.trim().replaceAll(" +", "-");
         return title+"-"+id;
     }
 
