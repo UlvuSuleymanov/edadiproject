@@ -1,15 +1,15 @@
 package az.edadi.back.service;
 
-import az.edadi.back.model.SummaryModel;
+import az.edadi.back.model.response.TopicResponseModel;
 
 import java.util.List;
 
 public interface TopicService {
 
-    SummaryModel addTopic(String title);
+    TopicResponseModel addTopic(String title);
 
-    List<SummaryModel> getTopicList(int page);
+    List<TopicResponseModel> getTopicList(int page);
 
-    SummaryModel getTopic(Long id);
+    TopicResponseModel getTopic(String slug);
 
 }

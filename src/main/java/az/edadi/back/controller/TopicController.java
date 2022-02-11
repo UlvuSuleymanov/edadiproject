@@ -23,8 +23,8 @@ public class TopicController {
         return ResponseEntity.ok(topicService.getTopicList(page));
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity getTopic(@PathVariable Long id) {
-        return ResponseEntity.ok(topicService.getTopic(id));
+    @GetMapping("/{slug}")
+    ResponseEntity getTopic(@PathVariable String slug) {
+        return ResponseEntity.ok(topicService.getTopic(slug));
     }
 }

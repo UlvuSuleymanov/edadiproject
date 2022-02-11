@@ -2,11 +2,12 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
-import az.edadi.back.model.SummaryModel;
+import az.edadi.back.model.response.TopicResponseModel;
 import az.edadi.back.repository.TopicRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.TopicService;
 import az.edadi.back.utility.AuthUtil;
+import az.edadi.back.utility.SlugUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,8 +30,8 @@ public class TopicServiceImpl implements TopicService {
     private final UserRepository userRepository;
 
     @Override
-    @CacheEvict(cacheNames = "topics",allEntries = true)
-    public SummaryModel addTopic(String title) {
+    @CacheEvict(cacheNames = "topics", allEntries = true)
+    public TopicResponseModel addTopic(String title) {
 
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
         Topic topic = new Topic();
@@ -38,28 +39,29 @@ public class TopicServiceImpl implements TopicService {
         topic.setDate(new Date());
         topic.setUser(user);
         Topic t = topicRepository.save(topic);
-        return new SummaryModel(t.getId(), t.getTitle());
+        return new TopicResponseModel(t);
 
     }
 
     @Override
     @Cacheable("topics")
-    public List<SummaryModel> getTopicList(int page) {
+    public List<TopicResponseModel> getTopicList(int page) {
 
         Pageable pageable = PageRequest.of(page, 40, Sort.by("date").descending());
 
         return topicRepository.findAll(pageable)
                 .stream()
-                .map(topic -> new SummaryModel(topic.getId(), topic.getTitle()))
+                .map(topic -> new TopicResponseModel(topic))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SummaryModel getTopic(Long id) {
+    public TopicResponseModel getTopic(String slug) {
 
+        Long id = SlugUtil.getId(slug);
         Topic topic = topicRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("No Topic found with the id " + id)
         );
-        return new SummaryModel(topic.getId(), topic.getTitle());
+        return new TopicResponseModel(topic);
     }
 }
