@@ -3,6 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.UserThread;
+import az.edadi.back.exception.model.CreateDublicateThreadException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.ThreadRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
@@ -41,8 +42,12 @@ public class ThreadServiceImpl implements ThreadService {
     private final MessageRepository messageRepository;
 
     @Override
-    public ThreadResponseModel  createThread(ThreadRequestModel threadRequestModel) {
+    public ThreadResponseModel createThread(ThreadRequestModel threadRequestModel) {
+
         User targetUser = userRepository.findByUsername(threadRequestModel.getUsername()).orElseThrow(UserNotFoundException::new);
+        if (targetUser.getId().equals(AuthUtil.getCurrentUserId()))
+            throw new CreateDublicateThreadException();
+
         Optional<List<UserThread>> userThreadList = userThreadRepository.getThreadsBWithUserIds(targetUser.getId(), AuthUtil.getCurrentUserId());
 
         if (userThreadList.isPresent() && userThreadList.get().size() > 0)

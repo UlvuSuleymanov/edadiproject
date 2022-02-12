@@ -8,6 +8,8 @@ import java.util.List;
 public interface ThreadService {
 
     ThreadResponseModel createThread(ThreadRequestModel threadRequestModel);
+
     List<ThreadResponseModel> getThreads(int page);
+
     ThreadResponseModel getThread(Long id);
 }

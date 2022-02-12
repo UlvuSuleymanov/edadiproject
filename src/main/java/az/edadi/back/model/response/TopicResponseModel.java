@@ -10,11 +10,13 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 public class TopicResponseModel {
+    private Long id;
     private String slug;
     private String title;
     private Date date;
 
     public TopicResponseModel(Topic topic){
+        id=topic.getId();
         slug = SlugUtil.createSlug(topic.getTitle().toLowerCase(),topic.getId());
         title=topic.getTitle();
         date=topic.getDate();
