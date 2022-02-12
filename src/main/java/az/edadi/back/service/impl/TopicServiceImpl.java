@@ -2,6 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
+import az.edadi.back.model.request.TopicRequestModel;
 import az.edadi.back.model.response.TopicResponseModel;
 import az.edadi.back.repository.TopicRepository;
 import az.edadi.back.repository.UserRepository;
@@ -31,11 +32,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     @CacheEvict(cacheNames = "topics", allEntries = true)
-    public TopicResponseModel addTopic(String title) {
+    public TopicResponseModel addTopic(TopicRequestModel topicRequestModel) {
 
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
         Topic topic = new Topic();
-        topic.setTitle(title);
+        topic.setTitle(topicRequestModel.getTitle());
         topic.setDate(new Date());
         topic.setUser(user);
         Topic t = topicRepository.save(topic);

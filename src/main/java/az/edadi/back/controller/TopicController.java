@@ -1,5 +1,6 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.model.request.TopicRequestModel;
 import az.edadi.back.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class TopicController {
     private final TopicService topicService;
 
     @PostMapping
-    ResponseEntity addTopic(@RequestBody String title) {
-        return ResponseEntity.ok(topicService.addTopic(title));
+    ResponseEntity addTopic(@RequestBody TopicRequestModel topicRequestModel) {
+        return ResponseEntity.ok(topicService.addTopic(topicRequestModel));
     }
 
     @GetMapping
