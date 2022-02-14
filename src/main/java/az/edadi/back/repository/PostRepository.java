@@ -1,6 +1,7 @@
 package az.edadi.back.repository;
 
 import az.edadi.back.entity.post.Post;
+import az.edadi.back.entity.post.Vote;
 import az.edadi.back.model.response.SearchResultResponseModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,10 +30,6 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
  List<Post> getSpecialityPosts(Long code, Pageable pageable);
 
 
-
-
-
-
  @Query("Select p from Post p where p.university.id=?1 and p.text like %?2%")
  List<Post> searchUniversityPostsLikeText( Long id, String text, Pageable pageable);
 
@@ -41,6 +38,18 @@ public interface PostRepository  extends JpaRepository<Post,Long> {
 
  @Query("Select p from Post p where p.topic.id=?1 and p.text like %?2%")
  List<Post> searchTopicPostsLikeText(Long id, String text, Pageable pageable);
+
+
+ @Query("SELECT p FROM Post p  where p.university.id=?1 ORDER BY ?2")
+ List<Post> getUniversityPostList(Long id, String sort, Pageable pageable);
+
+
+ @Query("SELECT p FROM Post p where p.university.id= ?1 ORDER BY SIZE(p.votes)")
+ List<Post> getUniversityPostListLikeDesc(Long id, Pageable pageable);
+
+ @Query("Select v from Vote v where v.user.id=?2 and v.post.id in ?1")
+ public List<Vote> getVotes(List<Long>ids , Long userId);
+
 
 
 }

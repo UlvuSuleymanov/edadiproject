@@ -6,15 +6,14 @@ public class AuthUtil {
     public static  Long getCurrentUserId(){
 
         if(userIsAuthenticated())
-        {
          return DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        }
+
 
         return null;
     }
 
     public static  boolean userIsAuthenticated(){
-      return SecurityContextHolder.getContext().getAuthentication().getCredentials()!=null;
+      return !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
     }
 
 }

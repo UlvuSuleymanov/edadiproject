@@ -9,27 +9,15 @@ import java.util.List;
 
 public interface PostService {
 
-     Post createPost(PostRequestModel postRequestModel, String username);
+     List<PostResponseModel> getPostList(String parent, Long id, int page , String sort, boolean asc);
+
+     Post createPost(PostRequestModel postRequestModel);
 
      void deletePost(Long postId);
-
-     List<PostResponseModel> getPosts(Integer page, Integer size, String sort);
-
-     List<PostResponseModel> getTopicPosts(Long id, Integer page,Integer size, String sort);
-
-     List<PostResponseModel> getSpecialityPosts(Long code, Integer page,Integer size, String sort);
-
-     List<PostResponseModel> getUniversityPosts(String uniAbbr, Integer page,Integer size, String sort);
-
-     PostResponseModel toResponse(Post post);
 
      Vote likePost(long postId, Long userId);
 
      void  disLikePost(long postId, Long userId);
-
-     boolean checkUserIsLiked(Long userId,Long postId);
-
-     List<PostResponseModel> postsToResponseModels(List<Post> posts);
 
      List<PostResponseModel> searchPost(String text, String type, String id);
 

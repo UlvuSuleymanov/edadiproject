@@ -1,76 +1,52 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
+import az.edadi.back.exception.model.BadParamsForPostListException;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.repository.*;
-import az.edadi.back.service.FileService;
-import az.edadi.back.service.ImageService;
 import az.edadi.back.service.PostService;
 import az.edadi.back.utility.AuthUtil;
-import az.edadi.back.utility.PhotoUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import java.io.File;
-import java.io.IOException;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
 @Service
+@Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PostServiceImpl implements PostService {
+
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private final TagServiceImpl tagService;
     private final UniversityRepository universityRepository;
-    private final FileService s3Service;
-    private final ImageService imageService;
     private final VoteRepository voteRepository;
     private final SpecialityRepository specialityRepository;
     private final TopicRepository topicRepository;
-
-    @Autowired
-    public PostServiceImpl(UserRepository userRepository,
-                           PostRepository postRepository,
-                           TagServiceImpl tagService,
-                           UniversityRepository universityRepository,
-                           FileService s3Service,
-                           ImageService imageService,
-                           VoteRepository voteRepository,
-                           SpecialityRepository specialityRepository, TopicRepository topicRepository) {
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.tagService = tagService;
-        this.universityRepository = universityRepository;
-        this.s3Service = s3Service;
-        this.imageService = imageService;
-        this.voteRepository = voteRepository;
-        this.specialityRepository = specialityRepository;
-        this.topicRepository = topicRepository;
-    }
-
+    private final EntityManager entityManager;
 
     @Override
-    public Post createPost(PostRequestModel postRequestModel, String username) {
+    public Post createPost(PostRequestModel postRequestModel) {
 
-
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with username or email : ")
+        User user = userRepository.findById(AuthUtil.getCurrentUserId()).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with id " + AuthUtil.getCurrentUserId().toString())
         );
 
         Post post = new Post(postRequestModel, user);
@@ -98,168 +74,96 @@ public class PostServiceImpl implements PostService {
 
         }
 
-
         return postRepository.save(post);
 
-
     }
+
 
     @Override
     public void deletePost(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
-        if (post.isPresent() && AuthUtil.userIsAuthenticated() && post.get().getUser().getId().equals(AuthUtil.getCurrentUserId()))
-        {
+        if (
+                post.isPresent() &&
+                        AuthUtil.userIsAuthenticated() &&
+                        post.get().getUser().getId().equals(AuthUtil.getCurrentUserId())
+        )
             postRepository.delete(post.get());
-        }
-
 
     }
 
     @Override
-    public List<PostResponseModel> getPosts(Integer page, Integer size, String sort) {
+    public List<PostResponseModel> getPostList(String parent, Long id, int page, String sort, boolean asc) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Optional<List<Post>> postList = Optional.empty();
+        //against sql injection
+        if (!parent.equals("university") &&
+                !parent.equals("speciality") &&
+                !parent.equals("topic")) {
+            throw new BadParamsForPostListException();
 
+        }
 
         switch (sort) {
-            case "mostCommented":
-                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
+            case "like":
+                sort = "SIZE(p.votes)";
                 break;
-            case "mostLiked":
-                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
+            case "comment":
+                sort = "SIZE(p.comments)";
                 break;
-            case "three":
-                System.out.println("mostLiked");
+            case "date":
+                sort = "date";
                 break;
             default:
-                postList = Optional.of(postRepository.findAll(pageable).toList());
-        }
-        if (postList.isPresent()) {
-            return postsToResponseModels(postList.get());
+                throw new BadParamsForPostListException();
         }
 
-        return null;
+        Query query = createQuery(parent, id, page, sort, asc);
+        List<Post> postList = query.getResultList();
+        return getPostResponseList(postList);
     }
 
-    @Override
-    public List<PostResponseModel> getTopicPosts(Long id, Integer page, Integer size, String sort) {
-        Topic topic = topicRepository.getById(id);
-        return postsToResponseModels(topic.getPosts());
+    List<PostResponseModel> getPostResponseList(List<Post> postList) {
+
+        List<PostResponseModel> postResponseModelList = postList.stream().map(
+                post -> new PostResponseModel(post, false)
+        ).collect(Collectors.toList());
+
+        if (AuthUtil.userIsAuthenticated())
+            return setIsLikes(postResponseModelList);
+
+        return postResponseModelList;
     }
 
+    List<PostResponseModel> setIsLikes(List<PostResponseModel> postResponseModels) {
+        List<Long> ids = postResponseModels.stream().map(postResponseModel -> postResponseModel.getId())
+                .collect(Collectors.toList()
+                );
+        List<Vote> voteList = postRepository.getVotes(ids, AuthUtil.getCurrentUserId());
+        for (PostResponseModel postResponseModel : postResponseModels)
+            for (Vote v : voteList)
+                if (v.getPost().getId().equals(postResponseModel.getId()))
+                    postResponseModel.setIsLiked(true);
 
-    @Override
-    public List<PostResponseModel> getSpecialityPosts(Long code, Integer page, Integer size, String sort) {
-        Pageable pageable = PageRequest.of(page, size);
-        List<Post> postList = postRepository.getSpecialityPosts(code, pageable);
-
-        return postList.stream()
-                .map(post -> toResponse(post))
-                .collect(Collectors.toList());
-
-//        switch (sort) {
-//            case "mostCommented":
-//                postList = Optional.ofNullable(postRepository.getTopCommentPost(pageable));
-//                break;
-//            case "mostLiked":
-//                postList = Optional.ofNullable(postRepository.getTopLikedPost(pageable));
-//                break;
-//            case "three":
-//                System.out.println("mostLiked");
-//                break;
-//            default:
-////                postList = Optional.of(postRepository.findAll(pageable).toList());
-//        }
-//        if (postList.isPresent()) {
-//            return postsToResponseModels(postList.get());
-//        }
-
+        return postResponseModels;
     }
 
 
-    @Override
-    public List<PostResponseModel> getUniversityPosts(String uniAbbr,
-                                                      Integer page,
-                                                      Integer size,
-                                                      String sort) {
-
-
-        Optional<University> universityOptional = universityRepository.findByAbbr(uniAbbr);
-        List<Post> postList = null;
-        Pageable pageable = PageRequest.of(page, size);
-
-        if (universityOptional.isPresent()) {
-
-            switch (sort) {
-
-                case "mostCommented":
-                    postList = postRepository.getTopCommentUniversityPost(universityOptional.get().getId(), pageable);
-                    break;
-                case "mostLiked":
-                    postList = postRepository.getTopLikedUniversityPost(universityOptional.get().getId(), pageable);
-                    break;
-
-                default:
-                    postList = postRepository.findAll(pageable).toList();
-
-            }
-
-            Optional<List<Post>> postsOptional = Optional.ofNullable(postList);
-            if (postsOptional.isPresent())
-                return postsToResponseModels(postList);
-        }
-        return null;
-
-
+    Query createQuery(String parent, Long id, int page, String sort, boolean asc) {
+        String direction = asc ? " ASC" : " DESC";
+        Query query = entityManager.createQuery("SELECT p FROM Post p where p." + parent + ".id=" + id.toString() + " ORDER BY " + sort + direction).
+                setFirstResult(calculateOffset(page, 20))
+                .setMaxResults(20);
+        return query;
     }
 
-
-    @Override
-    public PostResponseModel toResponse(Post post) {
-
-        if (post != null) {
-
-            boolean authenticated = AuthUtil.userIsAuthenticated();
-            Long userId = null;
-
-
-            if (authenticated) {
-                userId = AuthUtil.getCurrentUserId();
-            }
-
-            boolean isLiked = false;
-            if (authenticated) {
-                isLiked = checkUserIsLiked(userId, post.getId());
-
-            }
-
-            return new PostResponseModel(post, isLiked);
-
-        }
-        return null;
+    private int calculateOffset(int page, int limit) {
+        return ((limit * page) - limit);
     }
-
-
-//    @Override
-//    public String savePostPicture(Long id, MultipartFile multipartFile) {
-//        try {
-//            File file = s3Service.convertMultiPartToFile(multipartFile);
-//            String name = "postImage" + id;
-//            s3Service.saveFile(name, file, PhotoEnum.BLOG_IMAGE_FOLDER);
-//            return PhotoUtil.getFullPhotoUrl(name);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return "default";
-//    }
 
 
     @Override
     public Vote likePost(long postId, Long userId) {
         Post post = postRepository.getOne(postId);
         User user = userRepository.getOne(userId);
-
         Vote postVote = voteRepository.getPostVoteByIds(userId, postId);
         if (postVote == null) {
             postVote = new Vote();
@@ -269,7 +173,6 @@ public class PostServiceImpl implements PostService {
         }
         return voteRepository.save(postVote);
 
-
     }
 
     @Override
@@ -278,36 +181,11 @@ public class PostServiceImpl implements PostService {
         voteRepository.delete(postVote);
     }
 
-
-    @Override
-    public boolean checkUserIsLiked(Long userId, Long postId) {
-        return voteRepository.getPostVoteByIds(userId, postId) != null;
-
-    }
-
-    @Override
-    public List<PostResponseModel> postsToResponseModels(List<Post> posts) {
-
-        List<PostResponseModel> postResponseModelList = new ArrayList<>();
-
-        for (Post post : posts) {
-
-            postResponseModelList.add(toResponse(post));
-        }
-
-        return postResponseModelList;
-
-
-    }
-
     @Override
     public List<PostResponseModel> searchPost(String text, String type, String id) {
         Pageable pageable = PageRequest.of(0, 10);
 
-
         List<Post> postList = new ArrayList<>();
-
-
         switch (type) {
             case "university":
                 postList = postRepository.searchUniversityPostsLikeText(Long.valueOf(id), text, pageable);
@@ -320,9 +198,8 @@ public class PostServiceImpl implements PostService {
         }
 
         return postList.stream()
-                .map(post -> toResponse(post))
+                .map(post -> new PostResponseModel(post, false))
                 .collect(Collectors.toList());
-
 
     }
 
@@ -330,13 +207,14 @@ public class PostServiceImpl implements PostService {
     public PostResponseModel getPost(Long postId) {
         Optional<Post> post = postRepository.findById(postId);
 
-
         if (post.isPresent()) {
             System.out.println("present");
 
-            return toResponse(post.get());
+            return new PostResponseModel(post.get(), false);
         }
 
         return null;
     }
+
+
 }
