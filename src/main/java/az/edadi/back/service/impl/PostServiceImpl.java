@@ -7,6 +7,7 @@ import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.exception.model.BadParamsForPostListException;
+import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.repository.*;
@@ -24,9 +25,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,23 +81,22 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
-        if (
-                post.isPresent() &&
-                        AuthUtil.userIsAuthenticated() &&
-                        post.get().getUser().getId().equals(AuthUtil.getCurrentUserId())
-        )
-            postRepository.delete(post.get());
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
+        if (!post.getUser().getId().equals(AuthUtil.getCurrentUserId()))
+            throw new UserAuthorizationException();
 
+        postRepository.delete(post);
     }
 
     @Override
-    public List<PostResponseModel> getPostList(String parent, Long id, int page, String sort, boolean asc) {
+    public List<PostResponseModel> getPostList(String type, Long id, int page, String sort, boolean asc) {
 
         //against sql injection
-        if (!parent.equals("university") &&
-                !parent.equals("speciality") &&
-                !parent.equals("topic")) {
+        if (!type.equals("university") &&
+                !type.equals("speciality") &&
+                !type.equals("topic")) {
             throw new BadParamsForPostListException();
 
         }
@@ -116,7 +115,7 @@ public class PostServiceImpl implements PostService {
                 throw new BadParamsForPostListException();
         }
 
-        Query query = createQuery(parent, id, page, sort, asc);
+        Query query = createQuery(type, id, page, sort, asc);
         List<Post> postList = query.getResultList();
         return getPostResponseList(postList);
     }
@@ -147,9 +146,9 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    Query createQuery(String parent, Long id, int page, String sort, boolean asc) {
+    Query createQuery(String type, Long id, int page, String sort, boolean asc) {
         String direction = asc ? " ASC" : " DESC";
-        Query query = entityManager.createQuery("SELECT p FROM Post p where p." + parent + ".id=" + id.toString() + " ORDER BY " + sort + direction).
+        Query query = entityManager.createQuery("SELECT p FROM Post p where p." + type + ".id=" + id.toString() + " ORDER BY " + sort + direction).
                 setFirstResult(calculateOffset(page, 20))
                 .setMaxResults(20);
         return query;
@@ -159,27 +158,6 @@ public class PostServiceImpl implements PostService {
         return ((limit * page) - limit);
     }
 
-
-    @Override
-    public Vote likePost(long postId, Long userId) {
-        Post post = postRepository.getOne(postId);
-        User user = userRepository.getOne(userId);
-        Vote postVote = voteRepository.getPostVoteByIds(userId, postId);
-        if (postVote == null) {
-            postVote = new Vote();
-            postVote.setUser(user);
-            postVote.setPost(post);
-            postVote.setDate(new Date());
-        }
-        return voteRepository.save(postVote);
-
-    }
-
-    @Override
-    public void disLikePost(long postId, Long userId) {
-        Vote postVote = voteRepository.getPostVoteByIds(userId, postId);
-        voteRepository.delete(postVote);
-    }
 
     @Override
     public List<PostResponseModel> searchPost(String text, String type, String id) {
@@ -205,15 +183,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseModel getPost(Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
 
-        if (post.isPresent()) {
-            System.out.println("present");
-
-            return new PostResponseModel(post.get(), false);
-        }
-
-        return null;
+        return setIsLikes(Arrays.asList(new PostResponseModel(post, false))).get(0);
     }
 
 
