@@ -8,6 +8,7 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.exception.model.BadParamsForPostListException;
 import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.repository.*;
@@ -30,14 +31,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PostServiceImpl implements PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final UniversityRepository universityRepository;
-    private final VoteRepository voteRepository;
     private final SpecialityRepository specialityRepository;
     private final TopicRepository topicRepository;
     private final EntityManager entityManager;
@@ -90,35 +89,20 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
     }
 
+
     @Override
-    public List<PostResponseModel> getPostList(String type, Long id, int page, String sort, boolean asc) {
-
-        //against sql injection
-        if (!type.equals("university") &&
-                !type.equals("speciality") &&
-                !type.equals("topic")) {
-            throw new BadParamsForPostListException();
-
-        }
-
-        switch (sort) {
-            case "like":
-                sort = "SIZE(p.votes)";
-                break;
-            case "comment":
-                sort = "SIZE(p.comments)";
-                break;
-            case "date":
-                sort = "date";
-                break;
-            default:
-                throw new BadParamsForPostListException();
-        }
-
-        Query query = createQuery(type, id, page, sort, asc);
+    public List<PostResponseModel> getPostList(GetPostRequestModel getPostRequestModel) {
+        Query query = createGetPostListQuery(getPostRequestModel.getType(),
+                                getPostRequestModel.getId(),
+                                getPostRequestModel.getPage(),
+                                getPostSortQuery(getPostRequestModel.getSort()),
+                                getPostRequestModel.isAsc()
+                                );
         List<Post> postList = query.getResultList();
+
         return getPostResponseList(postList);
     }
+
 
     List<PostResponseModel> getPostResponseList(List<Post> postList) {
 
@@ -146,7 +130,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    Query createQuery(String type, Long id, int page, String sort, boolean asc) {
+    Query createGetPostListQuery(String type, Long id, int page, String sort, boolean asc) {
         String direction = asc ? " ASC" : " DESC";
         Query query = entityManager.createQuery("SELECT p FROM Post p where p." + type + ".id=" + id.toString() + " ORDER BY " + sort + direction).
                 setFirstResult(calculateOffset(page, 20))
@@ -188,6 +172,19 @@ public class PostServiceImpl implements PostService {
         );
 
         return setIsLikes(Arrays.asList(new PostResponseModel(post, false))).get(0);
+    }
+
+    String getPostSortQuery(String sortField) {
+        switch (sortField) {
+            case "like":
+                return "SIZE(p.votes)";
+            case "comment":
+                return "SIZE(p.comments)";
+            case "date":
+                return "date";
+            default:
+                throw new BadParamsForPostListException();
+        }
     }
 
 

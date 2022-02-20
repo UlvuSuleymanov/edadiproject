@@ -5,19 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PostRequestModel {
-
-    @NotBlank
-    @Size(min = 1, max = 700)
-    private String text;
+public class GetPostRequestModel {
 
     @NotBlank
     @PostType
@@ -26,4 +20,11 @@ public class PostRequestModel {
     @NotNull
     private Long id;
 
+    @Min(1)
+    private int page;
+
+    @NotBlank
+    private String sort;
+
+    private boolean asc;
 }
