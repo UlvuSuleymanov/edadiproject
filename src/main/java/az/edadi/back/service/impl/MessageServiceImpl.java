@@ -6,44 +6,33 @@ import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.model.request.MessageRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.repository.MessageRepository;
-import az.edadi.back.repository.ThreadRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.repository.UserThreadRepository;
 import az.edadi.back.service.MessageService;
 import az.edadi.back.utility.AuthUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MessageServiceImpl implements MessageService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final UserRepository userRepository;
-    private final ThreadRepository threadRepository;
     private final UserThreadRepository userThreadRepository;
     private final MessageRepository messageRepository;
-
-    public MessageServiceImpl(SimpMessagingTemplate simpMessagingTemplate,
-                              UserRepository userRepository,
-                              ThreadRepository threadRepository,
-                              UserThreadRepository userThreadRepository, MessageRepository messageRepository) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-        this.userRepository = userRepository;
-        this.threadRepository = threadRepository;
-        this.userThreadRepository = userThreadRepository;
-        this.messageRepository = messageRepository;
-    }
 
     @Override
     public MessageResponseModel sendChatMessage(MessageRequestModel messageRequestModel) throws JsonProcessingException {
         List<UserThread> threadList = userThreadRepository.findByThreadId(messageRequestModel.getThreadId());
-        User currentUser= userRepository.getById(AuthUtil.getCurrentUserId());
-        if(threadList.size()<2 || checkUserInThread(threadList))
+        User currentUser = userRepository.getById(AuthUtil.getCurrentUserId());
+        if (threadList.size() < 2 || checkUserInThread(threadList))
             throw new RuntimeException("User can't send message to this thread");
 
         Message message = new Message(messageRequestModel);
@@ -51,7 +40,7 @@ public class MessageServiceImpl implements MessageService {
         message.setThread(threadList.get(0).getThread());
         Message sendedMessage = messageRepository.save(message);
         MessageResponseModel messageResponseModel = new MessageResponseModel(sendedMessage);
-        sendNotifications(threadList,messageResponseModel);
+        sendNotifications(threadList, messageResponseModel);
         return messageResponseModel;
     }
 

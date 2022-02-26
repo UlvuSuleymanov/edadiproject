@@ -92,7 +92,7 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     ThreadResponseModel addMessagesToThread(ThreadResponseModel threadResponseModel) {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("date").descending());
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("date").descending());
         List<MessageResponseModel> messageResponseModels = new ArrayList<>();
         messageRepository.findByThreadId(threadResponseModel.getThreadId(), pageable).stream().forEach(
                 message -> messageResponseModels.add(new MessageResponseModel(message))
