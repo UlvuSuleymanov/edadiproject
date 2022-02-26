@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.User;
+import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
 import az.edadi.back.model.response.JwtTokenResponseModel;
@@ -8,6 +9,7 @@ import az.edadi.back.repository.SpecialityOfferRepository;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
+import az.edadi.back.security.listener.event.LoginEvent;
 import az.edadi.back.service.*;
 
 
@@ -16,13 +18,16 @@ import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.SignInResponseModel;
 
 import freemarker.template.TemplateException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,39 +35,16 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final SpecialityRepository specialityRepository;
-    private final UniversityRepository universityRepository;
-    private final SpecialityService specialityService;
-    private final SpecialityOfferRepository specialityOfferRepository;
     private final MailService mailService;
-
-    @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository,
-                                     UserService userService,
-                                     PasswordEncoder passwordEncoder,
-                                     JwtService jwtService,
-                                     SpecialityRepository specialityRepository,
-                                     UniversityRepository universityRepository,
-                                     SpecialityService specialityService,
-                                     SpecialityOfferRepository specialityOfferRepository,
-                                     MailService mailService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.specialityRepository = specialityRepository;
-        this.universityRepository = universityRepository;
-        this.specialityService = specialityService;
-        this.specialityOfferRepository = specialityOfferRepository;
-        this.mailService = mailService;
-    }
-
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final LoginAttemptService loginAttemptService;
+    private final HttpServletRequest request;
 
     @Override
     public void register(SignUpRequestModel signUpRequestModel) throws UsernameNotFoundException {
@@ -128,7 +110,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         int length = c.length;
 
         for (int i = 1; i < length - 1; i++) {
-            if (c[i] == '.' || c[i + 1] == '@' || c[i] == '@')
+            if ( c[i + 1] == '@' || c[i] == '@')
                 continue;
             c[i] = '*';
         }
@@ -140,15 +122,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public SignInResponseModel login(SignInRequestModel signInRequestModel) {
 
+        if(!loginAttemptService.isGoodAttemmpt())
+            throw new TooManyAttemptException();
+
         User user = userRepository.findByUsernameOrEmail(signInRequestModel.getUsername(), signInRequestModel.getUsername())
                 .orElseThrow(() ->
                         new EntityNotFoundException("User not found with username or email : " + signInRequestModel.getUsername())
                 );
 
         if (!passwordEncoder.matches(signInRequestModel.getPassword(), user.getPassword())) {
+            applicationEventPublisher.publishEvent(new LoginEvent(false));
             throw new UsernameOrPasswordNotCorrectException();
         }
 
+        applicationEventPublisher.publishEvent(new LoginEvent(true));
         return new SignInResponseModel(user, jwtService.getTokenResponse(user));
 
 

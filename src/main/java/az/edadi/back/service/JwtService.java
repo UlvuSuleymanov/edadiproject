@@ -10,7 +10,7 @@ public interface JwtService {
     String generateAccessToken(User user);
     String generateRefreshToken(User user);
     String generateResetPasswordToken(User user);
-    public Claims getAccessTokenClaims(String token);
+    Claims getAccessTokenClaims(String token);
     Long getUntrustedIdFromToken(String token);
     Long getIdFromToken(String token, User user);
 
