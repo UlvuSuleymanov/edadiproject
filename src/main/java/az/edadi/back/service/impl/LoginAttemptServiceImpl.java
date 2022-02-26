@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.service.LoginAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
     @Override
     public void addAttempt() {
         String ip = Optional.ofNullable(httpServletRequest.getHeader("X-FORWARDED-FOR")).orElse(httpServletRequest.getRemoteAddr());
-
+        System.out.println(AppConstants.DOMAIN);
         if (attempts.containsKey(ip))
             attempts.put(ip, attempts.get(ip) + 1);
         else

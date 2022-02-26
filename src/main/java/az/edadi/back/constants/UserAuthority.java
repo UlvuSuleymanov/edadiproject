@@ -6,10 +6,6 @@ package az.edadi.back.constants;
         ADMIN_READ("admin:read"),
         ADMIN_UPDATE("admin:update");
 
-
-
-
-
         private final String permission;
 
         UserAuthority(String permission) {

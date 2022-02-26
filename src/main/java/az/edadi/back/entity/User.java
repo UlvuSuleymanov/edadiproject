@@ -1,8 +1,7 @@
 package az.edadi.back.entity;
 
-import az.edadi.back.constants.PhotoEnum;
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.entity.post.Comment;
@@ -107,7 +106,7 @@ public class User {
         name=signUpRequestModel.getName();
         email=signUpRequestModel.getEmail().toLowerCase();
         profileBirthDay = new Date();
-        imageName= PhotoEnum.USER_DEFAULT_PHOTO.getName();
+        imageName= AppConstants.USER_DEFAULT_PHOTO;
     }
     public User(Long id){
         this.id=id;

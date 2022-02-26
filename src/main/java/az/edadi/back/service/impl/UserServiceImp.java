@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.PhotoEnum;
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.model.UserNotFoundException;
@@ -10,14 +10,13 @@ import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.model.response.UserResponseModel;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UserRepository;
-import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.service.UserService;
 import az.edadi.back.utility.AuthUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,26 +27,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImp implements UserService {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final ImageService imageService;
-    private final FileService fileService;
     private final SpecialityRepository specialityRepository;
-
-
-    @Autowired
-    public UserServiceImp(PasswordEncoder passwordEncoder,
-                          UserRepository userRepository,
-                          ImageService imageService, FileService fileService, SpecialityRepository specialityRepository) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.imageService = imageService;
-        this.fileService = fileService;
-        this.specialityRepository = specialityRepository;
-    }
-
 
     @Override
     public UserResponseModel getUserByUsername(String username) {
@@ -88,7 +73,7 @@ public class UserServiceImp implements UserService {
         user.setImageName(name);
         userRepository.save(user);
 
-        if (!oldImageName.equals(PhotoEnum.USER_DEFAULT_PHOTO.getName())) {
+        if (!oldImageName.equals(AppConstants.USER_DEFAULT_PHOTO)) {
             imageService.deleteUserOldImages(oldImageName);
         }
 
@@ -101,10 +86,10 @@ public class UserServiceImp implements UserService {
         Optional<Speciality> speciality = specialityRepository.findById(setSpecialityRequestModel.getSpecialityId());
         Optional<User> user = userRepository.findById(AuthUtil.getCurrentUserId());
 
-       if(user.isPresent() && speciality.isPresent()){
+        if (user.isPresent() && speciality.isPresent()) {
             user.get().setSpeciality(speciality.get());
             userRepository.save(user.get());
-       }
+        }
     }
 
 

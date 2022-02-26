@@ -1,16 +1,16 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.PhotoEnum;
 import az.edadi.back.service.FileService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+
 @Service
 @Profile("dev")
 public class FileServiceImpl implements FileService {
     @Override
-    public String saveFile(String key, File file, PhotoEnum folder) {
+    public String saveFile(String key, File file, String folder) {
         return key;
     }
 
@@ -20,7 +20,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile(String key, PhotoEnum folder) {
+    public void deleteFile(String key, String folder) {
 
     }
 }

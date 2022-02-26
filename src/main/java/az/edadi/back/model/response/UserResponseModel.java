@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.constants.PhotoEnum;
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.User;
 import az.edadi.back.model.ImageModel;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class UserResponseModel {
     public UserResponseModel(User user) {
         username = user.getUsername();
         name = user.getName();
-        image = new ImageModel(user.getImageName(), PhotoEnum.USER_IMAGE_FOLDER);
+        image = new ImageModel(user.getImageName(), AppConstants.USER_IMAGE_FOLDER);
     }
 
 }

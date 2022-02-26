@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
@@ -44,16 +45,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MailService mailService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final LoginAttemptService loginAttemptService;
-    private final HttpServletRequest request;
 
     @Override
     public void register(SignUpRequestModel signUpRequestModel) throws UsernameNotFoundException {
         User user = new User(signUpRequestModel);
         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
-
-
         userRepository.save(user);
-
     }
 
     @Override
@@ -63,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserNotFoundException();
 
         String token = jwtService.generateResetPasswordToken(user.get());
-        String link = "http://edadi.az/recovery?token=" + token;
+        String link = AppConstants.DOMAIN+ "/recovery?token=" + token;
         Map<String, String> mailModel = new HashMap<>();
         mailModel.put("name", user.get().getName());
         mailModel.put("link", link);

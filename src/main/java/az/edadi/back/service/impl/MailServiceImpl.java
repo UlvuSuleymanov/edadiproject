@@ -4,6 +4,7 @@ package az.edadi.back.service.impl;
  import freemarker.template.Configuration;
  import freemarker.template.Template;
  import freemarker.template.TemplateException;
+ import lombok.RequiredArgsConstructor;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.mail.javamail.JavaMailSender;
  import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,15 +20,10 @@ package az.edadi.back.service.impl;
  import java.util.Map;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MailServiceImpl implements MailService {
     private final JavaMailSender mailSender;
     private final Configuration configuration;
-
-    @Autowired
-    public MailServiceImpl(JavaMailSender mailSender, Configuration configuration) {
-        this.mailSender = mailSender;
-        this.configuration = configuration;
-    }
 
     @Override
     @Async(value = "sendMailExecutor")

@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.PhotoEnum;
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.Article;
 import az.edadi.back.entity.User;
 import az.edadi.back.model.request.ArticleRequestModel;
@@ -94,10 +94,10 @@ public class ArticleServiceImpl implements ArticleService {
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
         File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileService.saveFile(name, file, PhotoEnum.BLOG_IMAGE_FOLDER);
+        fileService.saveFile(name, file, AppConstants.BLOG_IMAGE_FOLDER);
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
-        simpleImageResponse.setUrl(PhotoEnum.ROOT_PHOTO_URL.getName() + PhotoEnum.BLOG_IMAGE_FOLDER.getName() + "/" + name);
+        simpleImageResponse.setUrl(AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + "/" + name);
         return simpleImageResponse;
 
     }
