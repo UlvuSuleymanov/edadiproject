@@ -41,7 +41,16 @@ app:
     secretKey: secretkey123
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
-
-
-
-
+  constants:
+    domain: http://edadi.az
+    image-url: https://edadiaz.s3.eu-central-1.amazonaws.com/public
+    user:
+      default-image: default
+      image-folder: /user
+    blog:
+      default-image: default
+      image-folder: /blog
+    file:
+      folder: /file
+    image:
+      size-s: thumbS
