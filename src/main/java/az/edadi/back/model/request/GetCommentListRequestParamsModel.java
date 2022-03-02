@@ -1,22 +1,24 @@
 package az.edadi.back.model.request;
 
-import az.edadi.back.validation.VoteType;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class VoteRequestModel {
-
-    @NotBlank
-    @VoteType
-    private String type;
+public class GetCommentListRequestParamsModel {
 
     @NotNull
-    private Long id;
+    private Long postId;
+
+    @Min(0)
+    private int page;
+
+    @NotBlank
+    private String sort;
+
+    private boolean asc;
 }

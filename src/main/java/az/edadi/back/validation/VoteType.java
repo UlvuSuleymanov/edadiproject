@@ -1,17 +1,17 @@
 package az.edadi.back.validation;
 
-import az.edadi.back.validation.validatedBy.PostTypeValidator;
+import az.edadi.back.validation.validatedBy.VoteTypeValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-@Constraint(validatedBy = PostTypeValidator.class)
+@Constraint(validatedBy = VoteTypeValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PostType {
+public @interface VoteType {
 
-    String message() default "There is no post of this type.";
+    String message() default "There is no vote of this type.";
 
     Class<?>[] groups() default {};
 

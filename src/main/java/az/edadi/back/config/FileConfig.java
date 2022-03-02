@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 
 @Configuration
-public class ImageConfig {
+public class FileConfig {
 
     @Value("${app.constants.domain}")
     private String domain;

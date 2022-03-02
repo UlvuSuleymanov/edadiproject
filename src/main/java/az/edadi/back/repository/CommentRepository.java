@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-     List<Comment> findByPost_id(Long postId, Pageable pageable);
 
-    @Query("SELECT c FROM Comment c where c.user.id=:id ORDER BY SIZE(c.votes) DESC ")
-    List<Comment> getTopLikedComment(Long id,Pageable pageable);
+    List<Comment> findByPost_id(Long postId, Pageable pageable);
+
 }
