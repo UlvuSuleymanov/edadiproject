@@ -1,5 +1,6 @@
 package az.edadi.back.validation.validatedBy;
 
+import az.edadi.back.constants.VoteTypes;
 import az.edadi.back.validation.PostType;
 
 import javax.validation.ConstraintValidator;
@@ -9,8 +10,10 @@ public class VoteTypeValidator implements ConstraintValidator<PostType, String> 
 
     @Override
     public boolean isValid(String type, ConstraintValidatorContext context) {
-        boolean isType = type.equals("post") || type.equals("comment");
-        return isType;
+        for (VoteTypes voteTypes : VoteTypes.values())
+            if (voteTypes.getType().equals(type))
+                return true;
+        return false;
     }
 
 }
