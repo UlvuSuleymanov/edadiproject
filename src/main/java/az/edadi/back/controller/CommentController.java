@@ -23,14 +23,14 @@ public class CommentController {
 
     @PostMapping(value = "/api/comment")
     public ResponseEntity addComment(@RequestBody @Valid CommentRequestModel commentRequestModel) {
-        log.info("User {} add comment to post with id {}", AuthUtil.getCurrentUserId(), commentRequestModel);
+        log.info("User {} add comment to post with id {}", AuthUtil.getCurrentUsername(), commentRequestModel);
         CommentResponseModel commentResponseModel = commentService.addComment(commentRequestModel);
         return ResponseEntity.ok(commentResponseModel);
     }
 
     @GetMapping(value = "/api/comment")
     public ResponseEntity getComments(@ModelAttribute @Valid GetCommentListRequestParamsModel getCommentListRequestParamsModel) {
-        log.info("User {} fetch comments of post with id {}", AuthUtil.getCurrentUserId(), getCommentListRequestParamsModel.getPostId());
+        log.info("User {} fetch comments of post with id {}", AuthUtil.getCurrentUsername(), getCommentListRequestParamsModel.getPostId());
         List<CommentResponseModel> commentResponseModelList = commentService.getComments(getCommentListRequestParamsModel);
         return ResponseEntity.ok(commentResponseModelList);
     }

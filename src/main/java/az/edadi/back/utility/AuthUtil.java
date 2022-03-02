@@ -1,5 +1,6 @@
 package az.edadi.back.utility;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthUtil {
@@ -9,8 +10,12 @@ public class AuthUtil {
         return null;
     }
 
+    public static String getCurrentUsername(){
+       return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
     public static  boolean userIsAuthenticated(){
-      return !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
+      return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
     }
 
 }
