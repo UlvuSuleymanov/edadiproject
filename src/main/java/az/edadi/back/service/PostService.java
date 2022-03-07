@@ -17,7 +17,7 @@ public interface PostService {
 
     void deletePost(Long postId);
 
-    List<PostResponseModel> searchPost(String text, String type, String id);
+    List<PostResponseModel> searchPost(GetPostRequestModel getPostRequestModel);
 
 
 }

@@ -15,17 +15,13 @@ import az.edadi.back.repository.*;
 import az.edadi.back.service.PostService;
 import az.edadi.back.utility.AuthUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,11 +89,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponseModel> getPostList(GetPostRequestModel getPostRequestModel) {
         Query query = createGetPostListQuery(getPostRequestModel.getType(),
-                                getPostRequestModel.getId(),
-                                getPostRequestModel.getPage(),
-                                getPostSortQuery(getPostRequestModel.getSort()),
-                                getPostRequestModel.isAsc()
-                                );
+                getPostRequestModel.getId(),
+                getPostRequestModel.getPage(),
+                getPostSortQuery(getPostRequestModel.getSort()),
+                getPostRequestModel.isAsc()
+        );
         List<Post> postList = query.getResultList();
 
         return getPostResponseList(postList);
@@ -138,30 +134,33 @@ public class PostServiceImpl implements PostService {
         return query;
     }
 
+    Query createSearchQuery(String type, Long id, int page, String sort, boolean asc, String text) {
+        String direction = asc ? " ASC" : " DESC";
+        Query query = entityManager.createQuery("SELECT p FROM Post p where p.text like '%" + text.trim() + "%' and p." + type + ".id=" + id.toString() + " ORDER BY " + sort + direction).
+                setFirstResult(calculateOffset(page, 20))
+                .setMaxResults(20);
+        return query;
+    }
+
+
     private int calculateOffset(int page, int limit) {
         return ((limit * page) - limit);
     }
 
 
     @Override
-    public List<PostResponseModel> searchPost(String text, String type, String id) {
-        Pageable pageable = PageRequest.of(0, 10);
+    public List<PostResponseModel> searchPost(GetPostRequestModel getPostRequestModel) {
 
-        List<Post> postList = new ArrayList<>();
-        switch (type) {
-            case "university":
-                postList = postRepository.searchUniversityPostsLikeText(Long.valueOf(id), text, pageable);
-                break;
-            case "speciality":
-                postList = postRepository.searchSpecialityPostsLikeText(Long.valueOf(id), text, pageable);
-            case "topic":
-                postList = postRepository.searchTopicPostsLikeText(Long.valueOf(id), text, pageable);
+        Query query = createSearchQuery(getPostRequestModel.getType(),
+                getPostRequestModel.getId(),
+                getPostRequestModel.getPage(),
+                getPostSortQuery(getPostRequestModel.getSort()),
+                getPostRequestModel.isAsc(), getPostRequestModel.getSearchText()
+        );
+        List<Post> postList = query.getResultList();
 
-        }
+        return getPostResponseList(postList);
 
-        return postList.stream()
-                .map(post -> new PostResponseModel(post, false))
-                .collect(Collectors.toList());
 
     }
 

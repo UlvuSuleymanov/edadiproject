@@ -31,6 +31,11 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostList(getPostRequestModel));
     }
 
+    @GetMapping(value = "/post/search")
+    public ResponseEntity searchPost(@ModelAttribute @Valid GetPostRequestModel getPostRequestModel) {
+        return ResponseEntity.ok(postService.searchPost(getPostRequestModel));
+    }
+
     @GetMapping(value = "/post/{postId}")
     ResponseEntity<PostResponseModel> getPost(@PathVariable Long postId) {
         PostResponseModel postResponseModel = postService.getPost(postId);

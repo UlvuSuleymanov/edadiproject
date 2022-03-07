@@ -1,7 +1,6 @@
 package az.edadi.back.model.request;
 
 import az.edadi.back.validation.PostType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +24,9 @@ public class GetPostRequestModel {
 
     @NotBlank
     private String sort;
+
+    @NotNull
+    private String searchText;
 
     private boolean asc;
 }
