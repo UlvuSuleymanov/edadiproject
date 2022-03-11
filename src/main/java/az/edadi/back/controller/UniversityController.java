@@ -7,6 +7,8 @@ package az.edadi.back.controller;
  import az.edadi.back.model.response.UniResponseModel;
  import az.edadi.back.model.response.UniSummaryModel;
  import az.edadi.back.repository.UniversityRepository;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.cache.annotation.Cacheable;
  import org.springframework.http.HttpStatus;
  import org.springframework.http.ResponseEntity;
@@ -16,19 +18,11 @@ package az.edadi.back.controller;
 
 @RestController
 @RequestMapping("/api/university")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+
 public class UniversityController {
     private  final UniversityRepository universityRepository;
     private  final UniversityService universityService;
-    private final SpecialityService uniSpecialityService;
-    public UniversityController(UniversityRepository universityRepository,
-                                UniversityService universityService,
-                                SpecialityService uniSpecialityService) {
-
-        this.universityRepository = universityRepository;
-        this.universityService = universityService;
-        this.uniSpecialityService = uniSpecialityService;
-    }
-
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin:update')")
@@ -40,7 +34,7 @@ public class UniversityController {
     }
 
     @GetMapping
-    @Cacheable("")
+    @Cacheable("universities")
     ResponseEntity getUniList(){
      List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
      return ResponseEntity.ok(uniResponseModelList);
