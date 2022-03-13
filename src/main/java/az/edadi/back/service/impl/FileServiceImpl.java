@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 @Service
-@Profile("dev")
+@Profile("dev | test")
 public class FileServiceImpl implements FileService {
     @Override
     public String saveFile(String key, File file, String folder) {

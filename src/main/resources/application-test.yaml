@@ -1,0 +1,56 @@
+server:
+  port: 5000
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 25MB
+      maxRequestSize: 35MB
+  h2:
+    console:
+      enabled: true
+      path: /h2
+    datasource:
+      url: jdbc:h2:mem:mydatabase
+      username: saa
+      password: saas
+      driverClassName: org.h2.Driver
+    jpa:
+      hibernate:
+        ddlAuto: create-drop
+  mail:
+    host: dummy.edadi.az
+    port: 587
+    username: dummy@edadi.az
+    password: mypassword
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jsa:
+  aws:
+    accessKeyId: secretid
+    secretAccessKey: secretkey
+  s3:
+    bucket: edadiaz/public
+    region: region
+app:
+  jwt:
+    title: Bearer
+    secretKey: secretkey123
+    accessTokenSessionTime: 999999999999
+    refreshTokenSessionTime: 99999999999
+  constants:
+    domain: http://edadi.az
+    image-url: https://edadiaz.s3.eu-central-1.amazonaws.com/public
+    user:
+      default-image: default
+      image-folder: /user
+    blog:
+      default-image: default
+      image-folder: /blog
+    file:
+      folder: /file
+    image:
+      size-s: thumbS
