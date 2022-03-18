@@ -1,8 +1,10 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
+import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.CommentRequestModel;
 import az.edadi.back.model.request.GetCommentListRequestParamsModel;
 import az.edadi.back.model.response.CommentResponseModel;
@@ -57,6 +59,17 @@ public class CommentServiceImpl implements CommentService {
                 .map(comment -> new CommentResponseModel(comment, false))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
+        if (!comment.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
+                !AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+            throw new UserAuthorizationException();
+        commentRepository.delete(comment);
     }
 
 }

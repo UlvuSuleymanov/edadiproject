@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,13 @@ public class CommentController {
         log.info("User {} add comment to post with id {}", AuthUtil.getCurrentUsername(), commentRequestModel);
         CommentResponseModel commentResponseModel = commentService.addComment(commentRequestModel);
         return ResponseEntity.ok(commentResponseModel);
+    }
+
+    @DeleteMapping(value = "/api/comment/{id}")
+    public ResponseEntity deleteComment(@PathVariable Long id) {
+        log.info("User {} trying to delete comment with id {}", AuthUtil.getCurrentUsername(),id);
+        commentService.deleteComment(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping(value = "/api/comment")

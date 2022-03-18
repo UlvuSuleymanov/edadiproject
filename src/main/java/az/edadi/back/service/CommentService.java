@@ -12,4 +12,6 @@ public interface CommentService {
 
     List<CommentResponseModel> getComments(GetCommentListRequestParamsModel getCommentListRequestParamsModel);
 
+    void deleteComment(Long id);
+
 }
