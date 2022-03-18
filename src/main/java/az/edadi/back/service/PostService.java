@@ -19,5 +19,7 @@ public interface PostService {
 
     List<PostResponseModel> searchPost(GetPostRequestModel getPostRequestModel);
 
+    List<PostResponseModel> getPostResponseList(List<Post> postList);
+
 
 }

@@ -104,8 +104,8 @@ public class PostServiceImpl implements PostService {
         return getPostResponseList(postList);
     }
 
-
-    List<PostResponseModel> getPostResponseList(List<Post> postList) {
+    @Override
+    public List<PostResponseModel> getPostResponseList(List<Post> postList) {
 
         List<PostResponseModel> postResponseModelList = postList.stream().map(
                 post -> new PostResponseModel(post, false)
