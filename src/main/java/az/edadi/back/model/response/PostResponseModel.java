@@ -1,5 +1,6 @@
 package az.edadi.back.model.response;
 
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.AuthUtil;
@@ -28,7 +29,9 @@ public class PostResponseModel {
         commentCount = post.getComments().size();
         author = new UserSummary(post.getUser());
         this.isLiked = isLiked;
-        canDelete = AuthUtil.userIsAuthenticated() && post.getUser().getId().equals(AuthUtil.getCurrentUserId());
+        canDelete = AuthUtil.userIsAuthenticated() && (
+                post.getUser().getId().equals(AuthUtil.getCurrentUserId()) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)
+                        );
 
     }
 
