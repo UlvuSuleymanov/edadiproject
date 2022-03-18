@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.Topic;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
@@ -15,6 +16,7 @@ import az.edadi.back.repository.*;
 import az.edadi.back.service.PostService;
 import az.edadi.back.utility.AuthUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PostServiceImpl implements PostService {
@@ -76,10 +79,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
+        log.info("User {} trying to delete post {}", AuthUtil.getCurrentUsername(), postId);
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new EntityNotFoundException()
         );
-        if (!post.getUser().getId().equals(AuthUtil.getCurrentUserId()))
+        if (!post.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
+                !AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
             throw new UserAuthorizationException();
 
         postRepository.delete(post);

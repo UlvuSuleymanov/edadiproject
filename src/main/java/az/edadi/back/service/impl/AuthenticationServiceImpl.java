@@ -1,23 +1,21 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
-import az.edadi.back.model.response.JwtTokenResponseModel;
-import az.edadi.back.repository.SpecialityOfferRepository;
-import az.edadi.back.repository.SpecialityRepository;
-import az.edadi.back.repository.UniversityRepository;
-import az.edadi.back.repository.UserRepository;
-import az.edadi.back.security.listener.event.LoginEvent;
-import az.edadi.back.service.*;
-
-
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
+import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.model.response.SignInResponseModel;
-
+import az.edadi.back.repository.UserRepository;
+import az.edadi.back.security.listener.event.LoginEvent;
+import az.edadi.back.service.AuthenticationService;
+import az.edadi.back.service.JwtService;
+import az.edadi.back.service.LoginAttemptService;
+import az.edadi.back.service.MailService;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +47,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void register(SignUpRequestModel signUpRequestModel) throws UsernameNotFoundException {
         User user = new User(signUpRequestModel);
         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
+        user = userRepository.save(user);
+        user.getAuthorities().add(UserAuthority.USER_READ);
+        user.getAuthorities().add(UserAuthority.USER_UPDATE);
         userRepository.save(user);
     }
 
@@ -60,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserNotFoundException();
 
         String token = jwtService.generateResetPasswordToken(user.get());
-        String link = AppConstants.DOMAIN+ "/recovery?token=" + token;
+        String link = AppConstants.DOMAIN + "/recovery?token=" + token;
         Map<String, String> mailModel = new HashMap<>();
         mailModel.put("name", user.get().getName());
         mailModel.put("link", link);
@@ -88,15 +88,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtTokenResponseModel refreshToken(JwtTokenResponseModel tokens) {
-         Long accessId = jwtService.getUntrustedIdFromToken(tokens.getRefreshToken());
+        Long accessId = jwtService.getUntrustedIdFromToken(tokens.getRefreshToken());
 
-         Optional<User> user = userRepository.findById(accessId);
+        Optional<User> user = userRepository.findById(accessId);
 
         if (!user.isPresent())
             throw new UserNotFoundException();
 
         //check refreshToken
-        jwtService.getIdFromToken(tokens.getRefreshToken(),user.get());
+        jwtService.getIdFromToken(tokens.getRefreshToken(), user.get());
 
         return jwtService.getTokenResponse(user.get());
 
@@ -107,7 +107,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         int length = c.length;
 
         for (int i = 1; i < length - 1; i++) {
-            if ( c[i + 1] == '@' || c[i] == '@')
+            if (c[i + 1] == '@' || c[i] == '@')
                 continue;
             c[i] = '*';
         }
@@ -119,7 +119,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public SignInResponseModel login(SignInRequestModel signInRequestModel) {
 
-        if(!loginAttemptService.isGoodAttemmpt())
+        if (!loginAttemptService.isGoodAttemmpt())
             throw new TooManyAttemptException();
 
         User user = userRepository.findByUsernameOrEmail(signInRequestModel.getUsername(), signInRequestModel.getUsername())
