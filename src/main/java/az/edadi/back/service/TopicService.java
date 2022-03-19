@@ -13,4 +13,6 @@ public interface TopicService {
 
     TopicResponseModel getTopic(String slug);
 
+    void deleteTopic(Long id);
+
 }
