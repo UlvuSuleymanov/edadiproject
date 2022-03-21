@@ -59,16 +59,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     void sendNotifications(List<UserThread> threads, MessageResponseModel message) throws JsonProcessingException {
-        Long currentUserId = AuthUtil.getCurrentUserId();
-
         ObjectMapper mapper = new ObjectMapper();
-
-        for (UserThread userThread : threads)
-            if (!userThread.getUser().getId().equals(currentUserId))
-                simpMessagingTemplate.convertAndSendToUser(
-                        String.valueOf(userThread.getUser().getId()),
-                        "/queue/messages",
-                        mapper.writeValueAsString(message));
+        for (UserThread userThread : threads) {
+            message.setIncoming(!userThread.getUser().getId().equals(message.getAuthor().getId()));
+            simpMessagingTemplate.convertAndSendToUser(
+                    String.valueOf(userThread.getUser().getId()),
+                    "/queue/messages",
+                    mapper.writeValueAsString(message));
+        }
 
     }
 }
