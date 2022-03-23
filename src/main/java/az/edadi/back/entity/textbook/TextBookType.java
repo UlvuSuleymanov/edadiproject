@@ -19,6 +19,8 @@ public class TextBookType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String type;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
     private List<TextBookFile> textBookFiles = new ArrayList<>();
 
