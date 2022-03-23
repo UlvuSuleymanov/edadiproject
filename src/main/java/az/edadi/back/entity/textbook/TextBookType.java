@@ -1,6 +1,6 @@
-package az.edadi.back.entity.university;
+package az.edadi.back.entity.textbook;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.university.TextBookFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,21 +13,15 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject {
+public class TextBookType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
-    private String name;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Speciality speciality;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
     private List<TextBookFile> textBookFiles = new ArrayList<>();
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
+    private List<TextbookAd> textbookAds = new ArrayList<>();
 }

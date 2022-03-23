@@ -1,6 +1,7 @@
 package az.edadi.back.entity.university;
 
 import az.edadi.back.entity.User;
+import az.edadi.back.entity.textbook.TextBookType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,13 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class TextBook {
+public class TextBookFile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     private String name;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
@@ -25,8 +26,10 @@ public class TextBook {
     @ManyToOne(fetch = FetchType.EAGER)
     private Subject subject;
 
-    private String fileName;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TextBookType type;
 
+    private String fileName;
 
 
 }

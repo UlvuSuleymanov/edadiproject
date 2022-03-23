@@ -9,9 +9,10 @@ import az.edadi.back.entity.post.Post;
 
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
-import az.edadi.back.entity.university.TextBook;
+import az.edadi.back.entity.university.TextBookFile;
 import az.edadi.back.model.request.SignUpRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -75,13 +76,16 @@ public class User {
     private List<Subject> subjects =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<TextBook> textBooks =new ArrayList<>();
+    private List<TextBookFile> textBookFiles =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Message> messages =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<UserThread> userThreads = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<TextbookAd> textbookAds = new ArrayList<>();
 
     private String photoUrl;
 
