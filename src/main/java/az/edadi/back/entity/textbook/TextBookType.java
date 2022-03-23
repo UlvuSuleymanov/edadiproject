@@ -24,4 +24,5 @@ public class TextBookType {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "type")
     private List<TextbookAd> textbookAds = new ArrayList<>();
+
 }
