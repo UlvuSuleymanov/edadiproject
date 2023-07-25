@@ -3,6 +3,7 @@ package az.edadi.back.model.response;
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.Article;
 import az.edadi.back.model.UserSummary;
+import az.edadi.back.utility.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,14 +21,14 @@ public class ArticleSummaryResponseModel {
     private String description;
     private String imageUrl;
     private UserSummary author;
-    private Date birthDay;
+    private String birthDay;
 
     public ArticleSummaryResponseModel(Article article) {
         title = article.getTitle();
         slug = article.getSlug();
         description = article.getDescription();
-        birthDay = article.getDate();
         author = new UserSummary(article.getUser());
         imageUrl = AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + "/" + article.getCoverUrl();
+        birthDay = DateUtil.getHowLongAgoString(article.getDate());
     }
 }
