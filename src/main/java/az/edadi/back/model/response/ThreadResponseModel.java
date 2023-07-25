@@ -19,7 +19,7 @@ public class ThreadResponseModel {
     private List<MessageResponseModel> messages;
 
     public ThreadResponseModel(Thread thread) {
-        threadId=thread.getId();
+        threadId = thread.getId();
         users = thread.getUserThread().stream()
                 .filter(userThread -> !userThread.getUser().getId().equals(AuthUtil.getCurrentUserId()))
                 .map(userThread -> new UserSummary(userThread.getUser()))

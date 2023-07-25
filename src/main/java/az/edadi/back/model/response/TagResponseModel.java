@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagResponseModel {
-    private  String tag;
+    private String tag;
     private Long id;
     private Integer point;
 

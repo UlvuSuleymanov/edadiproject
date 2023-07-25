@@ -11,9 +11,9 @@ public class SubjectSummaryResponseModel {
     private Long id;
     private String name;
 
-    public SubjectSummaryResponseModel(Subject subject){
-        id=subject.getId();
-        name=subject.getName();
+    public SubjectSummaryResponseModel(Subject subject) {
+        id = subject.getId();
+        name = subject.getName();
     }
 
 }

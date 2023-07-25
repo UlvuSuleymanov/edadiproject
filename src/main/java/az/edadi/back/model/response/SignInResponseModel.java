@@ -12,9 +12,9 @@ public class SignInResponseModel {
     private JwtTokenResponseModel token;
     private UserSummary author;
 
-    public  SignInResponseModel(User user, JwtTokenResponseModel jwtTokenResponseModel){
-        token=jwtTokenResponseModel;
-        author=new UserSummary(user);
+    public SignInResponseModel(User user, JwtTokenResponseModel jwtTokenResponseModel) {
+        token = jwtTokenResponseModel;
+        author = new UserSummary(user);
     }
 
 }

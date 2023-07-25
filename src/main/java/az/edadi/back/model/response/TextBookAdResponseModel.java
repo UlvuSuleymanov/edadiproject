@@ -2,6 +2,7 @@ package az.edadi.back.model.response;
 
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.model.UserSummary;
+import az.edadi.back.utility.DateUtil;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -13,7 +14,7 @@ public class TextBookAdResponseModel {
     private String name;
     private String about;
     private float price;
-    private Date date;
+    private String date;
     private UserSummary user;
 
     public TextBookAdResponseModel(TextbookAd textbookAd) {
@@ -21,7 +22,7 @@ public class TextBookAdResponseModel {
         name = textbookAd.getName();
         about = textbookAd.getAbout();
         price = textbookAd.getPrice();
-        date = textbookAd.getDate();
+        date = DateUtil.getHowLongAgoString(textbookAd.getDate());
         user = new UserSummary(textbookAd.getUser());
     }
 }

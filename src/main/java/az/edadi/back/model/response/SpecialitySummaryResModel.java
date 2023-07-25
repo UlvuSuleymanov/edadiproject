@@ -16,7 +16,7 @@ public class SpecialitySummaryResModel {
     private Long code;
     private Long group;
     private String university;
-    public String type;
+    private String type;
 
     public SpecialitySummaryResModel(Speciality uniSpeciality) {
         id = uniSpeciality.getId();

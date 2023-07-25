@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpResponseModel {
-     private boolean usernameIsValid;
-     private boolean emailIsValid;
-     private boolean passwordIsValid;
-     private boolean nameIsValid;
-     private boolean universityIsValid;
-     private boolean specialityIsValid;
-     private  boolean newUserIsValid;
+    private boolean usernameIsValid;
+    private boolean emailIsValid;
+    private boolean passwordIsValid;
+    private boolean nameIsValid;
+    private boolean universityIsValid;
+    private boolean specialityIsValid;
+    private boolean newUserIsValid;
 }
