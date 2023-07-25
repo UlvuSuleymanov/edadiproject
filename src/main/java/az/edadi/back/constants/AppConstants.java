@@ -1,7 +1,6 @@
 package az.edadi.back.constants;
 
 public class AppConstants {
-
     public static String DOMAIN;
 
     public static String ROOT_IMAGE_URL;

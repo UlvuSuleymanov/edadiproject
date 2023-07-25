@@ -5,18 +5,16 @@ spring:
     multipart:
       maxFileSize: 25MB
       maxRequestSize: 35MB
-  h2:
-    console:
-      enabled: true
-      path: /h2
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo
     datasource:
-      url: jdbc:h2:mem:mydatabase
-      username: saa
-      password: saas
-      driverClassName: org.h2.Driver
+    username: root
+    password: Demo12345
+    driverClassName: mysql.cj.jdbc.Driver
     jpa:
       hibernate:
-        ddlAuto: create-drop
+        ddlAuto: update
+      showSql: true
   mail:
     host: dummy.edadi.az
     port: 587
