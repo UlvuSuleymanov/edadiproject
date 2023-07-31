@@ -1,8 +1,10 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.model.SummaryModel;
 import az.edadi.back.model.request.TextbookAdRequestModel;
 import az.edadi.back.model.request.TextbookAdRequestParamsModel;
+import az.edadi.back.model.response.TextBookAdResponseModel;
 import az.edadi.back.repository.TextbookAdRepository;
 import az.edadi.back.repository.TextbookTypeRepository;
 import az.edadi.back.service.TextbookAdService;
@@ -29,20 +31,24 @@ public class TextbookAdController {
     }
 
     @GetMapping("/type")
-    ResponseEntity getTypes(){
+    ResponseEntity getTypes() {
         return ResponseEntity.ok(
                 textbookTypeRepository.findAll()
                         .stream()
                         .map(
-                                textBookType -> new SummaryModel(textBookType.getId(),textBookType.getType())
+                                textBookType -> new SummaryModel(textBookType.getId(), textBookType.getType())
                         ).collect(Collectors.toList())
         );
     }
 
     @PostMapping
     ResponseEntity addTextbookAd(@RequestBody @Valid TextbookAdRequestModel textbookAdRequestModel) {
-        textbookAdService.addTextbookAd(textbookAdRequestModel);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        TextbookAd textbookAd = textbookAdService
+                .addTextbookAd(textbookAdRequestModel);
+        TextBookAdResponseModel textBookAdResponseModel = new TextBookAdResponseModel(textbookAd);
+
+        return ResponseEntity.ok(textBookAdResponseModel);
     }
 
     @DeleteMapping("/{id}")

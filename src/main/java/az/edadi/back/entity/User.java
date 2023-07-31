@@ -6,7 +6,6 @@ import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
-
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.roommate.RoommateAd;
 import az.edadi.back.entity.textbook.TextbookAd;
@@ -23,11 +22,10 @@ import javax.persistence.*;
 import java.util.*;
 
 @Data
-@Builder
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,8 +84,6 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<TextbookAd> textbookAds = new ArrayList<>();
-
-    private String photoUrl;
 
 
     @ElementCollection(fetch = FetchType.EAGER)

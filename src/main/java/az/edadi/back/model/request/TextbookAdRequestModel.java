@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
@@ -14,17 +12,19 @@ import javax.validation.constraints.NotNull;
 public class TextbookAdRequestModel {
 
     @NotBlank
-    @Max(255)
+    @Size(max = 255)
     private String name;
 
-    @Max(255)
+    @Size(max = 255)
     private String about;
 
     @NotNull
+    @PositiveOrZero
     private float price;
 
     @NotNull
     private Long type;
 
+    @NotNull
     private Long specialityId;
 }

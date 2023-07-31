@@ -3,10 +3,11 @@ package az.edadi.back.model.response;
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.DateUtil;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 
+@Data
 @NoArgsConstructor
 public class TextBookAdResponseModel {
 

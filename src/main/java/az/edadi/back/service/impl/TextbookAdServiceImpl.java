@@ -1,7 +1,6 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.entity.User;
 import az.edadi.back.entity.textbook.TextBookType;
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.entity.university.Speciality;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,30 +36,27 @@ public class TextbookAdServiceImpl implements TextbookAdService {
     private final SpecialityRepository specialityRepository;
 
     @Override
-    public void addTextbookAd(TextbookAdRequestModel textbookAdRequestModel) {
+    public TextbookAd addTextbookAd(TextbookAdRequestModel textbookAdRequestModel) {
+        TextbookAd textbookAd = TextbookAd.from(textbookAdRequestModel);
 
-        TextbookAd textbookAd = new TextbookAd();
-
-        TextBookType textBookType = textbookTypeRepository.findById(textbookAdRequestModel.getType()).orElseThrow(
-                () -> new EntityNotFoundException()
-        );
-
-        if (Optional.ofNullable(textbookAdRequestModel.getSpecialityId()).isPresent()) {
-            Speciality speciality = specialityRepository.findById(textbookAdRequestModel.getSpecialityId()).orElseThrow(
-                    () -> new EntityNotFoundException()
-            );
-            textbookAd.setSpeciality(speciality);
-        }
-        textbookAd.setUser(new User(AuthUtil.getCurrentUserId()));
-
-        textbookAd.setAbout(textbookAdRequestModel.getAbout());
-        textbookAd.setName(textbookAdRequestModel.getName());
-        textbookAd.setDate(new Date());
+        TextBookType textBookType = textbookTypeRepository
+                .findById(textbookAdRequestModel
+                        .getType()).
+                orElseThrow(
+                        () -> new EntityNotFoundException()
+                );
         textbookAd.setType(textBookType);
-        textbookAd.setPrice(textbookAdRequestModel.getPrice());
 
-        textbookAdRepository.save(textbookAd);
 
+        Speciality speciality = specialityRepository
+                .findById(textbookAdRequestModel
+                        .getSpecialityId()).
+                orElseThrow(
+                        () -> new EntityNotFoundException()
+                );
+        textbookAd.setSpeciality(speciality);
+
+        return textbookAdRepository.save(textbookAd);
     }
 
     @Override

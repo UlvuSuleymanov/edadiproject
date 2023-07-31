@@ -2,6 +2,8 @@ package az.edadi.back.entity.textbook;
 
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.university.Speciality;
+import az.edadi.back.model.request.TextbookAdRequestModel;
+import az.edadi.back.utility.AuthUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,4 +39,13 @@ public class TextbookAd {
     private Speciality speciality;
 
 
+    public static TextbookAd from(TextbookAdRequestModel textbookAdRequestModel) {
+        TextbookAd textbookAd = new TextbookAd();
+        textbookAd.setUser(new User(AuthUtil.getCurrentUserId()));
+        textbookAd.setAbout(textbookAdRequestModel.getAbout());
+        textbookAd.setName(textbookAdRequestModel.getName());
+        textbookAd.setDate(new Date());
+        textbookAd.setPrice(textbookAdRequestModel.getPrice());
+        return textbookAd;
+    }
 }
