@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -60,25 +59,21 @@ public class TextbookAdServiceImpl implements TextbookAdService {
     }
 
     @Override
-    public List<TextBookAdResponseModel> getTextbookAd(TextbookAdRequestParamsModel textbookAdRequestParamsModel) {
-        Pageable pageable;
-        pageable = textbookAdRequestParamsModel.isAsc() ?
-                PageRequest.of(textbookAdRequestParamsModel.getPage(), 20, Sort.by("date").ascending()) :
-                PageRequest.of(textbookAdRequestParamsModel.getPage(), 20, Sort.by("date").descending());
+    public List<TextBookAdResponseModel> getTextbookAdsList(TextbookAdRequestParamsModel textbookAdRequestParamsModel) {
 
-        List<TextbookAd> textbookAdList;
+        Pageable pageable = textbookAdRequestParamsModel.isAsc() ?
+                PageRequest.of(textbookAdRequestParamsModel.getPage(), 10, Sort.by("date").ascending()) :
+                PageRequest.of(textbookAdRequestParamsModel.getPage(), 10, Sort.by("date").descending());
 
-        if (Optional.ofNullable(textbookAdRequestParamsModel.getSpecialityId()).isPresent())
-            textbookAdList = textbookAdRepository.getTextbooks(
-                    textbookAdRequestParamsModel.getType(), textbookAdRequestParamsModel.getSpecialityId(), pageable
+        List<TextbookAd> textbookAdList = textbookAdRepository
+                .getTextbooks(textbookAdRequestParamsModel.getType(),
+                        textbookAdRequestParamsModel.getSpecialityId(),
+                        pageable
             );
-        else
-            textbookAdList = textbookAdRepository.getTextbooks(textbookAdRequestParamsModel.getType(), pageable);
 
         return textbookAdList.stream()
                 .map(textbookAd -> new TextBookAdResponseModel(textbookAd))
                 .collect(Collectors.toList());
-
 
     }
 

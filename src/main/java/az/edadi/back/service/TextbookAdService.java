@@ -11,7 +11,7 @@ public interface TextbookAdService {
 
     TextbookAd addTextbookAd(TextbookAdRequestModel textbookAdRequestModel);
 
-    List<TextBookAdResponseModel> getTextbookAd(TextbookAdRequestParamsModel textbookAdRequestParamsModel);
+    List<TextBookAdResponseModel> getTextbookAdsList(TextbookAdRequestParamsModel textbookAdRequestParamsModel);
 
     TextBookAdResponseModel getTextbookAd(Long id);
 

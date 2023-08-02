@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,8 +27,12 @@ public class TextbookAdController {
     private final TextbookTypeRepository textbookTypeRepository;
 
     @GetMapping
-    ResponseEntity getTextbookAdList(@ModelAttribute @Valid TextbookAdRequestParamsModel textbookAdRequestParamsModel) {
-        return ResponseEntity.ok(textbookAdService.getTextbookAd(textbookAdRequestParamsModel));
+    ResponseEntity getTextbookAdList(@ModelAttribute @Valid
+                                     TextbookAdRequestParamsModel
+                                             textbookAdRequestParamsModel) {
+        List<TextBookAdResponseModel> textbookAdsList = textbookAdService
+                .getTextbookAdsList(textbookAdRequestParamsModel);
+        return ResponseEntity.ok(textbookAdsList);
     }
 
     @GetMapping("/type")

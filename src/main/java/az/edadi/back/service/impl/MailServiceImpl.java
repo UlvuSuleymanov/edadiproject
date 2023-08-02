@@ -6,6 +6,7 @@ package az.edadi.back.service.impl;
  import freemarker.template.TemplateException;
  import lombok.RequiredArgsConstructor;
  import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.beans.factory.annotation.Value;
  import org.springframework.mail.javamail.JavaMailSender;
  import org.springframework.mail.javamail.MimeMessageHelper;
  import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,13 @@ package az.edadi.back.service.impl;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MailServiceImpl implements MailService {
+
+    @Value("${app.constants.defaultSecurityMail}")
+    private String securityMailAddress;
+
+    @Value("${app.constants.appName}")
+    private String appName;
+
     private final JavaMailSender mailSender;
     private final Configuration configuration;
 
@@ -36,11 +44,10 @@ public class MailServiceImpl implements MailService {
         Template t = configuration.getTemplate("mailTemp.html");
 
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, mailMessage);
-
         mimeMessageHelper.setTo(to);
         mimeMessageHelper.setText(html, true);
         mimeMessageHelper.setSubject("Şifrə bərpası");
-        mimeMessageHelper.setFrom(new InternetAddress("security@edadi.az","Edadi"));
+        mimeMessageHelper.setFrom(new InternetAddress(securityMailAddress,appName));
         mailSender.send(message);
     }
 }

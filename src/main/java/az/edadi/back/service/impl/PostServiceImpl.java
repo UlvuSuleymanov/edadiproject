@@ -134,16 +134,16 @@ public class PostServiceImpl implements PostService {
     Query createGetPostListQuery(String type, Long id, int page, String sort, boolean asc) {
         String direction = asc ? " ASC" : " DESC";
         Query query = entityManager.createQuery("SELECT p FROM Post p where p." + type + ".id=" + id.toString() + " ORDER BY " + sort + direction).
-                setFirstResult(calculateOffset(page, 20))
-                .setMaxResults(20);
+                setFirstResult(calculateOffset(page, 10))
+                .setMaxResults(10);
         return query;
     }
 
     Query createSearchQuery(String type, Long id, int page, String sort, boolean asc, String text) {
         String direction = asc ? " ASC" : " DESC";
         Query query = entityManager.createQuery("SELECT p FROM Post p where p.text like '%" + text.trim() + "%' and p." + type + ".id=" + id.toString() + " ORDER BY " + sort + direction).
-                setFirstResult(calculateOffset(page, 20))
-                .setMaxResults(20);
+                setFirstResult(calculateOffset(page, 10))
+                .setMaxResults(10);
         return query;
     }
 

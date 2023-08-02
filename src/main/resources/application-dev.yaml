@@ -7,19 +7,19 @@ spring:
       maxRequestSize: 35MB
   datasource:
     url: jdbc:mysql://localhost:.3306/demo
-    username: root
-    password: Demo12345
-    driverClassName: com.mysql.jdbc.Driver
+    username: edauni
+    password: Demo142536
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      dialect: org.hibernate.dialect.MySQL5Dialect
+      dialect: hibernate.dialect.MySQL5Dialectorg.
       ddlAuto: update
     showSql: true
   mail:
-    host: dummy.edadi.az
+    host: smtp.gmail.com
     port: 587
-    username: dummy@edadi.az
-    password: mypassword
+    username: email@gmail.com
+    password: pass123
     properties:
       mail:
         smtp:
@@ -28,11 +28,11 @@ spring:
             enable: true
 jsa:
   aws:
-    accessKeyId: secretid
-    secretAccessKey: secretkey
+    accessKeyId: keyId
+    secretAccessKey: keypas
   s3:
-    bucket: edadiaz/public
-    region: region
+    bucket: edauni/public
+    region: eu-north-1
 app:
   jwt:
     title: Bearer
@@ -40,8 +40,10 @@ app:
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
   constants:
+    defaultSecurityMail: main@edauni.com
+    appName: Edauni
     domain: http://localhost:4200
-    image-url: https://edadiaz.s3.eu-central-1.amazonaws.com/public
+    image-url: https://edauni.s3.eu-north-1.amazonaws.com/public
     user:
       default-image: default
       image-folder: /user
