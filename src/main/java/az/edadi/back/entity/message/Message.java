@@ -5,8 +5,8 @@ import az.edadi.back.model.request.MessageRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -18,7 +18,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "text",length = 500)
+    @Column(name = "text", length = 500)
     private String text;
 
     private Date date;
@@ -29,9 +29,9 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     private Thread thread;
 
-    public Message(MessageRequestModel messageRequestModel){
-        text=messageRequestModel.getMessage();
-        date=new Date();
+    public Message(MessageRequestModel messageRequestModel) {
+        text = messageRequestModel.getMessage();
+        date = new Date();
     }
 
 }

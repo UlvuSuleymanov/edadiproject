@@ -2,10 +2,10 @@ package az.edadi.back.validation.validatedBy;
 
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.validation.NotDublicateEmail;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 public class DublicateEmailValidator implements ConstraintValidator<NotDublicateEmail, String> {
 

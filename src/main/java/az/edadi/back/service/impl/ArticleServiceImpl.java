@@ -14,6 +14,7 @@ import az.edadi.back.service.FileService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.SlugUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;

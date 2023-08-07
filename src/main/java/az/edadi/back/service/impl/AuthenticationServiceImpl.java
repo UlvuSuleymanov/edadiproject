@@ -17,6 +17,7 @@ import az.edadi.back.service.JwtService;
 import az.edadi.back.service.LoginAttemptService;
 import az.edadi.back.service.MailService;
 import freemarker.template.TemplateException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException {
+    public String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException {
         Optional<User> user = userRepository.findByUsernameOrEmail(usernamOrEmail, usernamOrEmail);
         if (!user.isPresent())
             throw new UserNotFoundException();

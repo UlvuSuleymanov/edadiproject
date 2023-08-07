@@ -15,7 +15,7 @@ public interface AuthenticationService {
 
     void register(SignUpRequestModel signUpRequestModel);
 
-    String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException;
+    String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException;
 
     SignInResponseModel resetPassword(String token, String newPassword);
 

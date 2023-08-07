@@ -4,9 +4,8 @@ import az.edadi.back.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
+ 
+import jakarta.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 @Data
@@ -22,7 +21,6 @@ public class Image {
     private Long id;
 
 
-    @Type(type="uuid-char")
     private UUID name;
 
     private String fileName;

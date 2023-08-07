@@ -2,9 +2,9 @@ package az.edadi.back.validation.validatedBy;
 
 import az.edadi.back.constants.VoteTypes;
 import az.edadi.back.validation.PostType;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 public class VoteTypeValidator implements ConstraintValidator<PostType, String> {
 

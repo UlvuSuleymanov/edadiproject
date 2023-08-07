@@ -13,6 +13,7 @@ import az.edadi.back.repository.TextbookAdRepository;
 import az.edadi.back.repository.TextbookTypeRepository;
 import az.edadi.back.service.TextbookAdService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 

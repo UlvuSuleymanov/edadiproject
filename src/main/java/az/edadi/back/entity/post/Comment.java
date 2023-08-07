@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -4,12 +4,11 @@ import az.edadi.back.entity.university.Subject;
 import az.edadi.back.model.SummaryModel;
 import az.edadi.back.model.request.SubjectRequestModel;
 import az.edadi.back.service.SubjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/subject")

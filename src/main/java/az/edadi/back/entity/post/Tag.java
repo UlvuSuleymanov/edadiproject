@@ -2,11 +2,12 @@ package az.edadi.back.entity.post;
 
 import az.edadi.back.entity.Article;
 import lombok.AllArgsConstructor;
- import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +33,6 @@ public class Tag {
     private Set<Article> articles = new HashSet<>();
 
 
-
     public Tag(String tag) {
         this.tag = tag;
     }
@@ -52,7 +52,6 @@ public class Tag {
     public void setTag(String tag) {
         this.tag = tag;
     }
-
 
 
     public Set<Post> getPosts() {

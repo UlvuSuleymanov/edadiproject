@@ -6,7 +6,9 @@ import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.service.AuthenticationService;
+
 import freemarker.template.TemplateException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import javax.validation.Valid;
+
 import java.io.IOException;
 
 @RestController
@@ -41,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/recovery")
-    public ResponseEntity sendToken(@RequestBody PasswordRecoverRequest emailOrUsername) throws MessagingException, IOException, TemplateException {
+    public ResponseEntity sendToken(@RequestBody PasswordRecoverRequest emailOrUsername) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException {
         return ResponseEntity.ok(new PasswordRecoverRequest(authenticationService.sendTokenByEmail(emailOrUsername.getUsernameOrEmail())));
     }
 

@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.2</version>
+        <version>3.2.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.edadi</groupId>
-    <artifactId>back</artifactId>
+    <groupId>com.edauni</groupId>
+    <artifactId>fresh</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend</name>
+    <name>fresh</name>
     <description>Demo project for Spring Boot</description>
-
     <properties>
-        <java.version>11</java.version>
+        <java.version>20</java.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -25,35 +22,33 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.13.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
-<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <version>8.0.33</version>
         </dependency>
+
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -68,57 +63,82 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
-        </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.521</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>6.0.11</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>6.0.9</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.859</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.mifmif</groupId>
-            <artifactId>generex</artifactId>
-            <version>1.0.2</version>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.32</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.16.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.20</version>
+        </dependency>
+            
     </dependencies>
 
     <build>
@@ -128,7 +148,177 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>edadijar</finalName>
     </build>
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
+
+
+        <!--        <?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+        <!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
+        <!--<modelVersion>4.0.0</modelVersion>-->
+        <!--<parent>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--    <version>2.5.2</version>-->
+        <!--    <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+        <!--</parent>-->
+        <!--<groupId>com.edadi</groupId>-->
+        <!--<artifactId>back</artifactId>-->
+        <!--<version>0.0.1-SNAPSHOT</version>-->
+        <!--<name>backend</name>-->
+        <!--<description>Demo project for Spring Boot</description>-->
+
+        <!--<properties>-->
+        <!--    <java.version>11</java.version>-->
+        <!--</properties>-->
+
+        <!--<dependencies>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-security</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.jsoup</groupId>-->
+        <!--        <artifactId>jsoup</artifactId>-->
+        <!--        <version>1.13.1</version>-->
+        <!--    </dependency>-->
+
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--    </dependency>-->
+
+
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-data-mongodb</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    <dependency>-->
+        <!--        <groupId>mysql</groupId>-->
+        <!--        <artifactId>mysql-connector-java</artifactId>-->
+        <!--        <scope>runtime</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.projectlombok</groupId>-->
+        <!--        <artifactId>lombok</artifactId>-->
+        <!--        <optional>true</optional>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-validation</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-cache</artifactId>-->
+        <!--    </dependency>-->
+
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>net.coobird</groupId>-->
+        <!--        <artifactId>thumbnailator</artifactId>-->
+        <!--        <version>0.4.8</version>-->
+        <!--    </dependency>-->
+
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-websocket</artifactId>-->
+        <!--    </dependency>-->
+
+        <!--    <dependency>-->
+        <!--        <groupId>io.jsonwebtoken</groupId>-->
+        <!--        <artifactId>jjwt</artifactId>-->
+        <!--        <version>0.9.1</version>-->
+        <!--    </dependency>-->
+
+        <!--    <dependency>-->
+        <!--        <groupId>com.amazonaws</groupId>-->
+        <!--        <artifactId>aws-java-sdk-s3</artifactId>-->
+        <!--        <version>1.11.859</version>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.security</groupId>-->
+        <!--        <artifactId>spring-security-test</artifactId>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-freemarker</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-mail</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>commons-io</groupId>-->
+        <!--        <artifactId>commons-io</artifactId>-->
+        <!--        <version>2.8.0</version>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>junit</groupId>-->
+        <!--        <artifactId>junit</artifactId>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>com.github.mifmif</groupId>-->
+        <!--        <artifactId>generex</artifactId>-->
+        <!--        <version>1.0.2</version>-->
+        <!--    </dependency>-->
+
+        <!--</dependencies>-->
+
+        <!--<build>-->
+        <!--    <plugins>-->
+        <!--        <plugin>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--        </plugin>-->
+        <!--    </plugins>-->
+        <!--    <finalName>edadijar</finalName>-->
+        <!--</build>-->
+
+        <!--</project>-->

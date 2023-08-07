@@ -2,7 +2,8 @@ package az.edadi.back.entity.roommate;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,6 @@ public class Region {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "region")
-    private List<RoommateAd> roommateAds =new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "region")
+    private List<RoommateAd> roommateAds = new ArrayList<>();
 }

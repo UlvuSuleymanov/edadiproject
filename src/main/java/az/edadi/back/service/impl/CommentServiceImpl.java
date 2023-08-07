@@ -13,13 +13,13 @@ import az.edadi.back.repository.PostRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.CommentService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

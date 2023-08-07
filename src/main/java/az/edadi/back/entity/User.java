@@ -13,12 +13,12 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
 import az.edadi.back.entity.university.TextBookFile;
 import az.edadi.back.model.request.SignUpRequestModel;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.*;
 
 @Data

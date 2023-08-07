@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.Date;
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -31,15 +32,16 @@ public class Vote {
 
     private Date date;
 
-   public  Vote(User user, Comment comment){
-       this.user=user;
-       this.comment=comment;
-       this.date=new Date();
-   }
-    public  Vote(User user, Post post){
-        this.user=user;
-        this.post=post;
-        this.date=new Date();
+    public Vote(User user, Comment comment) {
+        this.user = user;
+        this.comment = comment;
+        this.date = new Date();
+    }
+
+    public Vote(User user, Post post) {
+        this.user = user;
+        this.post = post;
+        this.date = new Date();
     }
 
 

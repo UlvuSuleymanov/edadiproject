@@ -1,6 +1,6 @@
 package az.edadi.back.exception.model;
 
-import javassist.NotFoundException;
+import com.amazonaws.services.kms.model.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

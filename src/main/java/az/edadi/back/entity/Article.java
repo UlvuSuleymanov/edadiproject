@@ -2,11 +2,11 @@ package az.edadi.back.entity;
 
 import az.edadi.back.entity.post.Tag;
 import az.edadi.back.model.request.ArticleRequestModel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +26,7 @@ public class Article {
 
     private String description;
 
-    private int status=1;
+    private int status = 1;
 
     @Lob
     private String content;
@@ -46,15 +46,13 @@ public class Article {
     private Set<Tag> tags = new HashSet<>();
 
 
-  public Article(ArticleRequestModel articleRequestModel){
-      title=articleRequestModel.getTitle();
-      content=articleRequestModel.getBody();
-      date=new Date();
-      description=articleRequestModel.getDescription();
+    public Article(ArticleRequestModel articleRequestModel) {
+        title = articleRequestModel.getTitle();
+        content = articleRequestModel.getBody();
+        date = new Date();
+        description = articleRequestModel.getDescription();
 
-  }
-
-
+    }
 
 
 }

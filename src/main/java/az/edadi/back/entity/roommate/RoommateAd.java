@@ -5,7 +5,8 @@ import az.edadi.back.model.request.RoommateRequestModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -35,13 +36,13 @@ public class RoommateAd {
     private Region region;
 
 
-    public  RoommateAd(RoommateRequestModel roommateRequestModel){
-        title=roommateRequestModel.getTitle();
-        info=roommateRequestModel.getInfo();
-        amount=roommateRequestModel.getAmount();
-        date=new Date();
-        size=roommateRequestModel.getRoomSize();
-        phone=roommateRequestModel.getNumber();
+    public RoommateAd(RoommateRequestModel roommateRequestModel) {
+        title = roommateRequestModel.getTitle();
+        info = roommateRequestModel.getInfo();
+        amount = roommateRequestModel.getAmount();
+        date = new Date();
+        size = roommateRequestModel.getRoomSize();
+        phone = roommateRequestModel.getNumber();
     }
 
 }

@@ -4,6 +4,8 @@ package az.edadi.back.service.impl;
  import freemarker.template.Configuration;
  import freemarker.template.Template;
  import freemarker.template.TemplateException;
+ import jakarta.mail.internet.InternetAddress;
+ import jakarta.mail.internet.MimeMessage;
  import lombok.RequiredArgsConstructor;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.beans.factory.annotation.Value;
@@ -14,8 +16,6 @@ package az.edadi.back.service.impl;
  import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
  import javax.mail.MessagingException;
- import javax.mail.internet.InternetAddress;
- import javax.mail.internet.MimeMessage;
  import java.io.IOException;
  import java.nio.charset.StandardCharsets;
  import java.util.Map;
@@ -35,7 +35,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     @Async(value = "sendMailExecutor")
-    public void sendResetPasswordMail(String to, Map<String,String> mailMessage) throws MessagingException, IOException, TemplateException {
+    public void sendResetPasswordMail(String to, Map<String,String> mailMessage) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException {
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

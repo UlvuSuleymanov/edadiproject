@@ -3,33 +3,35 @@ package az.edadi.back.security.jwt;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.service.JwtService;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 public class JwtVerifierFilter extends OncePerRequestFilter {
 
 
     private final JwtBean jwtBean;
     private final JwtService jwtService;
 
+
     public JwtVerifierFilter(JwtBean jwtBean, JwtService jwtService) {
         this.jwtBean = jwtBean;
         this.jwtService = jwtService;
     }
+
 
 
     @Override
@@ -68,4 +70,6 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
     }
+
+
 }

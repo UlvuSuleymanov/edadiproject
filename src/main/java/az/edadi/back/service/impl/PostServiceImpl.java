@@ -15,15 +15,15 @@ import az.edadi.back.model.response.PostResponseModel;
 import az.edadi.back.repository.*;
 import az.edadi.back.service.PostService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

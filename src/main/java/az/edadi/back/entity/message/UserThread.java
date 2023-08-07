@@ -4,8 +4,8 @@ import az.edadi.back.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 
 @Data
 @Entity

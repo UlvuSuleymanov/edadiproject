@@ -4,15 +4,11 @@ import az.edadi.back.validation.NotDublicateEmail;
 import az.edadi.back.validation.NotDublicateUsername;
 import az.edadi.back.validation.Password;
 import az.edadi.back.validation.Username;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

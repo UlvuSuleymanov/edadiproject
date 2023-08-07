@@ -11,11 +11,11 @@ import az.edadi.back.repository.PostRepository;
 import az.edadi.back.repository.VoteRepository;
 import az.edadi.back.service.VoteService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.Optional;
 

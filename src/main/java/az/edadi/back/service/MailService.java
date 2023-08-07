@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface MailService {
 
-    void sendResetPasswordMail(String to, Map<String,String> body) throws MessagingException, IOException, TemplateException;
+    void sendResetPasswordMail(String to, Map<String,String> body) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException;
 
 }
