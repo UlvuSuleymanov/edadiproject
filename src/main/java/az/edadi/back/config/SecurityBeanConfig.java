@@ -9,8 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 @Configuration
-public class SecurityBeanConfig {
+public class SecurityBeanConfig  {
 
     @Bean
     PasswordEncoder passwordEncoder(){
@@ -36,6 +37,5 @@ public class SecurityBeanConfig {
             }
         };
     }
-
 
 }

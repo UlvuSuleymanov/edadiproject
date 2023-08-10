@@ -7,7 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,8 +20,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+@Slf4j
 public class JwtVerifierFilter extends OncePerRequestFilter {
-
 
     private final JwtBean jwtBean;
     private final JwtService jwtService;
@@ -32,21 +32,20 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
     }
 
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", httpServletRequest.getHeader("Origin"));
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        httpServletResponse.setHeader("Accept-Language", "*");
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-        String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
-        if (requestHeader != null && requestHeader != "") {
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, Accept-Language, remember-me");
 
+        String requestHeader = httpServletRequest.getHeader(AUTHORIZATION);
+
+        if (requestHeader != null && requestHeader != "") {
             String token = requestHeader.replace(jwtBean.getTitle(), "");
             Claims body = jwtService.getAccessTokenClaims(token);
             List<String> userAuthorityList = (List<String>) body.get("authorities");
@@ -64,12 +63,10 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
     }
-
 
 }

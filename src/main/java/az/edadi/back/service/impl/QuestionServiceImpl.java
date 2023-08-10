@@ -1,14 +1,14 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.entity.Topic;
+import az.edadi.back.entity.Question;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.TopicRequestModel;
-import az.edadi.back.model.response.TopicResponseModel;
-import az.edadi.back.repository.TopicRepository;
+import az.edadi.back.model.response.QuestionResponseModel;
+import az.edadi.back.repository.QuestionRepository;
 import az.edadi.back.repository.UserRepository;
-import az.edadi.back.service.TopicService;
+import az.edadi.back.service.QuestionService;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.SlugUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,58 +29,58 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TopicServiceImpl implements TopicService {
+public class QuestionServiceImpl implements QuestionService {
 
-    private final TopicRepository topicRepository;
+    private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
 
     @Override
     @CacheEvict(cacheNames = "topics", allEntries = true)
-    public TopicResponseModel addTopic(TopicRequestModel topicRequestModel) {
+    public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
 
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
-        Topic topic = new Topic();
-        topic.setTitle(topicRequestModel.getTitle());
-        topic.setDate(new Date());
-        topic.setUser(user);
-        Topic t = topicRepository.save(topic);
-        return new TopicResponseModel(t);
+        Question question = new Question();
+        question.setTitle(topicRequestModel.getTitle());
+        question.setDate(new Date());
+        question.setUser(user);
+        Question savedQuestion = questionRepository.save(question);
+        return new QuestionResponseModel(savedQuestion);
 
     }
 
     @Override
-    @Cacheable("topics")
-    public List<TopicResponseModel> getTopicList(int page) {
+    @Cacheable("questions")
+    public List<QuestionResponseModel> getQuestionsList(int page) {
 
         Pageable pageable = PageRequest.of(page, 40, Sort.by("date").descending());
 
-        return topicRepository.findAll(pageable)
+        return questionRepository.findAll(pageable)
                 .stream()
-                .map(topic -> new TopicResponseModel(topic))
+                .map(topic -> new QuestionResponseModel(topic))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TopicResponseModel getTopic(String slug) {
+    public QuestionResponseModel getQuestion(String slug) {
         Long id = SlugUtil.getId(slug);
-        Topic topic = topicRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("No Topic found with the id " + id)
+        Question topic = questionRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No Question found with the id " + id)
         );
-        return new TopicResponseModel(topic);
+        return new QuestionResponseModel(topic);
     }
 
     @Override
-    @CacheEvict(cacheNames = "topics", allEntries = true)
-    public void deleteTopic(Long id) {
-        Topic topic = topicRepository.findById(id).orElseThrow(
+    @CacheEvict(cacheNames = "questions", allEntries = true)
+    public void deleteQuestion(Long id) {
+        Question question = questionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException()
         );
-        if (!topic.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
+        if (!question.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
                 !AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
             throw new UserAuthorizationException();
 
-        topicRepository.delete(topic);
-        log.info("Topic with id {} was deleted", id);
+        questionRepository.delete(question);
+        log.info("Question with id {} was deleted", id);
 
     }
 }

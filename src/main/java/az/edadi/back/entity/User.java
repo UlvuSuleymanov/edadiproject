@@ -15,7 +15,6 @@ import az.edadi.back.entity.university.TextBookFile;
 import az.edadi.back.model.request.SignUpRequestModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +22,6 @@ import java.util.*;
 
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -68,7 +66,7 @@ public class User {
     private List<Vote> votes=new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Topic> topics =new ArrayList<>();
+    private List<Question> questions =new ArrayList<>();
     
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();

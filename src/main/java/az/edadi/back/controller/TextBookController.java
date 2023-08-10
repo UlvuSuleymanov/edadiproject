@@ -13,8 +13,6 @@ public class TextBookController {
     @PostMapping("/api/subject/{subjectId}/textbook")
     ResponseEntity addTextBook(@RequestBody MultipartFile file, @PathVariable Long subjectId)
     {
-        System.out.println(subjectId);
-        System.out.println(file.getName());
 
         return new ResponseEntity(HttpStatus.OK);
     }
