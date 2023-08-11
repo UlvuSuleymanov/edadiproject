@@ -1,6 +1,7 @@
 package az.edadi.back.constants;
 
     public enum UserAuthority {
+        ROOT("root"),
         USER_READ("user:read"),
         USER_UPDATE("user:update"),
         ADMIN_READ("admin:read"),

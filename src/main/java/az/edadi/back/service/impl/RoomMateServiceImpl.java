@@ -65,4 +65,11 @@ public class RoomMateServiceImpl implements RoomMateService {
                 .map(roommateAd -> new RoommateResponseModel(roommateAd))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<RoommateAd> getAllRoommateAds(int page) {
+        Pageable pageable = PageRequest.of(page, 20, Sort.by("date").descending());
+        List<RoommateAd> roommateAds = roomMateRepository.findAll(pageable).getContent();
+        return roommateAds;
+    }
 }
