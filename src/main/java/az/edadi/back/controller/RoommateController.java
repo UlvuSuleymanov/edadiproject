@@ -9,6 +9,7 @@ import az.edadi.back.service.RoomMateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,12 @@ public class RoommateController {
                                                @RequestParam(defaultValue = "1") int page){
 
          return roomMateService.getRoommates(regionId,page);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteRoommateAd(@PathVariable Long id){
+          roomMateService.deleteRoommateAd(id);
+          return   ResponseEntity.ok(HttpEntity.EMPTY);
     }
 
     @GetMapping(value = "/all")

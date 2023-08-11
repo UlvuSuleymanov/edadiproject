@@ -16,4 +16,6 @@ public interface RoomMateService {
 
     List<RoommateAd> getAllRoommateAds(int page);
 
+    void deleteRoommateAd(Long id);
+
 }

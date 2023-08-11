@@ -1,8 +1,10 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.RoommateRequestModel;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.repository.RegionRepository;
@@ -10,6 +12,7 @@ import az.edadi.back.repository.RoomMateRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,5 +74,17 @@ public class RoomMateServiceImpl implements RoomMateService {
         Pageable pageable = PageRequest.of(page, 20, Sort.by("date").descending());
         List<RoommateAd> roommateAds = roomMateRepository.findAll(pageable).getContent();
         return roommateAds;
+    }
+
+    @Override
+    public void deleteRoommateAd(Long id) {
+        Long currentId=AuthUtil.getCurrentUserId();
+        RoommateAd roommateAd = roomMateRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
+        if(roommateAd.getUser().getId().equals(currentId)||AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+          roomMateRepository.delete(roommateAd);
+        else
+            throw new UserAuthorizationException();
     }
 }
