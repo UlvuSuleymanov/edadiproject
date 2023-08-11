@@ -35,8 +35,9 @@ public class QuestionServiceImpl implements QuestionService {
     private final UserRepository userRepository;
 
     @Override
-    @CacheEvict(cacheNames = "topics", allEntries = true)
+    @CacheEvict(cacheNames = "questions", allEntries = true)
     public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
+        log.info("User {} try add new question", AuthUtil.getCurrentUsername());
 
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
         Question question = new Question();
@@ -44,6 +45,8 @@ public class QuestionServiceImpl implements QuestionService {
         question.setDate(new Date());
         question.setUser(user);
         Question savedQuestion = questionRepository.save(question);
+        log.info("User {} added new question", AuthUtil.getCurrentUsername());
+
         return new QuestionResponseModel(savedQuestion);
 
     }
@@ -72,14 +75,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @CacheEvict(cacheNames = "questions", allEntries = true)
     public void deleteQuestion(Long id) {
+        log.info("User {} try add new question", AuthUtil.getCurrentUsername());
         Question question = questionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException()
         );
-        if (!question.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
-                !AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
-            throw new UserAuthorizationException();
+        if (question.getUser().getId().equals(AuthUtil.getCurrentUserId())
+                ||  AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+            questionRepository.delete(question);
+        else
+        throw new UserAuthorizationException();
 
-        questionRepository.delete(question);
         log.info("Question with id {} was deleted", id);
 
     }
