@@ -2,6 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.entity.Login;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
@@ -10,6 +11,7 @@ import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.model.response.SignInResponseModel;
+import az.edadi.back.repository.LoginRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.security.listener.event.LoginEvent;
 import az.edadi.back.service.AuthenticationService;
@@ -42,6 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MailService mailService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final LoginAttemptService loginAttemptService;
+    private final LoginRepository loginRepository;
 
     @Override
     public void register(SignUpRequestModel signUpRequestModel) throws UsernameNotFoundException {
@@ -132,10 +135,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UsernameOrPasswordNotCorrectException();
         }
 
+        loginRepository.save(new Login(user));
+
         applicationEventPublisher.publishEvent(new LoginEvent(true));
         return new SignInResponseModel(user, jwtService.getTokenResponse(user));
 
 
     }
+
+
 
 }

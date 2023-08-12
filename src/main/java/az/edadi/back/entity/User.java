@@ -83,6 +83,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<TextbookAd> textbookAds = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<Login> logins = new ArrayList<>();
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "id"))
