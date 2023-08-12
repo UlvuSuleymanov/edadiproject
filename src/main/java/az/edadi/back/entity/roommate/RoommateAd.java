@@ -17,17 +17,13 @@ public class RoommateAd {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
     private String info;
 
     private Integer amount;
 
     private Date date;
 
-    private Long size;
-
-    private String phone;
+    private String contact;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
@@ -37,12 +33,10 @@ public class RoommateAd {
 
 
     public RoommateAd(RoommateRequestModel roommateRequestModel) {
-        title = roommateRequestModel.getTitle();
         info = roommateRequestModel.getInfo();
         amount = roommateRequestModel.getAmount();
         date = new Date();
-        size = roommateRequestModel.getRoomSize();
-        phone = roommateRequestModel.getNumber();
+        contact = roommateRequestModel.getContact();
     }
 
 }
