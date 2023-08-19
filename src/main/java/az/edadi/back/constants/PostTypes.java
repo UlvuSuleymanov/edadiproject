@@ -3,7 +3,7 @@ package az.edadi.back.constants;
 public enum  PostTypes {
     UNIVERSITY("university"),
     SPECIALITY("speciality"),
-    TOPIC("topic");
+    QUESTION("question");
 
     private final String type;
 
