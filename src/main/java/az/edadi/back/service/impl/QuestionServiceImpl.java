@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class QuestionServiceImpl implements QuestionService {
 
+    private int DEFAULT_PAGE_SIZE = 20;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
 
@@ -38,30 +39,43 @@ public class QuestionServiceImpl implements QuestionService {
     @CacheEvict(cacheNames = "questions", allEntries = true)
     public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
         log.info("User {} try add new question", AuthUtil.getCurrentUsername());
-
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
-        Question question = new Question();
-        question.setTitle(topicRequestModel.getTitle());
-        question.setDate(new Date());
-        question.setUser(user);
-        Question savedQuestion = questionRepository.save(question);
+        Question question =
+                Question.builder()
+                        .title(topicRequestModel.getTitle())
+                        .date(new Date())
+                        .user(user)
+                        .build();
+
+        Question savedQuestion = questionRepository.saveAndFlush(question);
         log.info("User {} added new question", AuthUtil.getCurrentUsername());
-
-        return new QuestionResponseModel(savedQuestion);
-
+        QuestionResponseModel questionResponseModel = new QuestionResponseModel(savedQuestion);
+        return questionResponseModel;
     }
 
     @Override
     @Cacheable("questions")
     public List<QuestionResponseModel> getQuestionsList(int page) {
 
-        Pageable pageable = PageRequest.of(page, 40, Sort.by("date").descending());
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());
 
         return questionRepository.findAll(pageable)
                 .stream()
                 .map(topic -> new QuestionResponseModel(topic))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<QuestionResponseModel> searchQuestion(String text, int page) {
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());
+       return questionRepository
+               .searchUniversityPostsLikeText(text,pageable)
+               .stream()
+               .map(
+                question -> new QuestionResponseModel(question))
+               .collect(Collectors.toList());
+    }
+
 
     @Override
     public QuestionResponseModel getQuestion(String slug) {

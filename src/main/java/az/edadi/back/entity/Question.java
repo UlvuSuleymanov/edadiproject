@@ -2,6 +2,7 @@ package az.edadi.back.entity;
 
 import az.edadi.back.entity.post.Post;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +14,9 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

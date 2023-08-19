@@ -1,14 +1,18 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.model.request.TopicRequestModel;
+import az.edadi.back.model.response.QuestionResponseModel;
 import az.edadi.back.service.QuestionService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,20 +29,28 @@ public class QuestionController {
     }
 
     @GetMapping
-    ResponseEntity getQuestions(@RequestParam(defaultValue = "0") int page) {
+    ResponseEntity getQuestionList(@RequestParam(defaultValue = "0") int page) {
         log.info("User {} fetch question", AuthUtil.getCurrentUsername());
-        return ResponseEntity.ok(questionService.getQuestionsList(page));
+        List<QuestionResponseModel> questionsList = questionService.getQuestionsList(page);
+        return ResponseEntity.ok(questionsList);
     }
+
 
     @GetMapping("/{slug}")
     ResponseEntity getQuestion(@PathVariable String slug) {
         return ResponseEntity.ok(questionService.getQuestion(slug));
     }
 
+    @GetMapping("/search")
+    ResponseEntity searchQuestion(@RequestParam @NotBlank String text, @RequestParam(defaultValue = "0") int page) {
+        List<QuestionResponseModel> questionResponseModels = questionService.searchQuestion(text, page);
+        return ResponseEntity.ok(questionResponseModels);
+    }
+
     @DeleteMapping("/{id}")
-    ResponseEntity getTopic(@PathVariable Long id) {
+    ResponseEntity deleteQuestion(@PathVariable Long id) {
         log.info("User {} trying to delete question {}", AuthUtil.getCurrentUsername(), id);
-         questionService.deleteQuestion(id);
+        questionService.deleteQuestion(id);
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }
 }

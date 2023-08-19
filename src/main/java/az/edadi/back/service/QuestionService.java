@@ -11,6 +11,8 @@ public interface QuestionService {
 
     List<QuestionResponseModel> getQuestionsList(int page);
 
+    List<QuestionResponseModel> searchQuestion(String text,int page);
+
     QuestionResponseModel getQuestion(String slug);
 
     void deleteQuestion(Long id);
