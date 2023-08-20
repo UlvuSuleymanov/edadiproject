@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.Question;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
@@ -9,6 +10,7 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.exception.model.BadParamsForPostListException;
 import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;
@@ -39,11 +41,13 @@ public class PostServiceImpl implements PostService {
     private final SpecialityRepository specialityRepository;
     private final QuestionRepository questionRepository;
     private final EntityManager entityManager;
+    private final  UserEventsRepository userEventsRepository;
 
     @Override
     public Post createPost(PostRequestModel postRequestModel) {
-
-        User user = userRepository.findById(AuthUtil.getCurrentUserId()).orElseThrow(() ->
+        Long id = AuthUtil.getCurrentUserId();
+        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_POST));
+        User user = userRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with id " + AuthUtil.getCurrentUserId().toString())
         );
 

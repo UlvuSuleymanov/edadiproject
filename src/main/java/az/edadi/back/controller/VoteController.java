@@ -1,9 +1,12 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.model.request.VoteRequestModel;
 import az.edadi.back.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class VoteController {
 
     private final VoteService voteService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("api/vote")
     ResponseEntity addVote(@RequestBody VoteRequestModel voteRequestModel) {
+        applicationEventPublisher.publishEvent(UserEvent.ADD_VOTE);
         voteService.addVote(voteRequestModel);
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }

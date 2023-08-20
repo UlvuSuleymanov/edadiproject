@@ -1,5 +1,6 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.model.request.TopicRequestModel;
 import az.edadi.back.model.response.QuestionResponseModel;
 import az.edadi.back.service.QuestionService;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,11 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
-
+    private final ApplicationEventPublisher applicationEventPublisher;
     @PostMapping
     ResponseEntity addQuestion(@RequestBody TopicRequestModel topicRequestModel) {
         log.info("User {} add question", AuthUtil.getCurrentUsername());
+        applicationEventPublisher.publishEvent(UserEvent.ADD_QUESTION);
         return ResponseEntity.ok(questionService.addQuestion(topicRequestModel));
     }
 

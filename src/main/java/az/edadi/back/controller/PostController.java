@@ -1,5 +1,6 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
@@ -9,6 +10,7 @@ import az.edadi.back.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -24,9 +26,11 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping(value = "/post")
     public ResponseEntity addPost(@RequestBody @Valid PostRequestModel postRequestModel) {
+        applicationEventPublisher.publishEvent(UserEvent.ADD_POST);
         Post post = postService.createPost(postRequestModel);
         return ResponseEntity.ok(new PostResponseModel(post, false));
     }

@@ -1,5 +1,6 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.model.request.CommentRequestModel;
 import az.edadi.back.model.request.GetCommentListRequestParamsModel;
 import az.edadi.back.model.response.CommentResponseModel;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -27,11 +29,13 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
 
     @PostMapping(value = "/api/comment")
     public ResponseEntity addComment(@RequestBody @Valid CommentRequestModel commentRequestModel) {
         log.info("User {} add comment to post with id {}", AuthUtil.getCurrentUsername(), commentRequestModel);
+        applicationEventPublisher.publishEvent(UserEvent.ADD_COMMENT);
         CommentResponseModel commentResponseModel = commentService.addComment(commentRequestModel);
         return ResponseEntity.ok(commentResponseModel);
     }

@@ -1,13 +1,16 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.exception.model.PostAlreadyLikedException;
+import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.VoteRequestModel;
 import az.edadi.back.repository.CommentRepository;
 import az.edadi.back.repository.PostRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.VoteRepository;
 import az.edadi.back.service.VoteService;
 import az.edadi.back.utility.AuthUtil;
@@ -26,13 +29,15 @@ public class VoteServiceImpl implements VoteService {
     private final VoteRepository voteRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public void addVote(VoteRequestModel voteRequestModel) {
-
+        Long id = AuthUtil.getCurrentUserId();
+        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_VOTE));
         Vote vote = new Vote();
         vote.setDate(new Date());
-        vote.setUser(new User(AuthUtil.getCurrentUserId()));
+        vote.setUser(new User(id));
         switch (voteRequestModel.getType()) {
             case "post":
                 vote = setPost(voteRequestModel.getId(), vote);

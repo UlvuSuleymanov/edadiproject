@@ -1,15 +1,18 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.CommentRequestModel;
 import az.edadi.back.model.request.GetCommentListRequestParamsModel;
 import az.edadi.back.model.response.CommentResponseModel;
 import az.edadi.back.repository.CommentRepository;
 import az.edadi.back.repository.PostRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.CommentService;
 import az.edadi.back.utility.AuthUtil;
@@ -31,10 +34,11 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-
+    private final UserEventsRepository userEventsRepository;
     @Override
     public CommentResponseModel addComment(CommentRequestModel commentRequestModel) {
         Long id = AuthUtil.getCurrentUserId();
+        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_COMMENT));
         Post post = postRepository.findById(commentRequestModel.getPostId()).orElseThrow(() -> new EntityNotFoundException(
                 "No post found with this id"
         ));

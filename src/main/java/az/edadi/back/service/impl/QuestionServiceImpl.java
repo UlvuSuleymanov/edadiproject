@@ -1,12 +1,15 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.Question;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.TopicRequestModel;
 import az.edadi.back.model.response.QuestionResponseModel;
 import az.edadi.back.repository.QuestionRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.QuestionService;
 import az.edadi.back.utility.AuthUtil;
@@ -17,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,12 +38,15 @@ public class QuestionServiceImpl implements QuestionService {
     private int DEFAULT_PAGE_SIZE = 20;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
-
-    @Override
+    private final UserEventsRepository userEventsRepository;
+     @Override
     @CacheEvict(cacheNames = "questions", allEntries = true)
     public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
         log.info("User {} try add new question", AuthUtil.getCurrentUsername());
-        User user = userRepository.getById(AuthUtil.getCurrentUserId());
+        Long id = AuthUtil.getCurrentUserId();
+        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_QUESTION));
+
+        User user = userRepository.getById(id);
         Question question =
                 Question.builder()
                         .title(topicRequestModel.getTitle())
