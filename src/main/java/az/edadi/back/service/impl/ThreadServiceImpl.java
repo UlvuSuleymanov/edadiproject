@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.UserThread;
@@ -8,10 +9,7 @@ import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.ThreadRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.model.response.ThreadResponseModel;
-import az.edadi.back.repository.MessageRepository;
-import az.edadi.back.repository.ThreadRepository;
-import az.edadi.back.repository.UserRepository;
-import az.edadi.back.repository.UserThreadRepository;
+import az.edadi.back.repository.*;
 import az.edadi.back.service.ThreadService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -30,9 +28,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
-@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ThreadServiceImpl implements ThreadService {
 
@@ -40,10 +38,11 @@ public class ThreadServiceImpl implements ThreadService {
     private final UserThreadRepository userThreadRepository;
     private final UserRepository userRepository;
     private final MessageRepository messageRepository;
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public ThreadResponseModel createThread(ThreadRequestModel threadRequestModel) {
-
+        userEventsRepository.check(UserEvent.ADD_THREAD);
         User targetUser = userRepository.findByUsername(threadRequestModel.getUsername()).orElseThrow(UserNotFoundException::new);
         if (targetUser.getId().equals(AuthUtil.getCurrentUserId()))
             throw new CreateDublicateThreadException();

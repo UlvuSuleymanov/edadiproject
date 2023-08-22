@@ -1,5 +1,6 @@
 package az.edadi.back.controller;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.model.SummaryModel;
 import az.edadi.back.model.request.TextbookAdRequestModel;
@@ -10,6 +11,7 @@ import az.edadi.back.service.TextbookAdService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ public class TextbookAdController {
 
     private final TextbookAdService textbookAdService;
     private final TextbookTypeRepository textbookTypeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @GetMapping
     ResponseEntity getTextbookAdList(@ModelAttribute @Valid
@@ -46,7 +49,7 @@ public class TextbookAdController {
 
     @PostMapping
     ResponseEntity addTextbookAd(@RequestBody @Valid TextbookAdRequestModel textbookAdRequestModel) {
-
+        applicationEventPublisher.publishEvent(UserEvent.ADD_TEXTBOOKAD);
         TextbookAd textbookAd = textbookAdService
                 .addTextbookAd(textbookAdRequestModel);
         TextBookAdResponseModel textBookAdResponseModel = new TextBookAdResponseModel(textbookAd);

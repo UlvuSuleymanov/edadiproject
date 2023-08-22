@@ -34,7 +34,7 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void addVote(VoteRequestModel voteRequestModel) {
         Long id = AuthUtil.getCurrentUserId();
-        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_VOTE));
+        userEventsRepository.check(UserEvent.ADD_VOTE);
         Vote vote = new Vote();
         vote.setDate(new Date());
         vote.setUser(new User(id));

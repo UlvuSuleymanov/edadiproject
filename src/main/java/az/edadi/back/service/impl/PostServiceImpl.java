@@ -41,12 +41,12 @@ public class PostServiceImpl implements PostService {
     private final SpecialityRepository specialityRepository;
     private final QuestionRepository questionRepository;
     private final EntityManager entityManager;
-    private final  UserEventsRepository userEventsRepository;
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public Post createPost(PostRequestModel postRequestModel) {
         Long id = AuthUtil.getCurrentUserId();
-        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_POST));
+        userEventsRepository.check(UserEvent.ADD_POST);
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with id " + AuthUtil.getCurrentUserId().toString())
         );

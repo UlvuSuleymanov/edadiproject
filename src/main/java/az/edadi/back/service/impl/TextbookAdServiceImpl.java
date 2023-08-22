@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.textbook.TextBookType;
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.entity.university.Speciality;
@@ -11,6 +12,7 @@ import az.edadi.back.model.response.TextBookAdResponseModel;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.TextbookAdRepository;
 import az.edadi.back.repository.TextbookTypeRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.service.TextbookAdService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,11 +35,12 @@ public class TextbookAdServiceImpl implements TextbookAdService {
     private final TextbookAdRepository textbookAdRepository;
     private final TextbookTypeRepository textbookTypeRepository;
     private final SpecialityRepository specialityRepository;
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public TextbookAd addTextbookAd(TextbookAdRequestModel textbookAdRequestModel) {
+        userEventsRepository.check(UserEvent.ADD_TEXTBOOKAD);
         TextbookAd textbookAd = TextbookAd.from(textbookAdRequestModel);
-
         TextBookType textBookType = textbookTypeRepository
                 .findById(textbookAdRequestModel
                         .getType()).
@@ -69,7 +72,7 @@ public class TextbookAdServiceImpl implements TextbookAdService {
                 .getTextbooks(textbookAdRequestParamsModel.getType(),
                         textbookAdRequestParamsModel.getSpecialityId(),
                         pageable
-            );
+                );
 
         return textbookAdList.stream()
                 .map(textbookAd -> new TextBookAdResponseModel(textbookAd))

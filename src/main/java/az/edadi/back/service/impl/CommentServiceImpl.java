@@ -35,10 +35,11 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserEventsRepository userEventsRepository;
+
     @Override
     public CommentResponseModel addComment(CommentRequestModel commentRequestModel) {
         Long id = AuthUtil.getCurrentUserId();
-        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_COMMENT));
+        userEventsRepository.check(UserEvent.ADD_COMMENT);
         Post post = postRepository.findById(commentRequestModel.getPostId()).orElseThrow(() -> new EntityNotFoundException(
                 "No post found with this id"
         ));

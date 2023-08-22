@@ -2,8 +2,8 @@ package az.edadi.back.repository.impl;
 
 import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.exception.model.UserEventLimitException;
-import az.edadi.back.model.UserEventModel;
 import az.edadi.back.repository.UserEventsRepository;
+import az.edadi.back.utility.AuthUtil;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -15,26 +15,24 @@ public class InMemoryUserEventRepository implements UserEventsRepository {
     Map<Long, List<UserEvent>> events = new HashMap<>();
 
     @Override
-    public UserEventModel saveEvent(UserEventModel userEventModel) {
-
-        if (!events.containsKey(userEventModel.getUserId())) {
-            events.put(userEventModel.getUserId(),new ArrayList<>());
-        }
-        events.get(userEventModel.getUserId()).add(userEventModel.getUserEvent());
-        return userEventModel;
-    }
+    public void saveEvent(UserEvent userEvent) {
+        Long id = AuthUtil.getCurrentUserId();
+        List<UserEvent> userEventList = Optional.ofNullable(events.get(id))
+                .orElse(new ArrayList<>());
+        userEventList.add(userEvent);
+        events.put(id, userEventList);
+     }
 
     @Override
-    public void check(UserEventModel userEventModel) {
-        if (!events.containsKey(userEventModel.getUserId()))
-            return;
-        UserEvent currentEvent = userEventModel.getUserEvent();
-        List<UserEvent> currentEventList = events.get(userEventModel.getUserId()).stream()
-                .filter(event -> event.equals(currentEvent))
+    public void check(final UserEvent userEvent) {
+        Long id = AuthUtil.getCurrentUserId();
+        List<UserEvent> userEventList = Optional.ofNullable(events.get(id))
+                .orElse(new ArrayList<>()).stream()
+                .filter(event -> event.equals(userEvent))
                 .collect(Collectors.toList());
 
-        if (currentEventList.size() > currentEvent.getLimit())
-            throw new UserEventLimitException(userEventModel.getUserEvent());
+        if (userEventList.size() > userEvent.getLimit())
+            throw new UserEventLimitException(userEvent);
     }
 
     @Override

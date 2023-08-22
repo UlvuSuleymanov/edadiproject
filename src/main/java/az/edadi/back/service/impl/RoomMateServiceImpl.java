@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.RoommateAd;
@@ -9,10 +10,12 @@ import az.edadi.back.model.request.RoommateRequestModel;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.repository.RegionRepository;
 import az.edadi.back.repository.RoomMateRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,26 +28,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RoomMateServiceImpl implements RoomMateService {
+
     private final RoomMateRepository roomMateRepository;
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public RoomMateServiceImpl(RoomMateRepository roomMateRepository, RegionRepository regionRepository, UserRepository userRepository) {
-        this.roomMateRepository = roomMateRepository;
-        this.regionRepository = regionRepository;
-        this.userRepository = userRepository;
-    }
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public RoommateResponseModel addRoommate(RoommateRequestModel roommateRequestModel) {
 
         RoommateAd roommateAd = new RoommateAd(roommateRequestModel);
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
-
-        Optional<Region> region=regionRepository.findById(roommateRequestModel.getRegion());
-        if(region.isPresent())
+        userEventsRepository.check(UserEvent.ADD_ROOMMATE);
+        Optional<Region> region = regionRepository.findById(roommateRequestModel.getRegion());
+        if (region.isPresent())
             roommateAd.setRegion(region.get());
 
         roommateAd.setUser(user);
@@ -52,16 +51,16 @@ public class RoomMateServiceImpl implements RoomMateService {
     }
 
     @Override
-    public List<RoommateResponseModel> getRoommates(Long regionId,int page) {
+    public List<RoommateResponseModel> getRoommates(Long regionId, int page) {
 
         Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
-        List<RoommateAd> roommateAds=new ArrayList<>();
+        List<RoommateAd> roommateAds = new ArrayList<>();
 
-        
-        if(regionId.intValue()!=0)
-           roommateAds=roomMateRepository.getRoommatesByRegion(regionId,pageable);
-         else
-           roommateAds=roomMateRepository.findAll(pageable).getContent();
+
+        if (regionId.intValue() != 0)
+            roommateAds = roomMateRepository.getRoommatesByRegion(regionId, pageable);
+        else
+            roommateAds = roomMateRepository.findAll(pageable).getContent();
 
         return roommateAds
                 .stream()
@@ -78,12 +77,12 @@ public class RoomMateServiceImpl implements RoomMateService {
 
     @Override
     public void deleteRoommateAd(Long id) {
-        Long currentId=AuthUtil.getCurrentUserId();
+        Long currentId = AuthUtil.getCurrentUserId();
         RoommateAd roommateAd = roomMateRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException()
         );
-        if(roommateAd.getUser().getId().equals(currentId)||AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
-          roomMateRepository.delete(roommateAd);
+        if (roommateAd.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+            roomMateRepository.delete(roommateAd);
         else
             throw new UserAuthorizationException();
     }

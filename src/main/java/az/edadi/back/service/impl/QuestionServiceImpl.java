@@ -39,12 +39,13 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
-     @Override
+
+    @Override
     @CacheEvict(cacheNames = "questions", allEntries = true)
     public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
         log.info("User {} try add new question", AuthUtil.getCurrentUsername());
         Long id = AuthUtil.getCurrentUserId();
-        userEventsRepository.check(new UserEventModel(id, UserEvent.ADD_QUESTION));
+        userEventsRepository.check(UserEvent.ADD_QUESTION);
 
         User user = userRepository.getById(id);
         Question question =
@@ -75,12 +76,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<QuestionResponseModel> searchQuestion(String text, int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());
-       return questionRepository
-               .searchUniversityPostsLikeText(text,pageable)
-               .stream()
-               .map(
-                question -> new QuestionResponseModel(question))
-               .collect(Collectors.toList());
+        return questionRepository
+                .searchUniversityPostsLikeText(text, pageable)
+                .stream()
+                .map(
+                        question -> new QuestionResponseModel(question))
+                .collect(Collectors.toList());
     }
 
 
@@ -101,10 +102,10 @@ public class QuestionServiceImpl implements QuestionService {
                 () -> new EntityNotFoundException()
         );
         if (question.getUser().getId().equals(AuthUtil.getCurrentUserId())
-                ||  AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+                || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
             questionRepository.delete(question);
         else
-        throw new UserAuthorizationException();
+            throw new UserAuthorizationException();
 
         log.info("Question with id {} was deleted", id);
 

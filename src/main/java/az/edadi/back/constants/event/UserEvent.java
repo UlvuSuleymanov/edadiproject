@@ -7,7 +7,8 @@ public enum UserEvent {
     ADD_QUESTION("add-question",5),
     ADD_THREAD("add-thread",7),
     ADD_ROOMMATE("add-roommate",2),
-    ADD_TEXTBOOKAD("add-textbookad",10);
+    ADD_TEXTBOOKAD("add-textbookad",10),
+    ADD_ARTICLE("add-article",5);
 
     private final String event;
     private int limit;

@@ -1,11 +1,12 @@
 package az.edadi.back.repository;
 
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.model.UserEventModel;
 
 public interface UserEventsRepository {
-    UserEventModel saveEvent(UserEventModel userEventModel);
+    void saveEvent(UserEvent userEvent);
 
-    void check(UserEventModel userEventModel);
+    void check(UserEvent userEvent);
 
     void clearAll();
 }

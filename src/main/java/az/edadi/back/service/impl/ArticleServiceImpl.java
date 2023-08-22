@@ -1,6 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
+import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.Article;
 import az.edadi.back.entity.User;
 import az.edadi.back.model.request.ArticleRequestModel;
@@ -8,6 +9,7 @@ import az.edadi.back.model.response.ArticleResponseModel;
 import az.edadi.back.model.response.ArticleSummaryResponseModel;
 import az.edadi.back.model.response.SimpleImageResponse;
 import az.edadi.back.repository.ArticleRepository;
+import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ArticleService;
 import az.edadi.back.service.FileService;
@@ -41,9 +43,11 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final ImageService imageService;
     private final FileService fileService;
+    private final UserEventsRepository userEventsRepository;
 
     @Override
     public ArticleResponseModel addArticle(ArticleRequestModel articleRequestModel) throws IOException {
+        userEventsRepository.check(UserEvent.ADD_ARTICLE);
         Long userId = AuthUtil.getCurrentUserId();
         User user = new User();
         user.setId(userId);
@@ -73,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
         return
                 articles != null ?
                         articles.stream().map(
-                                article -> new ArticleSummaryResponseModel(article))
+                                        article -> new ArticleSummaryResponseModel(article))
                                 .collect(Collectors.toList())
 
                         : Collections.emptyList();
