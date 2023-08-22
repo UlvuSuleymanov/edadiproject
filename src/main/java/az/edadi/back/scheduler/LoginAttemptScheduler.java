@@ -12,7 +12,7 @@ public class LoginAttemptScheduler {
     private LoginAttemptService loginAttemptService;
 
     @Scheduled(fixedRate = 600000)
-    public void calistirGorev() {
+    public void clearLoginAttemps() {
         loginAttemptService.clearAll();
     }
 
