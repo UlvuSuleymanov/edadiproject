@@ -13,7 +13,7 @@
     <name>fresh</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>20</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
     <dependency>
