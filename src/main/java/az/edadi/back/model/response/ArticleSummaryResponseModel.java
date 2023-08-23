@@ -28,7 +28,7 @@ public class ArticleSummaryResponseModel {
         slug = article.getSlug();
         description = article.getDescription();
         author = new UserSummary(article.getUser());
-        imageUrl = AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + "/" + article.getCoverUrl();
+        imageUrl = AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + article.getCoverUrl();
         birthDay = DateUtil.getHowLongAgoString(article.getDate());
     }
 }

@@ -11,23 +11,9 @@ import java.io.IOException;
 
 
 public interface UserService {
-
-
     UserResponseModel getUserByUsername(String username);
-
-
     UserPrincipalModel createUserPrincipial(User user);
-
     ImageModel setImage(MultipartFile multipartFile) throws IOException;
-
-
     void setSpeciality(SetSpecialityRequestModel setSpecialityRequestModel);
-    //     String setPhoto(MultipartFile multipartFile ,String username);
-
-//      SignInResponseModel login (SignInRequestModel signInRequestModel);
-//      User userBuilder(SignUpRequestModel signUpRequestModel);
-//
-//      boolean checkPassword(String password);
-
 
 }

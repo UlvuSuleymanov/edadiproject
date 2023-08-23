@@ -26,7 +26,7 @@ public class S3ServiceImpl implements FileService {
 
     @Override
     public String saveFile(String keyName, File file, String folder) {
-        s3client.putObject(new PutObjectRequest(bucketName + folder, keyName, file));
+        s3client.putObject(new PutObjectRequest(bucketName,folder+keyName, file));
         return keyName;
     }
 

@@ -13,7 +13,7 @@
     <name>fresh</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>20</java.version>
     </properties>
     <dependencies>
     <dependency>
@@ -77,13 +77,15 @@
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
-    <dependency>
-        <groupId>com.amazonaws</groupId>
-        <artifactId>aws-java-sdk-s3</artifactId>
-        <version>1.12.521</version>
-    </dependency>
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.533</version>
+        </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-websocket</artifactId>
