@@ -10,7 +10,7 @@ spring:
     datasource:
     username: root
     password: Demo12345
-    driverClassName: mysql.cj.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     jpa:
       hibernate:
         ddlAuto: update

@@ -8,7 +8,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.edauni</groupId>
-    <artifactId>fresh</artifactId>
+    <artifactId>edauni</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>fresh</name>
     <description>Demo project for Spring Boot</description>
@@ -38,6 +38,7 @@
         <groupId>com.mysql</groupId>
         <artifactId>mysql-connector-j</artifactId>
         <version>8.1.0</version>
+        <scope></scope>
     </dependency>
 
     <dependency>
@@ -147,9 +148,26 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -160,6 +178,11 @@
             <groupId>com.github.mifmif</groupId>
             <artifactId>generex</artifactId>
             <version>1.0.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
 
