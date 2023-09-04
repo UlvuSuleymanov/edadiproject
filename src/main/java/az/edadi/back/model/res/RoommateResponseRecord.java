@@ -5,6 +5,9 @@ import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.DateUtil;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
+
 public record RoommateResponseRecord(
         Long id,
         String info,
@@ -13,7 +16,8 @@ public record RoommateResponseRecord(
         String regionId,
         String date,
         Integer amount,
-        String contact
+        String contact,
+        List<String> urls
 ) {
     public RoommateResponseRecord(RoommateAd roommateAd) {
         this(roommateAd.getId(),
@@ -23,7 +27,8 @@ public record RoommateResponseRecord(
         roommateAd.getRegion().getId().toString(),
         DateUtil.getHowLongAgoString(roommateAd.getDate()),
         roommateAd.getAmount(),
-        roommateAd.getContact()
+        roommateAd.getContact(),
+                Arrays.asList("")
         );
     }
 

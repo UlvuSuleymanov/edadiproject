@@ -22,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,13 +53,10 @@ public class RoomMateServiceImpl implements RoomMateService {
     public List<RoommateResponseModel> getRoommates(Long regionId, int page) {
 
         Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
-        List<RoommateAd> roommateAds = new ArrayList<>();
-
-
-        if (regionId.intValue() != 0)
-            roommateAds = roomMateRepository.getRoommatesByRegion(regionId, pageable);
-        else
-            roommateAds = roomMateRepository.findAll(pageable).getContent();
+        List<RoommateAd>  roommateAds = regionId.intValue() != 0 ?
+            roomMateRepository.getRoommatesByRegion(regionId, pageable)
+            :
+            roomMateRepository.findAll(pageable).getContent();
 
         return roommateAds
                 .stream()
