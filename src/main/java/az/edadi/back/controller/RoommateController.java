@@ -42,8 +42,15 @@ public class RoommateController {
         return roomMateService.getRoommates(regionId, page);
     }
 
-    @DeleteMapping("/{id}")
+
+    @GetMapping("/{id}")
     ResponseEntity deleteRoommateAd(@PathVariable Long id) {
+      RoommateResponseModel roommateResponseModel= roomMateService.getRoommate(id);
+        return ResponseEntity.ok(roommateResponseModel);
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity getRoommate(@PathVariable Long id) {
         roomMateService.deleteRoommateAd(id);
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }

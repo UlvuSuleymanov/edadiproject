@@ -53,10 +53,10 @@ public class RoomMateServiceImpl implements RoomMateService {
     public List<RoommateResponseModel> getRoommates(Long regionId, int page) {
 
         Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
-        List<RoommateAd>  roommateAds = regionId.intValue() != 0 ?
-            roomMateRepository.getRoommatesByRegion(regionId, pageable)
-            :
-            roomMateRepository.findAll(pageable).getContent();
+        List<RoommateAd> roommateAds = regionId.intValue() != 0 ?
+                roomMateRepository.getRoommatesByRegion(regionId, pageable)
+                :
+                roomMateRepository.findAll(pageable).getContent();
 
         return roommateAds
                 .stream()
@@ -69,6 +69,15 @@ public class RoomMateServiceImpl implements RoomMateService {
         Pageable pageable = PageRequest.of(page, 20, Sort.by("date").descending());
         List<RoommateAd> roommateAds = roomMateRepository.findAll(pageable).getContent();
         return roommateAds;
+    }
+
+    @Override
+    public RoommateResponseModel getRoommate(Long id) {
+        RoommateAd roommateAd = roomMateRepository
+                .findById(id).orElseThrow(
+                        () ->  new EntityNotFoundException("No roommate with this id")
+        );
+        return new RoommateResponseModel(roommateAd);
     }
 
     @Override
