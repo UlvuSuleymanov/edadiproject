@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface ImageService {
 
-    ImageModel saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException;
+    String saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException;
 
     File getSSizePhoto(File file) throws IOException;
 

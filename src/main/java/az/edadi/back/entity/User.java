@@ -1,7 +1,6 @@
 package az.edadi.back.entity;
 
 import az.edadi.back.constants.AppConstants;
-import az.edadi.back.constants.Provider;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
@@ -14,16 +13,16 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
 import az.edadi.back.entity.university.TextBookFile;
 import az.edadi.back.model.request.SignUpRequestModel;
+import az.edadi.back.model.response.OAuth2CustomUser;
+import az.edadi.back.utility.UserUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 @Data
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
@@ -41,7 +40,7 @@ public class User {
 
     private String password;
 
-    private String imageName;
+    private String picture;
 
     private Date profileBirthDay;
 
@@ -96,22 +95,36 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<UserAuthority> authorities = new HashSet<>();
 
-
-
-    public User(String username, String name, String email, String password) {
-        this.username = username;
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public User(){
+        this.profileBirthDay=new Date();
+        this.authorities.add(UserAuthority.USER_READ);
+        this.authorities.add(UserAuthority.USER_UPDATE);
     }
 
+//    public User(String username, String name, String email, String password) {
+//        this.username = username;
+//        this.name = name;
+//        this.email = email;
+//        this.password = password;
+//    }
+//
+
+
     public User(SignUpRequestModel signUpRequestModel){
+        this();
         username=signUpRequestModel.getUsername().toLowerCase();
         name=signUpRequestModel.getName();
         email=signUpRequestModel.getEmail().toLowerCase();
-        profileBirthDay = new Date();
-        imageName= AppConstants.USER_DEFAULT_PHOTO;
-        provider = Provider.NATIVE.getProvider();
+        picture= AppConstants.ROOT_IMAGE_URL+AppConstants.USER_IMAGE_FOLDER+AppConstants.USER_DEFAULT_PHOTO;
+        provider = "NATIVE";
+    }
+    public User(OAuth2CustomUser user){
+        this();
+        name=user.getName();
+        username= UserUtil.getRandomUsername();
+        email= user.getEmail();
+        provider = user.getProvider();
+        picture=user.getPicture();
     }
     public User(Long id){
         this.id=id;

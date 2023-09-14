@@ -4,6 +4,7 @@ import az.edadi.back.model.ImageModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +16,11 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("api/user/")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
+
     private final UserRepository userRepository;
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
-
 
     @GetMapping("{username}")
     ResponseEntity getUserDetails(@PathVariable String username) {
@@ -35,9 +31,8 @@ public class UserController {
     @PostMapping("{username}/image")
     public ResponseEntity setImage(@RequestParam("image") MultipartFile multipartFile,
                                    @PathVariable String username) throws IOException {
-
-        ImageModel responseModel = userService.setImage(multipartFile);
-        return ResponseEntity.ok(responseModel);
+        String url = userService.setImage(multipartFile);
+        return ResponseEntity.ok(new ImageModel(url));
     }
     @PostMapping("/speciality")
     public ResponseEntity setImage(@RequestBody SetSpecialityRequestModel speciality) {

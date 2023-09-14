@@ -13,12 +13,12 @@ public class UserSummary {
     private Long id;
     private String name;
     private String username;
-    private ImageModel image;
+    private String picture;
 
     public UserSummary(User user){
         id=user.getId();
         name=user.getName();
         username=user.getUsername();
-        image= new ImageModel(user.getImageName(), AppConstants.USER_IMAGE_FOLDER);
+        picture=user.getPicture();
     }
 }

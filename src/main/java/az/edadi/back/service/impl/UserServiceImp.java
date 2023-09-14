@@ -1,10 +1,8 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.model.UserNotFoundException;
-import az.edadi.back.model.ImageModel;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.model.response.UserResponseModel;
@@ -61,23 +59,23 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ImageModel setImage(MultipartFile multipartFile) throws IOException {
+    public String setImage(MultipartFile multipartFile) throws IOException {
 
         Long userId = AuthUtil.getCurrentUserId();
         User user = userRepository.getById(userId);
 
         String name = UUID.randomUUID().toString();
-        ImageModel imageModel = imageService.saveProfilePhoto(name, multipartFile);
+        String url = imageService.saveProfilePhoto(name, multipartFile);
 
-        String oldImageName = user.getImageName();
-        user.setImageName(name);
+//        String oldImageName = user.getImageName();
+        user.setPicture(url);
         userRepository.save(user);
 
-        if (!oldImageName.equals(AppConstants.USER_DEFAULT_PHOTO)) {
-            imageService.deleteUserOldImages(oldImageName);
-        }
+//        if (!oldImageName.equals(AppConstants.USER_DEFAULT_PHOTO)) {
+//            imageService.deleteUserOldImages(oldImageName);
+//        }
 
-        return imageModel;
+        return url;
 
     }
 

@@ -23,12 +23,10 @@ import java.io.IOException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImageServiceImpl implements ImageService {
 
-    private final UserRepository userRepository;
-    private final ImageRepository imageRepository;
     private final FileService fileService;
 
     @Override
-    public ImageModel saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException {
+    public String saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException {
         log.info("User upload profile image named {}", name);
 
         File orginalImage = convertMultiPartToFile(multipartFile);
@@ -41,7 +39,7 @@ public class ImageServiceImpl implements ImageService {
         orginalImage.delete();
         imageS.delete();
 
-        return new ImageModel(name, AppConstants.USER_IMAGE_FOLDER);
+        return AppConstants.ROOT_IMAGE_URL+AppConstants.USER_IMAGE_FOLDER+AppConstants.IMAGE_SIZE_S+name;
     }
 
 

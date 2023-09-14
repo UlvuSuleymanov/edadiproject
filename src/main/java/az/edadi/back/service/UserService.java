@@ -13,7 +13,7 @@ import java.io.IOException;
 public interface UserService {
     UserResponseModel getUserByUsername(String username);
     UserPrincipalModel createUserPrincipial(User user);
-    ImageModel setImage(MultipartFile multipartFile) throws IOException;
+    String setImage(MultipartFile multipartFile) throws IOException;
     void setSpeciality(SetSpecialityRequestModel setSpecialityRequestModel);
 
 }

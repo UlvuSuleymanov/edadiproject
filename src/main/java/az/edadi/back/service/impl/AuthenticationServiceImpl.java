@@ -1,14 +1,11 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
-import az.edadi.back.constants.Provider;
-import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.Login;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
-import az.edadi.back.model.UserSummary;
 import az.edadi.back.model.request.OAuth2LoginRequest;
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
@@ -35,7 +32,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -55,10 +51,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void register(SignUpRequestModel signUpRequestModel) throws UsernameNotFoundException {
         User user = new User(signUpRequestModel);
         user.setPassword(passwordEncoder.encode(signUpRequestModel.getPassword()));
-        user = userRepository.save(user);
-        user.getAuthorities().add(UserAuthority.USER_READ);
-        user.getAuthorities().add(UserAuthority.USER_UPDATE);
         userRepository.save(user);
+
     }
 
     @Override
@@ -117,20 +111,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isPresent())
             return new SignInResponseModel(user.get(), jwtService.getTokenResponse(user.get()));
 
-        User newUser = new User();
-        newUser.setEmail(oAuth2CustomUser.getEmail());
-        newUser.setName(oAuth2CustomUser.getName());
+        User newUser = new User(oAuth2CustomUser);
         newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString().substring(4, 20)));
-        newUser.setUsername(getSaltString());
-        newUser.setProfileBirthDay(new Date());
-        newUser.getAuthorities().add(UserAuthority.USER_READ);
-        newUser.getAuthorities().add(UserAuthority.USER_UPDATE);
-        newUser.setProvider(Provider.GOOGLE.getProvider());
         User saved = userRepository.saveAndFlush(newUser);
-
         return new SignInResponseModel(saved, jwtService.getTokenResponse(saved));
-
-
     }
 
     OAuth2CustomUser verifyToken(String token) {
@@ -144,18 +128,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return result.getBody();
     }
 
-    protected String getSaltString() {
-        String SALTCHARS = "abcdefghijklmnopqrstuvwxyz_1234567890";
-        StringBuilder salt = new StringBuilder("user");
-        Random rnd = new Random();
-        while (salt.length() < 14) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
 
-    }
 
     String getSecureEmail(String email) {
         char[] c = email.toCharArray();

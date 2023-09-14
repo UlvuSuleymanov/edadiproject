@@ -1,20 +1,12 @@
 package az.edadi.back.model;
 
-import az.edadi.back.constants.AppConstants;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ImageModel {
-    private String urlS;
     private String url;
-
-    public ImageModel(String imageName, String folder) {
-        String rootUrl = AppConstants.ROOT_IMAGE_URL+folder;
-        urlS = rootUrl + AppConstants.IMAGE_SIZE_S + imageName;
-        url = rootUrl + AppConstants.IMAGE_SIZE_L + imageName;
-    }
-
-
 }

@@ -7,4 +7,5 @@ public class OAuth2CustomUser {
     private String email;
     private String name;
     private String picture;
+    private String provider;
 }
