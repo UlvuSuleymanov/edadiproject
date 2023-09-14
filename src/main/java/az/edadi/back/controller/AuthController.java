@@ -1,10 +1,8 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.model.request.NewPasswordRequestModel;
-import az.edadi.back.model.request.PasswordRecoverRequest;
-import az.edadi.back.model.request.SignInRequestModel;
-import az.edadi.back.model.request.SignUpRequestModel;
+import az.edadi.back.model.request.*;
 import az.edadi.back.model.response.JwtTokenResponseModel;
+import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.service.AuthenticationService;
 
 import freemarker.template.TemplateException;
@@ -40,6 +38,12 @@ public class AuthController {
     public ResponseEntity addUser(@Valid @RequestBody final SignUpRequestModel signUpRequestModel) {
         authenticationService.register(signUpRequestModel);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/google")
+    public ResponseEntity addUser(@RequestBody OAuth2LoginRequest request) {
+        SignInResponseModel signInResponseModel = authenticationService.socialLogin(request);
+        return ResponseEntity.ok(signInResponseModel);
     }
 
     @PostMapping(value = "/recovery")

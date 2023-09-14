@@ -1,6 +1,7 @@
 package az.edadi.back.entity;
 
 import az.edadi.back.constants.AppConstants;
+import az.edadi.back.constants.Provider;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
@@ -43,6 +44,8 @@ public class User {
     private String imageName;
 
     private Date profileBirthDay;
+
+    private String provider;
 
     @ManyToOne
     private Speciality speciality;
@@ -108,6 +111,7 @@ public class User {
         email=signUpRequestModel.getEmail().toLowerCase();
         profileBirthDay = new Date();
         imageName= AppConstants.USER_DEFAULT_PHOTO;
+        provider = Provider.NATIVE.getProvider();
     }
     public User(Long id){
         this.id=id;

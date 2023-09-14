@@ -1,5 +1,6 @@
 package az.edadi.back.service;
 
+import az.edadi.back.model.request.OAuth2LoginRequest;
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.JwtTokenResponseModel;
@@ -20,5 +21,7 @@ public interface AuthenticationService {
     SignInResponseModel resetPassword(String token, String newPassword);
 
     JwtTokenResponseModel refreshToken(JwtTokenResponseModel tokens);
+
+    SignInResponseModel socialLogin(OAuth2LoginRequest oAuth2LoginRequest);
 
 }

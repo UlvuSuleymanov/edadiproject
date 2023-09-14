@@ -1,15 +1,19 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
+import az.edadi.back.constants.Provider;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.Login;
 import az.edadi.back.entity.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
+import az.edadi.back.model.UserSummary;
+import az.edadi.back.model.request.OAuth2LoginRequest;
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.JwtTokenResponseModel;
+import az.edadi.back.model.response.OAuth2CustomUser;
 import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.repository.LoginRepository;
 import az.edadi.back.repository.UserRepository;
@@ -23,15 +27,16 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.charset.Charset;
+import java.util.*;
 
 
 @Service
@@ -105,6 +110,53 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
+    @Override
+    public SignInResponseModel socialLogin(OAuth2LoginRequest oAuth2LoginRequest) {
+        OAuth2CustomUser oAuth2CustomUser = verifyToken(oAuth2LoginRequest.getToken());
+        Optional<User> user = userRepository.findByEmail(oAuth2CustomUser.getEmail());
+        if (user.isPresent())
+            return new SignInResponseModel(user.get(), jwtService.getTokenResponse(user.get()));
+
+        User newUser = new User();
+        newUser.setEmail(oAuth2CustomUser.getEmail());
+        newUser.setName(oAuth2CustomUser.getName());
+        newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString().substring(4, 20)));
+        newUser.setUsername(getSaltString());
+        newUser.setProfileBirthDay(new Date());
+        newUser.getAuthorities().add(UserAuthority.USER_READ);
+        newUser.getAuthorities().add(UserAuthority.USER_UPDATE);
+        newUser.setProvider(Provider.GOOGLE.getProvider());
+        User saved = userRepository.saveAndFlush(newUser);
+
+        return new SignInResponseModel(saved, jwtService.getTokenResponse(saved));
+
+
+    }
+
+    OAuth2CustomUser verifyToken(String token) {
+        RestTemplate restTemplate = new RestTemplate();
+        String uri = "https://oauth2.googleapis.com/tokeninfo?id_token=" + token;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        ResponseEntity<OAuth2CustomUser> result = restTemplate.exchange(uri, HttpMethod.GET, entity, OAuth2CustomUser.class);
+        return result.getBody();
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "abcdefghijklmnopqrstuvwxyz_1234567890";
+        StringBuilder salt = new StringBuilder("user");
+        Random rnd = new Random();
+        while (salt.length() < 14) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
+
     String getSecureEmail(String email) {
         char[] c = email.toCharArray();
         int length = c.length;
@@ -142,7 +194,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     }
-
 
 
 }
