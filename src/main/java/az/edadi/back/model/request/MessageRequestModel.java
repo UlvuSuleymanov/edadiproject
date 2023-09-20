@@ -13,8 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageRequestModel implements Serializable {
+
     @NotBlank
-    private String message;
+    private String content;
 
     @NotNull
     private Long threadId;

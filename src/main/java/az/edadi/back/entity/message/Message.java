@@ -3,6 +3,7 @@ package az.edadi.back.entity.message;
 import az.edadi.back.entity.User;
 import az.edadi.back.model.request.MessageRequestModel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
@@ -30,7 +32,7 @@ public class Message {
     private Thread thread;
 
     public Message(MessageRequestModel messageRequestModel) {
-        text = messageRequestModel.getMessage();
+        text = messageRequestModel.getContent();
         date = new Date();
     }
 

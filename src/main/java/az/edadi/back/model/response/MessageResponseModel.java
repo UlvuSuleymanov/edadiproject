@@ -4,17 +4,15 @@ import az.edadi.back.entity.message.Message;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.DateUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
+@Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class MessageResponseModel {
     private Long id;
     private String body;

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public class MessageServiceImpl implements MessageService {
 
         return false;
     }
-
+    @Async
     void sendNotifications(List<UserThread> threads, MessageResponseModel message) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         for (UserThread userThread : threads) {

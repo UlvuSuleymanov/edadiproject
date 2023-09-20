@@ -20,7 +20,7 @@ public class Thread {
 
     private Date date;
 
-    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "thread")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "thread")
     private List<UserThread> userThread=new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "thread")
