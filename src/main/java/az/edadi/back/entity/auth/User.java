@@ -52,6 +52,8 @@ public class User {
 
     private Date date;
 
+    private Date lastSeen;
+
     @ManyToOne
     private Speciality speciality;
 
