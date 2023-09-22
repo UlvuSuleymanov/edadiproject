@@ -4,11 +4,14 @@ import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.UserThread;
+import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.model.UserSummary;
 import az.edadi.back.model.request.MessageRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.repository.MessageRepository;
 import az.edadi.back.repository.UserThreadRepository;
 import az.edadi.back.service.ChatService;
+import az.edadi.back.utility.AuthUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -41,7 +44,7 @@ public class ChatServiceImpl implements ChatService {
                 () -> new EntityNotFoundException("Thread Not Found")
         );
 
-        notifyUsers(userThread.getThread(),messageRequestModel);
+        notifyUsers(currentUserID, userThread.getThread(), messageRequestModel);
         Message message = Message.builder()
                 .date(new Date())
                 .user(new User(currentUserID))
@@ -52,7 +55,12 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<MessageResponseModel> getMessages(int page) {
+    public List<MessageResponseModel> getThreadMessages(Long threadId, int page) {
+
+        // checking user is in thread
+        UserThread userThread = userThreadRepository
+                .findByUserIdAndThreadId(AuthUtil.getCurrentUserId(), threadId)
+                .orElseThrow(UserAuthorizationException::new);
 
         PageRequest pageRequest = PageRequest.of(
                 page,
@@ -60,23 +68,25 @@ public class ChatServiceImpl implements ChatService {
                 Sort.by("date")
         );
 
-        return messageRepository.findAll(pageRequest).get().map(
-                message -> new MessageResponseModel(message)
+        return messageRepository.findByThreadId(threadId, pageRequest).stream().map(
+                MessageResponseModel::new
         ).collect(Collectors.toList());
     }
 
     @Async
-    void notifyUsers(Thread thread, MessageRequestModel messageRequestModel){
+    void notifyUsers(Long currentUserId, Thread thread, MessageRequestModel messageRequestModel) {
 
-        thread.getUserThread().forEach((t) ->
+        thread.getUserThread().forEach((userThread) ->
                 {
                     try {
                         simpMessagingTemplate.convertAndSendToUser(
-                                String.valueOf(t.getUser().getId()),
+                                String.valueOf(userThread.getUser().getId()),
                                 "/message",
-                                 objectMapper.writeValueAsString(MessageResponseModel.builder()
+                                objectMapper.writeValueAsString(MessageResponseModel.builder()
                                         .body(messageRequestModel.getContent())
                                         .date(new Date().toString())
+                                        .incoming(!currentUserId.equals(userThread.getUser().getId()))
+                                        .author(new UserSummary(userThread.getUser()))
                                         .threadId(messageRequestModel.getThreadId())
                                         .build())
                         );

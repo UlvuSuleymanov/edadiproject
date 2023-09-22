@@ -6,7 +6,6 @@ import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.DateUtil;
 import lombok.*;
 
-import java.util.Date;
 
 @Data
 @Builder

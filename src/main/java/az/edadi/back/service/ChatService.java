@@ -10,6 +10,6 @@ public interface ChatService {
 
     void saveMessage(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException;
 
-    List<MessageResponseModel> getMessages(int page);
+    List<MessageResponseModel> getThreadMessages(Long threadId, int page);
 
 }

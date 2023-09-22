@@ -17,9 +17,7 @@ import java.util.Date;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ChatController {
 
-    @Autowired
     private final ChatService chatService;
-
 
     @MessageMapping("/send/message")
 //    @SendTo("/message")
