@@ -2,11 +2,10 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.exception.model.UserAuthorizationException;
-import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.CommentRequestModel;
 import az.edadi.back.model.request.GetCommentListRequestParamsModel;
 import az.edadi.back.model.response.CommentResponseModel;

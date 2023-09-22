@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.response.SpecialityResponseModel;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.SpecialityService;

@@ -1,6 +1,5 @@
-package az.edadi.back.entity;
+package az.edadi.back.entity.auth;
 
-import az.edadi.back.entity.message.Thread;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
-import az.edadi.back.entity.Login;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.Login;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;

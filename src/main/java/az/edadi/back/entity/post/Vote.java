@@ -1,6 +1,6 @@
 package az.edadi.back.entity.post;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;

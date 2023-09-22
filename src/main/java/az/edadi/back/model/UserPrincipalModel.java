@@ -1,6 +1,6 @@
 package az.edadi.back.model;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

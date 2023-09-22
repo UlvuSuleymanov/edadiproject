@@ -1,15 +1,13 @@
 package az.edadi.back.model.response;
 
 import az.edadi.back.constants.AppConstants;
-import az.edadi.back.entity.Article;
+import az.edadi.back.entity.app.Article;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
 
 @Data
 @Accessors(chain = true)

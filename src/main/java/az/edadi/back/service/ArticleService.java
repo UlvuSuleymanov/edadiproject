@@ -1,6 +1,6 @@
 package az.edadi.back.service;
 
-import az.edadi.back.entity.Article;
+import az.edadi.back.entity.app.Article;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
 import az.edadi.back.model.response.ArticleSummaryResponseModel;

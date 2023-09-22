@@ -2,7 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.RoommateAd;
 import az.edadi.back.exception.model.UserAuthorizationException;

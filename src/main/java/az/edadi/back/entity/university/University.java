@@ -1,6 +1,5 @@
 package az.edadi.back.entity.university;
 
-import az.edadi.back.entity.User;
 import az.edadi.back.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;

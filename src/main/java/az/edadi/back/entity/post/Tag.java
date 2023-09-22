@@ -1,6 +1,6 @@
 package az.edadi.back.entity.post;
 
-import az.edadi.back.entity.Article;
+import az.edadi.back.entity.app.Article;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;

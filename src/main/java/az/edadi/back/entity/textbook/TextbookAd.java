@@ -1,6 +1,6 @@
 package az.edadi.back.entity.textbook;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.model.request.TextbookAdRequestModel;
 import az.edadi.back.utility.AuthUtil;

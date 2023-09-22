@@ -2,8 +2,8 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.Article;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.app.Article;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.request.ArticleRequestModel;
 import az.edadi.back.model.response.ArticleResponseModel;
 import az.edadi.back.model.response.ArticleSummaryResponseModel;

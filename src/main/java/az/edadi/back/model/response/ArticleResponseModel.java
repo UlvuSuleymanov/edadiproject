@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.entity.Article;
+import az.edadi.back.entity.app.Article;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.DateUtil;
 import lombok.Data;

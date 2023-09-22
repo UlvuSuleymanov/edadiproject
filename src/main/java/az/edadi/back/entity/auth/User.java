@@ -1,7 +1,11 @@
-package az.edadi.back.entity;
+package az.edadi.back.entity.auth;
 
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.entity.app.Article;
+import az.edadi.back.entity.app.Image;
+import az.edadi.back.entity.app.Notification;
+import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.entity.post.Comment;
@@ -46,6 +50,8 @@ public class User {
 
     private String provider;
 
+    private Date date;
+
     @ManyToOne
     private Speciality speciality;
 
@@ -87,6 +93,9 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Login> logins = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<Notification> notifications = new ArrayList<>();
 
 
     @ElementCollection(fetch = FetchType.EAGER)

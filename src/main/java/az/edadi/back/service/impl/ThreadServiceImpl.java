@@ -1,7 +1,7 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.exception.model.CreateDublicateThreadException;

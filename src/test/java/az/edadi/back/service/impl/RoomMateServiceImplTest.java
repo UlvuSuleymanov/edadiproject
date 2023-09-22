@@ -4,7 +4,7 @@
 //import static org.junit.Assert.assertTrue;
 //import static org.mockito.Mockito.*;
 //
-//import az.edadi.back.entity.User;
+//import az.edadi.back.entity.auth.User;
 //import az.edadi.back.entity.roommate.Region;
 //import az.edadi.back.entity.roommate.RoommateAd;
 //import az.edadi.back.entity.university.Speciality;

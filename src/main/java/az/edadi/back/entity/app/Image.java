@@ -1,27 +1,30 @@
-package az.edadi.back.entity.message;
+package az.edadi.back.entity.app;
 
 import az.edadi.back.entity.auth.User;
-import az.edadi.back.model.request.MessageRequestModel;
+import az.edadi.back.entity.post.Post;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+ 
 import jakarta.persistence.*;
-
 import java.util.Date;
-
+import java.util.UUID;
 @Data
-@Entity
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+@NoArgsConstructor
+@Entity
+
+public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    @Column(name = "text", length = 500)
-    private String text;
+
+    private UUID name;
+
+    private String fileName;
 
     private Date date;
 
@@ -29,11 +32,6 @@ public class Message {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Thread thread;
-
-    public Message(MessageRequestModel messageRequestModel) {
-        text = messageRequestModel.getContent();
-        date = new Date();
-    }
+    private Post post;
 
 }

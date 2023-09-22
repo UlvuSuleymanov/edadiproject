@@ -1,8 +1,8 @@
 package az.edadi.back.entity.post;
 
-import az.edadi.back.entity.Image;
-import az.edadi.back.entity.Question;
- import az.edadi.back.entity.User;
+import az.edadi.back.entity.app.Image;
+import az.edadi.back.entity.app.Question;
+ import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.PostRequestModel;

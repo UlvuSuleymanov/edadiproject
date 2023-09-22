@@ -1,5 +1,6 @@
-package az.edadi.back.entity;
+package az.edadi.back.entity.app;
 
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

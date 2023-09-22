@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.message.Message;
 import az.edadi.back.entity.message.UserThread;
 import az.edadi.back.model.request.MessageRequestModel;

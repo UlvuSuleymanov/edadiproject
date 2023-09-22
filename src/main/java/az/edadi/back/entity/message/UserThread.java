@@ -1,6 +1,6 @@
 package az.edadi.back.entity.message;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

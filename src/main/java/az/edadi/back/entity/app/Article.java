@@ -1,5 +1,6 @@
-package az.edadi.back.entity;
+package az.edadi.back.entity.app;
 
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Tag;
 import az.edadi.back.model.request.ArticleRequestModel;
 import lombok.Data;

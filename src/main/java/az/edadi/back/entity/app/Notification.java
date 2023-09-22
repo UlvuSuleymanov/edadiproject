@@ -1,36 +1,34 @@
-package az.edadi.back.entity;
+package az.edadi.back.entity.app;
 
-import az.edadi.back.entity.post.Post;
+import az.edadi.back.constants.NotificationType;
+import az.edadi.back.entity.auth.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
- 
-import jakarta.persistence.*;
+
 import java.util.Date;
-import java.util.UUID;
+
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-
-public class Image {
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
-
-    private UUID name;
-
-    private String fileName;
+    private String text;
 
     private Date date;
+
+    private boolean seen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
 
 }

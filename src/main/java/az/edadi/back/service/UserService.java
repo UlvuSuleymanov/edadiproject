@@ -1,7 +1,6 @@
 package az.edadi.back.service;
 
-import az.edadi.back.entity.User;
-import az.edadi.back.model.ImageModel;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
 import az.edadi.back.model.response.UserResponseModel;

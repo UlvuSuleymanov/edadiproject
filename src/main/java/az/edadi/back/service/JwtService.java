@@ -1,6 +1,6 @@
 package az.edadi.back.service;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.response.JwtTokenResponseModel;
 import io.jsonwebtoken.Claims;
 

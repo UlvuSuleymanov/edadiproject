@@ -1,12 +1,11 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.exception.model.PostAlreadyLikedException;
-import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.VoteRequestModel;
 import az.edadi.back.repository.CommentRepository;
 import az.edadi.back.repository.PostRepository;

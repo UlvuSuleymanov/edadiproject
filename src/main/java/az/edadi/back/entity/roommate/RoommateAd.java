@@ -1,6 +1,6 @@
 package az.edadi.back.entity.roommate;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.request.RoommateRequestModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

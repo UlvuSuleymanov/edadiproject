@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.UserSummary;
 import lombok.Data;
 import lombok.NoArgsConstructor;

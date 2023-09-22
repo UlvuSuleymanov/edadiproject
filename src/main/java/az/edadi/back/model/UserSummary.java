@@ -1,7 +1,6 @@
 package az.edadi.back.model;
 
-import az.edadi.back.constants.AppConstants;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

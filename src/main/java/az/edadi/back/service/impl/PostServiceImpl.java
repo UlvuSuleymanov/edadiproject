@@ -2,15 +2,14 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.Question;
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.app.Question;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.exception.model.BadParamsForPostListException;
 import az.edadi.back.exception.model.UserAuthorizationException;
-import az.edadi.back.model.UserEventModel;
 import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;

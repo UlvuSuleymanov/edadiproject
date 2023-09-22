@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.entity.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.service.UserPrincipalService;
 import az.edadi.back.service.UserService;
 import az.edadi.back.model.UserPrincipalModel;
