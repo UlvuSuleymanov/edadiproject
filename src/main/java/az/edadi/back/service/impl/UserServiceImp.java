@@ -5,12 +5,16 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
+import az.edadi.back.model.response.JwtTokenResponseModel;
+import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.model.response.UserResponseModel;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ImageService;
+import az.edadi.back.service.JwtService;
 import az.edadi.back.service.UserService;
 import az.edadi.back.utility.AuthUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +35,7 @@ public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final ImageService imageService;
     private final SpecialityRepository specialityRepository;
+    private final JwtService jwtService;
 
     @Override
     public UserResponseModel getUserByUsername(String username) {
@@ -88,6 +93,14 @@ public class UserServiceImp implements UserService {
             user.get().setSpeciality(speciality.get());
             userRepository.save(user.get());
         }
+    }
+
+    @Override
+    public SignInResponseModel getCurrentUser() {
+        Long id = AuthUtil.getCurrentUserId();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException());
+        return new SignInResponseModel(user, jwtService.getTokenResponse(user));
     }
 
 

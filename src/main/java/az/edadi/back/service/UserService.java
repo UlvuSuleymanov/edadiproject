@@ -3,6 +3,7 @@ package az.edadi.back.service;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
+import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.model.response.UserResponseModel;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,5 +15,6 @@ public interface UserService {
     UserPrincipalModel createUserPrincipial(User user);
     String setImage(MultipartFile multipartFile) throws IOException;
     void setSpeciality(SetSpecialityRequestModel setSpecialityRequestModel);
+    SignInResponseModel getCurrentUser();
 
 }

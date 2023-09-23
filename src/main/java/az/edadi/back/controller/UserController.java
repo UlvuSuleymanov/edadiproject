@@ -2,8 +2,10 @@ package az.edadi.back.controller;
 
 import az.edadi.back.model.ImageModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
+import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.UserService;
+import az.edadi.back.utility.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,13 @@ import java.io.IOException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final UserService userService;
+     private final UserService userService;
+
+    @GetMapping("/me")
+    ResponseEntity getCurrentUser(){
+        SignInResponseModel signInResponseModel = userService.getCurrentUser();
+        return ResponseEntity.ok(signInResponseModel);
+    }
 
     @GetMapping("{username}")
     ResponseEntity getUserDetails(@PathVariable String username) {

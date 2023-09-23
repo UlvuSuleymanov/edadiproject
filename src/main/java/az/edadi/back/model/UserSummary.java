@@ -13,6 +13,7 @@ public class UserSummary {
     private String name;
     private String username;
     private String picture;
+    private String lang="az";
 
     public UserSummary(User user){
         id=user.getId();
