@@ -13,7 +13,7 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/message");
-        config.enableSimpleBroker("/notification");
+//        config.enableSimpleBroker("/notification");
         config.setApplicationDestinationPrefixes("/app");
 
     }
@@ -21,7 +21,7 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:4200").withSockJS();
+                .setAllowedOrigins("http://edauni.com").withSockJS();
 
 
     }
