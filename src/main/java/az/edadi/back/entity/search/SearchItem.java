@@ -6,10 +6,12 @@ import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "search")
+@ToString
 public class SearchItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

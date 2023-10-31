@@ -36,6 +36,7 @@ public class SecurityConfigurer {
 
     private final String[] WHITE_LIST = {
             "/api/auth/**",
+            "/api/search",
             "/ws/**",
             "/ws"
     };
