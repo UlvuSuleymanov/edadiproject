@@ -1,26 +1,26 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.entity.search.SearchItem;
-import az.edadi.back.repository.SearchRepository;
-import az.edadi.back.repository.UserRepository;
+import az.edadi.back.model.response.SearchRes;
+import az.edadi.back.service.ElasticsearchService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/search")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SearchController {
 
-    private final SearchRepository searchRepository;
-    private final UserRepository userRepository;
+    private final ElasticsearchService elasticsearchService;
 
-    @GetMapping("/{text}")
-    String searchItem(@RequestParam String text){
+    @GetMapping
+    List<SearchRes> searchItem(@RequestParam @NotBlank String text,
+                               @RequestParam(defaultValue = "1") int page) {
 
-        return searchRepository.findByTextContainingIgnoreCase(text).toString();
+        return elasticsearchService.search(page, text);
 
-     }
+    }
 }
