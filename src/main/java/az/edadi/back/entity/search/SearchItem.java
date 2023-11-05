@@ -22,7 +22,7 @@ public class SearchItem {
 
     private String text;
 
-    private Long entityId;
+    private String entityId;
 
     private EntityType type;
 
@@ -32,19 +32,19 @@ public class SearchItem {
     }
 
     public SearchItem(User user) {
-        entityId = user.getId();
+        entityId = user.getUsername();
         type = EntityType.USER;
         text = user.getName() + " " + user.getUsername();
     }
 
     public SearchItem(Speciality speciality) {
-        entityId = speciality.getId();
+        entityId = speciality.getId().toString();
         type = EntityType.SPECIALITY;
         text = speciality.getName() + " " + speciality.getSpecialityCode();
     }
 
     public SearchItem(Post post) {
-        entityId = post.getId();
+        entityId = post.getId().toString();
         type = EntityType.POST;
         text = post.getText();
     }
@@ -52,11 +52,11 @@ public class SearchItem {
     public SearchItem(Question question) {
         text = question.getTitle();
         type = EntityType.QUESTION;
-        entityId = question.getId();
+        entityId = question.getId().toString();
     }
 
     public SearchItem(University university) {
-        entityId = university.getId();
+        entityId = university.getId().toString();
         type = EntityType.UNIVERSITY;
         text = university.getAbbr()
                 + " " + university.getAbbrAz()

@@ -8,6 +8,6 @@ public interface ElasticsearchService {
 
     void refreshElasticRepository();
 
-    List<SearchRes> search(int page, String text);
+    List<SearchRes> search(String text, String type,int page);
 
 }

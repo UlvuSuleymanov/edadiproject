@@ -12,5 +12,7 @@ import java.util.List;
 @Repository
 public interface SearchRepository extends ElasticsearchRepository<SearchItem,Long> {
     List<SearchItem>findByTextContainingIgnoreCase(String text, Pageable pageable);
+    List<SearchItem>findByTypeAndTextContainingIgnoreCase(String type,String text, Pageable pageable);
+
 
 }

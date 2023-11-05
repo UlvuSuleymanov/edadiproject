@@ -18,9 +18,10 @@ public class SearchController {
 
     @GetMapping
     List<SearchRes> searchItem(@RequestParam @NotBlank String text,
+                               @RequestParam(defaultValue = "ALL") String type,
                                @RequestParam(defaultValue = "1") int page) {
 
-        return elasticsearchService.search(page, text);
+        return elasticsearchService.search(text, type,page);
 
     }
 }

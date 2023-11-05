@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchRes {
-    private Long id;
+    private String id;
     private String type;
     private String text;
 

@@ -1,5 +1,6 @@
 package az.edadi.back.service.impl;
 
+import az.edadi.back.constants.EntityType;
 import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.model.response.SearchRes;
 import az.edadi.back.repository.*;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +24,9 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     private final QuestionRepository questionRepository;
     private final PostRepository postRepository;
     private final SearchRepository searchRepository;
-
+    private final UniversityRepository universityRepository;
+    private final SpecialityRepository specialityRepository;
+    @Async
     @Override
     @PostConstruct
     public void refreshElasticRepository() {
@@ -39,15 +43,28 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
         searchRepository.saveAll(
                 postRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
         );
+
+        searchRepository.saveAll(
+                universityRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
+        );
+
+        searchRepository.saveAll(
+                specialityRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
+        );
+
     }
 
     @Override
-    public List<SearchRes> search(int page, String text) {
+    public List<SearchRes> search(String text, String type, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return searchRepository
-                .findByTextContainingIgnoreCase(text.trim(), pageable)
-                .stream().map(SearchRes::new)
+        List<SearchItem> items = type.equals("all") ?
+                searchRepository.findByTextContainingIgnoreCase(text.trim(), pageable)
+                :
+                searchRepository.findByTypeAndTextContainingIgnoreCase(type, text, pageable);
+
+        return items.stream().map(SearchRes::new)
                 .collect(Collectors.toList());
+
     }
 
 }

@@ -23,7 +23,6 @@ public class WsConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://edauni.com").withSockJS();
 
-
     }
 
 

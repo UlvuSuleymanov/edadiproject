@@ -14,8 +14,10 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.http.HttpHeaders;
 
@@ -24,12 +26,17 @@ import java.util.List;
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticConfig{
+    @Value("${spring.data.elasticsearch.host}")
+    private String HOST;
+    @Value("${spring.data.elasticsearch.port}")
+    private int PORT;
+
 
     @Bean
     public RestClient getRestClient() {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("", ""));
-        return RestClient.builder(new HttpHost("34.68.213.40", 9200))
+        return RestClient.builder(new HttpHost(HOST, PORT))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     httpClientBuilder.disableAuthCaching();
                     httpClientBuilder.setDefaultHeaders(List.of(
