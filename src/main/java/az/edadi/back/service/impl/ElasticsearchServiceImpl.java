@@ -26,23 +26,23 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     private final SearchRepository searchRepository;
     private final UniversityRepository universityRepository;
     private final SpecialityRepository specialityRepository;
-    @Async
+
     @Override
-    @PostConstruct
+//    @PostConstruct
     public void refreshElasticRepository() {
         searchRepository.deleteAll();
 
-        searchRepository.saveAll(
-                userRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
-        );
+//        searchRepository.saveAll(
+//                userRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
+//        );
 
         searchRepository.saveAll(
                 questionRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
         );
 
-        searchRepository.saveAll(
-                postRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
-        );
+//        searchRepository.saveAll(
+//                postRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
+//        );
 
         searchRepository.saveAll(
                 universityRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
