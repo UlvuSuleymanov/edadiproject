@@ -25,10 +25,10 @@ public class Message {
 
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Thread thread;
 
     public Message(MessageRequestModel messageRequestModel) {

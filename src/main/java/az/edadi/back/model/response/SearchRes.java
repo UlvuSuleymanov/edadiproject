@@ -20,9 +20,9 @@ public class SearchRes {
         type=item.getType().getType();
         text=item.getText();
         switch (item.getType()) {
-            case USER -> this.url = "/user/" + item.getId();
-            case UNIVERSITY -> this.url = "/university/" + item.getId();
-            case QUESTION -> this.url = "/question/" + item.getId();
+            case USER -> this.url = "/user/" + item.getEntityId();
+            case UNIVERSITY -> this.url = "/university/" + item.getEntityId();
+            case QUESTION -> this.url = "/question/" + item.getEntityId();
             default -> this.url = "/";
         }
     }

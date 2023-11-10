@@ -43,10 +43,10 @@ public class UnversityServiceImpl implements UniversityService {
 
 
     @Override
-    public UniResponseModel getUni(String abbrName) {
-        Optional<University> university = universityRepository.findByAbbr(abbrName);
-        if (!university.isPresent())
-            throw new EntityNotFoundException();
-        return new UniResponseModel(university.get());
+    public UniResponseModel getUni(Long id) {
+       University university = universityRepository.findById(id).orElseThrow(
+               EntityNotFoundException::new
+        );
+        return new UniResponseModel(university);
     }
 }

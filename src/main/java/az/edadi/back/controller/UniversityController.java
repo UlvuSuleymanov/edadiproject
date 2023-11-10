@@ -40,9 +40,9 @@ public class UniversityController {
 
     }
 
-    @GetMapping("/{abbrName}")
-    ResponseEntity getUni(@PathVariable String abbrName) {
-        UniResponseModel uniResponseModel = universityService.getUni(abbrName);
+    @GetMapping("/{id}")
+    ResponseEntity getUni(@PathVariable Long id) {
+        UniResponseModel uniResponseModel = universityService.getUni(id);
         return ResponseEntity.ok(uniResponseModel);
     }
 

@@ -29,7 +29,7 @@ public class Article {
 
     private int status = 1;
 
-    @Lob
+    @Column(length = 65555)
     private String content;
 
     private Date date;

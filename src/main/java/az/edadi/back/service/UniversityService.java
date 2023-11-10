@@ -12,6 +12,6 @@ public interface UniversityService {
 
     List<UniResponseModel> getUnisList();
 
-    UniResponseModel getUni(String abbrName);
+    UniResponseModel getUni(Long id);
 
 }

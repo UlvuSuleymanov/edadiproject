@@ -48,12 +48,12 @@ public class Post {
     private List<Image> image = new ArrayList<>();
 
 
-    @LazyCollection(LazyCollectionOption.EXTRA)
+//    @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Vote> votes = new ArrayList<>();
 
 
-    @LazyCollection(LazyCollectionOption.EXTRA)
+//    @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 

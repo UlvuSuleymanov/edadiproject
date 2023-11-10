@@ -28,7 +28,7 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     private final SpecialityRepository specialityRepository;
 
     @Override
-//    @PostConstruct
+    @PostConstruct
     public void refreshElasticRepository() {
         searchRepository.deleteAll();
 
