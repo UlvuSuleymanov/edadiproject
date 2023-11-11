@@ -1,6 +1,7 @@
 package az.edadi.back.model;
 
 import az.edadi.back.entity.auth.User;
+import az.edadi.back.utility.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,13 @@ public class UserSummary {
     private String username;
     private String picture;
     private String lang="az";
+    private String lastSeen;
 
     public UserSummary(User user){
         id=user.getId();
         name=user.getName();
         username=user.getUsername();
         picture=user.getPicture();
+        lastSeen= DateUtil.getHowLongAgoString(user.getLastSeen());
     }
 }
