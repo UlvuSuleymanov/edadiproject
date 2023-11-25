@@ -35,7 +35,7 @@ public class ChatServiceImpl implements ChatService {
     private final MessageRepository messageRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ObjectMapper objectMapper;
-    int MESSAGES_PAGE_SIZE = 10;
+    int MESSAGES_PAGE_SIZE = 15;
 
     @Async
     @Override
@@ -56,8 +56,6 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<MessageResponseModel> getThreadMessages(Long threadId, int page) {
-
-        // checking user is in thread
         UserThread userThread = userThreadRepository
                 .findByUserIdAndThreadId(AuthUtil.getCurrentUserId(), threadId)
                 .orElseThrow(UserAuthorizationException::new);
@@ -65,7 +63,7 @@ public class ChatServiceImpl implements ChatService {
         PageRequest pageRequest = PageRequest.of(
                 page,
                 MESSAGES_PAGE_SIZE,
-                Sort.by("date")
+                Sort.by("date").descending()
         );
 
         return messageRepository.findByThreadId(threadId, pageRequest).stream().map(

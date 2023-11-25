@@ -20,11 +20,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
-
 @Configuration
-@EnableElasticsearchRepositories
 public class ElasticConfig{
     @Value("${spring.data.elasticsearch.host}")
     private String HOST;

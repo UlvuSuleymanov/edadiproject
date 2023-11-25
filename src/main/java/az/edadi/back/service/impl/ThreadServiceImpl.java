@@ -10,6 +10,7 @@ import az.edadi.back.model.request.ThreadRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.model.response.ThreadResponseModel;
 import az.edadi.back.repository.*;
+import az.edadi.back.service.ChatService;
 import az.edadi.back.service.ThreadService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -37,8 +38,8 @@ public class ThreadServiceImpl implements ThreadService {
     private final ThreadRepository threadRepository;
     private final UserThreadRepository userThreadRepository;
     private final UserRepository userRepository;
-    private final MessageRepository messageRepository;
     private final UserEventsRepository userEventsRepository;
+    private final ChatService chatService;
 
     @Override
     public ThreadResponseModel createThread(ThreadRequestModel threadRequestModel) {
@@ -85,18 +86,9 @@ public class ThreadServiceImpl implements ThreadService {
         UserThread userThread = userThreadRepository.findByUserIdAndThreadId(currentUserId, id).orElseThrow(
                 () -> new AccessDeniedException("User cam't access this thread"));
         Thread thread = userThread.getThread();
-        return addMessagesToThread(new ThreadResponseModel(thread));
-
-
-    }
-
-    ThreadResponseModel addMessagesToThread(ThreadResponseModel threadResponseModel) {
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("date").descending());
-        List<MessageResponseModel> messageResponseModels = new ArrayList<>();
-        messageRepository.findByThreadId(threadResponseModel.getThreadId(), pageable).stream().forEach(
-                message -> messageResponseModels.add(new MessageResponseModel(message))
-        );
-        threadResponseModel.setMessages(messageResponseModels);
+        ThreadResponseModel threadResponseModel = new ThreadResponseModel(thread);
+        threadResponseModel.setMessages(chatService.getThreadMessages(thread.getId(),0));
         return threadResponseModel;
     }
+
 }

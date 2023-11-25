@@ -6,20 +6,20 @@ spring:
       maxFileSize: 25MB
       maxRequestSize: 35MB
   datasource:
-    url: jdbc:h2:mem:edauni
+    url:
     username: root
-    password: root
-    driverClassName: org.hibernate.dialect.MySQL8Dialect
+    password:
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      globally_quoted_identifiers: true
-      ddlAuto: create-drop
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      ddlAuto: update
     showSql: true
   mail:
     host: smtp.gmail.com
     port: 587
-    username: security@edauni.com
-    password: password
+    username: edaunicom2@gmail.com
+    password:
     properties:
       mail:
         smtp:
@@ -28,26 +28,26 @@ spring:
             enable: true
   data:
     elasticsearch:
-      host: 35.202.14.93
+      host: localhost
       port: 9200
-      cluster-name: 99d1e62fc3ce
+      cluster-name: 839c66f1568c
 jsa:
   aws:
-    accessKeyId: secretkey
-    secretAccessKey: accesskey
+    accessKeyId:
+    secretAccessKey:
   s3:
     bucket: edauni
     region: eu-north-1
 app:
   jwt:
     title: Bearer
-    secretKey: SEkkasdlaijhhsd
+    secretKey:
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
   constants:
-    defaultSecurityMail: security@edauni.com
+    defaultSecurityMail: edaunicom2@gmail.com
     appName: Edauni
-    domain: http://edauni.com
+    domain: https://edauni.com
     image-url: https://edauni.s3.eu-north-1.amazonaws.com/
     user:
       default-image: default

@@ -51,8 +51,6 @@ public class User implements Serializable {
 
     private String provider;
 
-    private Date date;
-
     private Date lastSeen;
 
     @ManyToOne
@@ -109,6 +107,7 @@ public class User implements Serializable {
 
     public User(){
         this.profileBirthDay=new Date();
+        this.lastSeen=new Date();
         this.authorities.add(UserAuthority.USER_READ);
         this.authorities.add(UserAuthority.USER_UPDATE);
     }
