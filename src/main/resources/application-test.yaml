@@ -6,49 +6,53 @@ spring:
       maxFileSize: 25MB
       maxRequestSize: 35MB
   datasource:
-    url: jdbc:mysql://localhost:3306/demo
-    datasource:
+    url: jdbc:h2:mem:testdb
     username: root
-    password: Demo12345
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jpa:
-      hibernate:
-        ddlAuto: update
-      showSql: true
+    password: root
+    driverClassName: org.h2.Driver
+  jpa:
+     showSql: true
   mail:
-    host: dummy.edadi.az
+    host: smtp.gmail.com
     port: 587
-    username: dummy@edadi.az
-    password: mypassword
+    username: edaunicom2@gmail.com
+    password:
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  data:
+    elasticsearch:
+      host: localhost
+      port: 9200
+#      cluster-name: 839c66f1568c
 jsa:
   aws:
-    accessKeyId: secretid
-    secretAccessKey: secretkey
+    accessKeyId: qweq
+    secretAccessKey: wqeq
   s3:
-    bucket: edadiaz/public
-    region: region
+    bucket: edauni
+    region: eu-north-1
 app:
   jwt:
     title: Bearer
-    secretKey: secretkey123
+    secretKey:
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
   constants:
-    domain: http://edadi.az
-    image-url: https://edadiaz.s3.eu-central-1.amazonaws.com/public
+    defaultSecurityMail: edaunicom2@gmail.com
+    appName: Edauni
+    domain: https://edauni.com
+    image-url: https://edauni.s3.eu-north-1.amazonaws.com/
     user:
       default-image: default
-      image-folder: /user
+      image-folder: public/user/
     blog:
       default-image: default
-      image-folder: /blog
+      image-folder: public/blog/
     file:
-      folder: /file
+      folder: public/file/
     image:
       size-s: thumbS

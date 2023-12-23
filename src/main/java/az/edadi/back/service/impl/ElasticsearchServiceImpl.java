@@ -8,6 +8,7 @@ import az.edadi.back.service.ElasticsearchService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Profile("dev")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ElasticsearchServiceImpl implements ElasticsearchService {
 
