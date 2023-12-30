@@ -31,6 +31,10 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     private Thread thread;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Room room;
+
+
     public Message(MessageRequestModel messageRequestModel) {
         text = messageRequestModel.getContent();
         date = new Date();

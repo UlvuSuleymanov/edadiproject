@@ -7,7 +7,7 @@ import az.edadi.back.entity.app.Image;
 import az.edadi.back.entity.app.Notification;
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.message.Message;
-import az.edadi.back.entity.message.UserThread;
+import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
@@ -87,7 +87,7 @@ public class User implements Serializable {
     private List<Message> messages =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<UserThread> userThreads = new ArrayList<>();
+    private List<Thread> userThreads = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<TextbookAd> textbookAds = new ArrayList<>();

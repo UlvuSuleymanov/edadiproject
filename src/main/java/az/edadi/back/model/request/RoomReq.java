@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ThreadRequestModel {
+public class RoomReq {
     private Long userId;
 }

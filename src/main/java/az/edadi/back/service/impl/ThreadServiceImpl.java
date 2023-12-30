@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class ThreadServiceImpl implements ThreadService {
 
     private final ThreadRepository threadRepository;
-    private final UserThreadRepository userThreadRepository;
+//    private final UserThreadRepository userThreadRepository;
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
     private final ChatService chatService;
@@ -44,6 +44,10 @@ public class ThreadServiceImpl implements ThreadService {
     @Override
     public ThreadResponseModel createThread(ThreadRequestModel threadRequestModel) {
         userEventsRepository.check(UserEvent.ADD_THREAD);
+        Thread thread = threadRepository.getCommonThreads(Arrays.asList(AuthUtil.getCurrentUserId(),threadRequestModel.getUserId()));
+
+
+
         User targetUser = userRepository.findByUsername(threadRequestModel.getUsername()).orElseThrow(UserNotFoundException::new);
         if (targetUser.getId().equals(AuthUtil.getCurrentUserId()))
             throw new CreateDublicateThreadException();

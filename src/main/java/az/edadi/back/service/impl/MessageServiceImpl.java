@@ -2,72 +2,125 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.message.Message;
-import az.edadi.back.entity.message.UserThread;
+import az.edadi.back.entity.message.Thread;
+import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.MessageRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.repository.MessageRepository;
-import az.edadi.back.repository.UserRepository;
-import az.edadi.back.repository.UserThreadRepository;
+import az.edadi.back.repository.RoomRepository;
+import az.edadi.back.repository.ThreadRepository;
 import az.edadi.back.service.MessageService;
-import az.edadi.back.utility.AuthUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MessageServiceImpl implements MessageService {
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
-    private final UserRepository userRepository;
-    private final UserThreadRepository userThreadRepository;
+    private final RoomRepository roomRepository;
+    private final ThreadRepository threadRepository;
     private final MessageRepository messageRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ObjectMapper objectMapper;
+    int MESSAGES_PAGE_SIZE = 15;
+
+//    @Async
+//    @Override
+//    public void saveMessage(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException {
+//        UserThread userThread = userThreadRepository.findByUserIdAndThreadId(currentUserID, messageRequestModel.getThreadId()).orElseThrow(
+//                () -> new EntityNotFoundException("Thread Not Found")
+//        );
+
+//    }
+
+//    @Override
+//    public List<MessageResponseModel> getRoomMessages(Long roomId, int page) {
+//        messageRepository
+//        Thread thread = threadRepository
+//                .findByUserIdAndThreadId(AuthUtil.getCurrentUserId(), threadId)
+//                .orElseThrow(UserAuthorizationException::new);
+//
+//        PageRequest pageRequest = PageRequest.of(
+//                page,
+//                MESSAGES_PAGE_SIZE,
+//                Sort.by("date").descending()
+//        );
+
+//        return messageRepository.findByThreadId(1L, ).stream().map(
+//                MessageResponseModel::new
+//        ).collect(Collectors.toList());
+//        return Collections.emptyList();
+//    }
+
 
     @Override
-    public MessageResponseModel sendChatMessage(MessageRequestModel messageRequestModel) throws JsonProcessingException {
-        List<UserThread> threadList = userThreadRepository.findByThreadId(messageRequestModel.getThreadId());
-        User currentUser = userRepository.getById(AuthUtil.getCurrentUserId());
-        if (threadList.size() < 2 || checkUserInThread(threadList))
-            throw new RuntimeException("User can't send message to this thread");
+    public MessageResponseModel sendMessageToRoom(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException {
 
-        Message message = new Message(messageRequestModel);
-        message.setUser(currentUser);
-        message.setThread(threadList.get(0).getThread());
-        Message sendedMessage = messageRepository.save(message);
-        MessageResponseModel messageResponseModel = new MessageResponseModel(sendedMessage);
-        sendNotifications(threadList, messageResponseModel);
-        return messageResponseModel;
-    }
+        Optional<Thread> thread = threadRepository.findById(messageRequestModel.getThreadId());
 
-    @Override
-    public List<MessageResponseModel> getMessages(Long rec) {
+        if (thread.isEmpty())
+            throw new EntityNotFoundException();
+
+        if (thread.get().getUser().getId().equals(currentUserID))
+            throw new UserAuthorizationException();
+
+//        Optional<Room> optionalRoom = threadRepository.getCommonThreads(Arrays.asList(currentUserID, messageRequestModel)).get().getRoom();
+//        notifyUsers(currentUserID, userThread.getThread(), messageRequestModel);
+        Message message = Message.builder()
+                .date(new Date())
+                .user(new User(currentUserID))
+                .text(messageRequestModel.getContent())
+                .thread(thread.get())
+                .room(thread.get().getRoom())
+                .build();
+        messageRepository.save(message);
         return null;
     }
 
-    boolean checkUserInThread(List<UserThread> threadList) {
-        Long currentUser = AuthUtil.getCurrentUserId();
-        for (UserThread userThread : threadList)
-            if (userThread.getId().equals(currentUser))
-                return true;
-
-        return false;
+    @Override
+    public List<MessageResponseModel> getMessages(Long roomId, int page) {
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                MESSAGES_PAGE_SIZE,
+                Sort.by("date").descending()
+        );
+        return messageRepository.findByRoomId(roomId,pageRequest)
+                .stream()
+                .map(MessageResponseModel::new)
+                .toList();
     }
-    @Async
-    void sendNotifications(List<UserThread> threads, MessageResponseModel message) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        for (UserThread userThread : threads) {
-            message.setIncoming(!userThread.getUser().getId().equals(message.getAuthor().getId()));
-            simpMessagingTemplate.convertAndSendToUser(
-                    String.valueOf(userThread.getUser().getId()),
-                    "/queue/messages",
-                    mapper.writeValueAsString(message));
-        }
 
-    }
+//    @Async
+//    void notifyUsers(Long currentUserId, Thread thread, MessageRequestModel messageRequestModel) {
+//
+//        thread.getUserThread().forEach((userThread) ->
+//                {
+//                    try {
+//                        simpMessagingTemplate.convertAndSendToUser(
+//                                String.valueOf(userThread.getUser().getId()),
+//                                "/message",
+//                                objectMapper.writeValueAsString(MessageResponseModel.builder()
+//                                        .body(messageRequestModel.getContent())
+//                                        .date(new Date().toString())
+//                                        .incoming(!currentUserId.equals(userThread.getUser().getId()))
+//                                        .author(new UserSummary(userThread.getUser()))
+//                                        .threadId(messageRequestModel.getThreadId())
+//                                        .build())
+//                        );
+//                    } catch (JsonProcessingException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//        );
+//    }
+
 }
