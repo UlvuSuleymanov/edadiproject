@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class MinEntryPoint {
+public class Mps {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
