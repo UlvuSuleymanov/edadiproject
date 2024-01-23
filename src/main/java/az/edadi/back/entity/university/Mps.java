@@ -14,8 +14,8 @@ public class Mps {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int year;
-    private float point;
+    private int entryYear;
+    private Double score;
 
     @ManyToOne
     private Speciality speciality;

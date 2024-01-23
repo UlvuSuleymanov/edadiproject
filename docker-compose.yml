@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgresql:16.1
+    container_name: edauni-cnt
+    environment:
+      POSTGRES_DB: edauni
+      POSTGRES_USER: ulvu
+      POSTGRES_PASSWORD: ulvu142536
+    volumes:
+      - /opt/pg/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

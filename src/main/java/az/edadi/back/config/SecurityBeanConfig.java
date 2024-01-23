@@ -1,5 +1,6 @@
 package az.edadi.back.config;
 
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.security.jwt.JwtBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +32,30 @@ public class SecurityBeanConfig  {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins(AppConstants.DOMAIN)
                         .allowedHeaders("*")
                         .allowedMethods("*");
             }
         };
+    }
+
+    public static void main(String[] args) {
+
+        String arr = "adsfghj";
+
+        char [] c = arr.toCharArray();
+        int i=0;
+        int j=c.length-1;
+        while(i<j){
+            char t=c[i];
+            c[i]=c[j];
+            c[j]=t;
+            i++;
+            j--;
+        }
+
+        for(int k=0;k<c.length;k++)
+            System.out.println(c[k]);
     }
 
 }

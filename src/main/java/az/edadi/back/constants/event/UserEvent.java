@@ -11,7 +11,7 @@ public enum UserEvent {
     ADD_ARTICLE("add-article",5);
 
     private final String event;
-    private int limit;
+    private final int limit;
 
     UserEvent(String event,int limit) {
         this.event = event;

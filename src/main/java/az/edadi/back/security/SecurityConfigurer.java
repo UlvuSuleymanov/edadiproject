@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -51,11 +52,17 @@ public class SecurityConfigurer {
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                          .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
+                         .requestMatchers("/h2-console/**").permitAll()
+                         .requestMatchers("/test").permitAll()
+                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+
+
                 .addFilterBefore(jwtVerifierFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

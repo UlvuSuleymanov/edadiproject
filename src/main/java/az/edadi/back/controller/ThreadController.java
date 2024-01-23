@@ -20,8 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ThreadController {
 
-    private final ThreadService threadService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+//    private final ThreadService threadService;
+//    private final ApplicationEventPublisher applicationEventPublisher;
 
 //    @PostMapping
 //    ResponseEntity createThread(@RequestBody ThreadRequestModel threadRequestModel) {

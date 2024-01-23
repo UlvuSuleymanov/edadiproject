@@ -41,7 +41,7 @@ public class Speciality implements Serializable {
     private List<Subject> subjects = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "speciality")
-    private List<MinEntryPoint> minEntryPoints = new ArrayList<>();
+    private List<Mps> mps = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "speciality")
     private List<TextbookAd> textbookAds = new ArrayList<>();

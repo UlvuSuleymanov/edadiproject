@@ -9,12 +9,12 @@ import java.util.Optional;
 @Repository
 public interface UniversityRepository extends JpaRepository<University,Long> {
 
-    boolean existsById(Long id);
+//    boolean existsById(Long id);
 
     Optional<University> findByAbbr(String abbr);
 
-    @Override
-    Optional<University> findById(Long id);
+//    @Override
+//    Optional<University> findById(Long id);
 
 //    Optional<University> findByName(String name);
 

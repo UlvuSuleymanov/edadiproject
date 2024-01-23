@@ -1,5 +1,6 @@
 package az.edadi.back.security.jwt;
 
+import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.service.JwtService;
 import io.jsonwebtoken.Claims;
@@ -36,7 +37,7 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "https://edauni.com");
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", AppConstants.DOMAIN);
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpServletResponse.setHeader("Accept-Language", "*");
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");

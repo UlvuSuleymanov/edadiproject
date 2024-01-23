@@ -6,12 +6,17 @@ spring:
       maxFileSize: 25MB
       maxRequestSize: 35MB
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: root
-    password: root
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
     driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
   jpa:
-     showSql: true
+    showSql: true
   mail:
     host: smtp.gmail.com
     port: 587
@@ -38,13 +43,13 @@ jsa:
 app:
   jwt:
     title: Bearer
-    secretKey:
+    secretKey: assaasdassadasdsad
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
   constants:
     defaultSecurityMail: edaunicom2@gmail.com
     appName: Edauni
-    domain: https://edauni.com
+    domain: http://localhost:4200
     image-url: https://edauni.s3.eu-north-1.amazonaws.com/
     user:
       default-image: default

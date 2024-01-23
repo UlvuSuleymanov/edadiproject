@@ -28,6 +28,7 @@ import java.util.*;
 
 @Data
 @Entity
+@Table(name = "users")
 @AllArgsConstructor
 public class User implements Serializable {
     @Id
