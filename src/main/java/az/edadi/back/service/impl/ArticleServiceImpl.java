@@ -12,7 +12,7 @@ import az.edadi.back.repository.ArticleRepository;
 import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ArticleService;
-import az.edadi.back.service.FileService;
+import az.edadi.back.service.FileIOService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.SlugUtil;
@@ -42,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final ImageService imageService;
-    private final FileService fileService;
+    private final FileIOService fileIOService;
     private final UserEventsRepository userEventsRepository;
 
     @Override
@@ -98,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
         File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileService.saveFile(name, file, AppConstants.BLOG_IMAGE_FOLDER);
+        fileIOService.saveFile(name, file, AppConstants.BLOG_IMAGE_FOLDER);
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
         simpleImageResponse.setUrl(AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + "/" + name);
