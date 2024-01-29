@@ -1,18 +1,18 @@
 package az.edadi.back.entity.post;
 
-import az.edadi.back.entity.app.Image;
+import az.edadi.back.entity.app.File;
 import az.edadi.back.entity.app.Question;
- import az.edadi.back.entity.auth.User;
+import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.PostRequestModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+
 
 import jakarta.persistence.*;
+
 import java.util.*;
 
 
@@ -45,15 +45,15 @@ public class Post {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Image> image = new ArrayList<>();
+    private List<File> image = new ArrayList<>();
 
 
-//    @LazyCollection(LazyCollectionOption.EXTRA)
+    //    @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Vote> votes = new ArrayList<>();
 
 
-//    @LazyCollection(LazyCollectionOption.EXTRA)
+    //    @LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 

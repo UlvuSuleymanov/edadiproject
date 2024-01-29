@@ -4,7 +4,7 @@ import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
-import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.RoommateRequestModel;
 import az.edadi.back.model.response.RoommateResponseModel;
@@ -38,56 +38,56 @@ public class RoomMateServiceImpl implements RoomMateService {
     @Override
     public RoommateResponseModel addRoommate(RoommateRequestModel roommateRequestModel) {
 
-        RoommateAd roommateAd = new RoommateAd(roommateRequestModel);
+        Roommate roommate = new Roommate(roommateRequestModel);
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
         userEventsRepository.check(UserEvent.ADD_ROOMMATE);
         Optional<Region> region = regionRepository.findById(roommateRequestModel.getRegion());
         if (region.isPresent())
-            roommateAd.setRegion(region.get());
+            roommate.setRegion(region.get());
 
-        roommateAd.setUser(user);
-        return new RoommateResponseModel(roomMateRepository.save(roommateAd));
+        roommate.setUser(user);
+        return new RoommateResponseModel(roomMateRepository.save(roommate));
     }
 
     @Override
     public List<RoommateResponseModel> getRoommates(Long regionId, int page) {
 
         Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
-        List<RoommateAd> roommateAds = regionId.intValue() != 0 ?
+        List<Roommate> roommates = regionId.intValue() != 0 ?
                 roomMateRepository.getRoommatesByRegion(regionId, pageable)
                 :
                 roomMateRepository.findAll(pageable).getContent();
 
-        return roommateAds
+        return roommates
                 .stream()
                 .map(roommateAd -> new RoommateResponseModel(roommateAd))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<RoommateAd> getAllRoommateAds(int page) {
+    public List<Roommate> getAllRoommateAds(int page) {
         Pageable pageable = PageRequest.of(page, 20, Sort.by("date").descending());
-        List<RoommateAd> roommateAds = roomMateRepository.findAll(pageable).getContent();
-        return roommateAds;
+        List<Roommate> roommates = roomMateRepository.findAll(pageable).getContent();
+        return roommates;
     }
 
     @Override
     public RoommateResponseModel getRoommate(Long id) {
-        RoommateAd roommateAd = roomMateRepository
+        Roommate roommate = roomMateRepository
                 .findById(id).orElseThrow(
                         () ->  new EntityNotFoundException("No roommate with this id")
         );
-        return new RoommateResponseModel(roommateAd);
+        return new RoommateResponseModel(roommate);
     }
 
     @Override
     public void deleteRoommateAd(Long id) {
         Long currentId = AuthUtil.getCurrentUserId();
-        RoommateAd roommateAd = roomMateRepository.findById(id).orElseThrow(
+        Roommate roommate = roomMateRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException()
         );
-        if (roommateAd.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
-            roomMateRepository.delete(roommateAd);
+        if (roommate.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
+            roomMateRepository.delete(roommate);
         else
             throw new UserAuthorizationException();
     }

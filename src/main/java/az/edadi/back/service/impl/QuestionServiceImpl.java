@@ -60,7 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Cacheable("questions")
+//    @Cacheable("questions")
     public List<QuestionResponseModel> getQuestionsList(int page) {
 
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());

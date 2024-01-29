@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @Component
@@ -21,17 +22,17 @@ public class WebSocketEventListener {
     private final SimpMessageSendingOperations messagingTemplate;
     private final UserRepository userRepository;
 
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-         Long currentUserId= Long.valueOf(event.getUser().getName());
-         User user = userRepository
-                 .findById(currentUserId)
-                 .orElseThrow(
-                         ()->new EntityNotFoundException("User not found")
-                 );
-         user.setLastSeen(new Date());
-         userRepository.save(user);
-
-    }
+//    @EventListener
+//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+//         Long currentUserId= Long.valueOf(Objects.requireNonNull(event.getUser()).getName());
+//         User user = userRepository
+//                 .findById(currentUserId)
+//                 .orElseThrow(
+//                         ()->new EntityNotFoundException("User not found")
+//                 );
+//         user.setLastSeen(new Date());
+//         userRepository.save(user);
+//
+//    }
 
 }

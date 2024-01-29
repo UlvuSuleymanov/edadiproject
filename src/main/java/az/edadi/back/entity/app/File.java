@@ -14,17 +14,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 
-public class Image {
+public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Long id;
-
-
-    private UUID name;
+    private UUID id;
 
     private String fileName;
+
+    private String type;
+
+    private String used;
 
     private Date date;
 

@@ -1,7 +1,11 @@
 package az.edadi.back.init;
 
+import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.auth.User;
+import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.university.University;
+import az.edadi.back.repository.QuestionRepository;
+import az.edadi.back.repository.RegionRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,14 +23,21 @@ import java.util.UUID;
 public class TestInit implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final QuestionRepository questionRepository;
     private final UniversityRepository universityRepository;
+
+    private final RegionRepository regionRepository;
+
 
     public TestInit(UniversityRepository universityRepository,
                     UserRepository userRepository,
-                    PasswordEncoder passwordEncoder) {
+                    PasswordEncoder passwordEncoder, QuestionRepository questionRepository, RegionRepository regionRepository) {
         this.universityRepository = universityRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.questionRepository = questionRepository;
+        this.regionRepository = regionRepository;
     }
 
 
@@ -34,7 +46,11 @@ public class TestInit implements CommandLineRunner {
         //add dummy universities
         addDummyUniversities();
         //add dummy users
-        addDummyUniversities();
+        addDummyUsers();
+
+        addQuestions();
+
+        addRegions();
     }
 
     void addDummyUniversities() {
@@ -68,6 +84,31 @@ public class TestInit implements CommandLineRunner {
             userList.add(user1);
         }
         userRepository.saveAllAndFlush(userList);
+    }
+
+    void addQuestions(){
+        List<Question> questions = new ArrayList<>();
+
+        for(int i=0;i<50; i++){
+            Question question = new Question();
+            question.setDate(new Date());
+            question.setUser(new User(1L));
+            question.setTitle(UUID.randomUUID().toString());
+            questions.add(question);
+        }
+        questionRepository.saveAll(questions);
+    }
+
+
+    void addRegions(){
+        List<Region> regions = new ArrayList<>();
+
+        for(int i=0;i<20; i++){
+             Region region = new Region();
+             region.setName(UUID.randomUUID().toString().substring(1,10));
+             regions.add(region);
+        }
+        regionRepository.saveAll(regions);
     }
 
 

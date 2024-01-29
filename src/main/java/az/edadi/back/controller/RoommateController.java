@@ -1,23 +1,19 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.request.RoommateRequestModel;
 import az.edadi.back.model.res.RoommateResponseRecord;
 import az.edadi.back.model.response.RoommateResponseModel;
-import az.edadi.back.repository.RoomMateRepository;
 import az.edadi.back.service.RoomMateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,8 +54,8 @@ public class RoommateController {
     @GetMapping(value = "/all")
     @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity getAllRoommateAds(@RequestParam(defaultValue = "0") int page) {
-        List<RoommateAd> roommateAds = roomMateService.getAllRoommateAds(page);
-        List<RoommateResponseRecord> roommateResponseRecords = roommateAds.stream().map(
+        List<Roommate> roommates = roomMateService.getAllRoommateAds(page);
+        List<RoommateResponseRecord> roommateResponseRecords = roommates.stream().map(
                 roommateAd -> new RoommateResponseRecord(roommateAd)
         ).collect(Collectors.toList());
         return ResponseEntity.ok(roommateResponseRecords);

@@ -1,7 +1,7 @@
 package az.edadi.back.model.response;
 
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.entity.roommate.RoommateAd;
+import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.DateUtil;
@@ -21,17 +21,17 @@ public class RoommateResponseModel {
     private boolean canDelete;
 
 
-    public RoommateResponseModel(RoommateAd roommateAd) {
-        id = roommateAd.getId();
-        info = roommateAd.getInfo();
-        author = new UserSummary(roommateAd.getUser());
-        region = roommateAd.getRegion().getName();
-        regionId = roommateAd.getRegion().getId().toString();
-        date = DateUtil.getHowLongAgoString(roommateAd.getDate());
-        amount = roommateAd.getAmount();
-        contact = roommateAd.getContact();
+    public RoommateResponseModel(Roommate roommate) {
+        id = roommate.getId();
+        info = roommate.getInfo();
+        author = new UserSummary(roommate.getUser());
+        region = roommate.getRegion().getName();
+        regionId = roommate.getRegion().getId().toString();
+        date = DateUtil.getHowLongAgoString(roommate.getDate());
+        amount = roommate.getAmount();
+        contact = roommate.getContact();
         canDelete = AuthUtil.userIsAuthenticated() && (
-                roommateAd.getUser().getId().equals(AuthUtil.getCurrentUserId()) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)
+                roommate.getUser().getId().equals(AuthUtil.getCurrentUserId()) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)
         );
     }
 

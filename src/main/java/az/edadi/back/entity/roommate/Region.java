@@ -17,5 +17,5 @@ public class Region {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "region")
-    private List<RoommateAd> roommateAds = new ArrayList<>();
+    private List<Roommate> roommates = new ArrayList<>();
 }
