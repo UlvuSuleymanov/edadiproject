@@ -6,7 +6,7 @@ import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.exception.model.UserAuthorizationException;
-import az.edadi.back.model.request.RoommateRequestModel;
+import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.repository.RegionRepository;
 import az.edadi.back.repository.RoomMateRepository;
@@ -36,12 +36,12 @@ public class RoomMateServiceImpl implements RoomMateService {
     private final UserEventsRepository userEventsRepository;
 
     @Override
-    public RoommateResponseModel addRoommate(RoommateRequestModel roommateRequestModel) {
+    public RoommateResponseModel addRoommate(RoommateReq roommateRequestModel) {
 
         Roommate roommate = new Roommate(roommateRequestModel);
         User user = userRepository.getById(AuthUtil.getCurrentUserId());
         userEventsRepository.check(UserEvent.ADD_ROOMMATE);
-        Optional<Region> region = regionRepository.findById(roommateRequestModel.getRegion());
+        Optional<Region> region = regionRepository.findById(roommateRequestModel.getRegionId());
         if (region.isPresent())
             roommate.setRegion(region.get());
 

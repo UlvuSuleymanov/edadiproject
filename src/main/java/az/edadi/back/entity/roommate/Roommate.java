@@ -2,7 +2,7 @@ package az.edadi.back.entity.roommate;
 
 import az.edadi.back.entity.app.File;
 import az.edadi.back.entity.auth.User;
-import az.edadi.back.model.request.RoommateRequestModel;
+import az.edadi.back.model.request.RoommateReq;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,11 +41,8 @@ public class Roommate {
 
 
 
-    public Roommate(RoommateRequestModel roommateRequestModel) {
-        info = roommateRequestModel.getInfo();
-        amount = roommateRequestModel.getAmount();
-        date = new Date();
-        contact = roommateRequestModel.getContact();
+    public Roommate(RoommateReq roommateRequestModel) {
+
     }
 
 }

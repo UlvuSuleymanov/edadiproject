@@ -1,8 +1,7 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.roommate.Roommate;
-import az.edadi.back.model.request.RoommateRequestModel;
+import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.res.RoommateResponseRecord;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.service.RoomMateService;
@@ -18,17 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "api/roommate")
+@RequestMapping(value = "api/v1/roommate")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RoommateController {
     private final RoomMateService roomMateService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping
-    ResponseEntity addRoomAd(@RequestBody RoommateRequestModel roommateRequestModel) {
-        applicationEventPublisher.publishEvent(UserEvent.ADD_ROOMMATE);
-        RoommateResponseModel roommateResponseModel = roomMateService.addRoommate(roommateRequestModel);
-        return ResponseEntity.ok(roommateResponseModel);
+    ResponseEntity addRoomAd(@RequestBody RoommateReq roommateRequest) {
+//        System.out.println(roommateRequestModel);
+////        applicationEventPublisher.publishEvent(UserEvent.ADD_ROOMMATE);
+////        RoommateResponseModel roommateResponseModel = roomMateService.addRoommate(roommateRequestModel);
+////        return ResponseEntity.ok(roommateResponseModel);
+        System.out.println(roommateRequest);
+        return ResponseEntity.ok(HttpEntity.EMPTY);
     }
 
     @GetMapping
@@ -41,7 +43,7 @@ public class RoommateController {
 
     @GetMapping("/{id}")
     ResponseEntity deleteRoommateAd(@PathVariable Long id) {
-      RoommateResponseModel roommateResponseModel= roomMateService.getRoommate(id);
+        RoommateResponseModel roommateResponseModel = roomMateService.getRoommate(id);
         return ResponseEntity.ok(roommateResponseModel);
     }
 
