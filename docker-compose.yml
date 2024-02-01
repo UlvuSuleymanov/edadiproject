@@ -12,7 +12,6 @@ services:
       - /opt/pg/data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-      -
   minio:
     container_name: flyjob_auth_dfs
     image: 'bitnami/minio:latest'
@@ -24,3 +23,7 @@ services:
       - MINIO_ROOT_PASSWORD=minio-root-password
     networks:
       - config-network
+
+networks:
+  config-network:
+    driver: bridge

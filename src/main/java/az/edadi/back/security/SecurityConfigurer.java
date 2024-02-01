@@ -50,7 +50,7 @@ public class SecurityConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                  .authorizeHttpRequests(auth -> auth
                         .requestMatchers(WHITE_LIST).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                          .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
                          .requestMatchers("/h2-console/**").permitAll()
                          .requestMatchers("/test").permitAll()

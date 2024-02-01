@@ -1,4 +1,4 @@
-package az.edadi.back.service.impl;
+package az.edadi.back.service.impl.fileIO;
 
 import az.edadi.back.service.FileIOService;
 import com.amazonaws.services.s3.AmazonS3;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 @Service
-@Profile("prod")
+@Profile("file-s3")
 public class S3IOServiceImpl implements FileIOService {
 
     @Autowired

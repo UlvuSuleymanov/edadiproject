@@ -1,4 +1,4 @@
-package az.edadi.back.service.impl;
+package az.edadi.back.service.impl.auth;
 
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.entity.auth.Login;

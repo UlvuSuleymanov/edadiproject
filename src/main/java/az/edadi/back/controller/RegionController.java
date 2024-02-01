@@ -1,8 +1,9 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.model.SummaryModel;
-import az.edadi.back.repository.RegionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import az.edadi.back.model.response.RegionRes;
+import az.edadi.back.service.RegionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,23 +13,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "api/region")
+@RequestMapping(value = "api/v1/region")
 public class RegionController {
 
-    private final RegionRepository regionRepository;
+    private final RegionService  regionService;
 
-    @Autowired
-    public RegionController(RegionRepository regionRepository) {
-        this.regionRepository = regionRepository;
+    public RegionController(RegionService regionService) {
+        this.regionService = regionService;
     }
 
     @GetMapping
-    ResponseEntity getRegions(){
-        List<SummaryModel> regions = regionRepository.findAll()
-                .stream()
-                .map(region -> new SummaryModel(region.getId(),region.getName()))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(regions);
+    ResponseEntity<List<RegionRes>> getRegions(){
+    return ResponseEntity.ok(regionService.getAllRegions());
     }
 }

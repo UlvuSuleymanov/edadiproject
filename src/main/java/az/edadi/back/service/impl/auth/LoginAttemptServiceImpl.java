@@ -1,4 +1,4 @@
-package az.edadi.back.service.impl;
+package az.edadi.back.service.impl.auth;
 
 import az.edadi.back.service.LoginAttemptService;
 import az.edadi.back.utility.AuthUtil;

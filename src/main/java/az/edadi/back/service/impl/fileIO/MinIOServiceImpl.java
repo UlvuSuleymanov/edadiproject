@@ -1,22 +1,22 @@
-package az.edadi.back.service.impl;
+package az.edadi.back.service.impl.fileIO;
 
 import az.edadi.back.service.FileIOService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-
 @Service
-@Profile("dev | test")
-public class FileIOServiceImpl implements FileIOService {
+@Profile("file-minio")
+
+public class MinIOServiceImpl implements FileIOService {
     @Override
     public String saveFile(String key, File file, String folder) {
-        return key;
+        return null;
     }
 
     @Override
     public String update(String key, File file) {
-        return key;
+        return null;
     }
 
     @Override
