@@ -2,50 +2,81 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
+import az.edadi.back.entity.app.File;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.exception.model.UserAuthorizationException;
+import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.response.RoommateResponseModel;
-import az.edadi.back.repository.RegionRepository;
-import az.edadi.back.repository.RoomMateRepository;
-import az.edadi.back.repository.UserEventsRepository;
-import az.edadi.back.repository.UserRepository;
+import az.edadi.back.repository.*;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RoomMateServiceImpl implements RoomMateService {
 
     private final RoomMateRepository roomMateRepository;
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
+    private final FileRepository fileRepository;
+
+    public RoomMateServiceImpl(RoomMateRepository roomMateRepository,
+                               RegionRepository regionRepository,
+                               UserRepository userRepository,
+                               UserEventsRepository userEventsRepository,
+                               FileRepository fileRepository) {
+        this.roomMateRepository = roomMateRepository;
+        this.regionRepository = regionRepository;
+        this.userRepository = userRepository;
+        this.userEventsRepository = userEventsRepository;
+        this.fileRepository = fileRepository;
+    }
+
 
     @Override
     public RoommateResponseModel addRoommate(RoommateReq roommateRequestModel) {
-
-        Roommate roommate = new Roommate(roommateRequestModel);
-        User user = userRepository.getById(AuthUtil.getCurrentUserId());
         userEventsRepository.check(UserEvent.ADD_ROOMMATE);
-        Optional<Region> region = regionRepository.findById(roommateRequestModel.getRegionId());
-        if (region.isPresent())
-            roommate.setRegion(region.get());
+        Roommate roommate = new Roommate(roommateRequestModel);
+
+        User user = userRepository.findById(AuthUtil.getCurrentUserId()).orElseThrow(
+                UserNotFoundException::new
+        );
+
+        Region region = regionRepository.findById(roommateRequestModel.getRegionId()).orElseThrow(
+                EntityNotFoundException::new
+        );
+        List<File> images = new ArrayList<>();
+
+        if (roommateRequestModel.getHaveHouse()) {
+            images = fileRepository.findByIds(roommateRequestModel.getUrls());
+            fileRepository.saveAll(images);
+            roommate.setFiles(images);
+        }
+
 
         roommate.setUser(user);
+        roommate.setRegion(region);
+        Roommate savedRoommate = roomMateRepository.saveAndFlush(roommate);
+
+
+        if (roommateRequestModel.getHaveHouse()) {
+            images = images.stream().map(file -> {file.setUsed(true); file.setRoommate(savedRoommate); return file;}).toList();
+            fileRepository.saveAll(images);
+            roommate.setFiles(images);
+        }
         return new RoommateResponseModel(roomMateRepository.save(roommate));
     }
 
@@ -75,8 +106,8 @@ public class RoomMateServiceImpl implements RoomMateService {
     public RoommateResponseModel getRoommate(Long id) {
         Roommate roommate = roomMateRepository
                 .findById(id).orElseThrow(
-                        () ->  new EntityNotFoundException("No roommate with this id")
-        );
+                        () -> new EntityNotFoundException("No roommate with this id")
+                );
         return new RoommateResponseModel(roommate);
     }
 

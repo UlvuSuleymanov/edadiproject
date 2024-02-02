@@ -16,6 +16,7 @@ public class InMemoryUserEventRepository implements UserEventsRepository {
 
     @Override
     public void saveEvent(UserEvent userEvent) {
+
         Long id = AuthUtil.getCurrentUserId();
         List<UserEvent> userEventList = Optional.ofNullable(events.get(id))
                 .orElse(new ArrayList<>());
@@ -25,12 +26,12 @@ public class InMemoryUserEventRepository implements UserEventsRepository {
 
     @Override
     public void check(final UserEvent userEvent) {
+        saveEvent(userEvent);
         Long id = AuthUtil.getCurrentUserId();
         List<UserEvent> userEventList = Optional.ofNullable(events.get(id))
                 .orElse(new ArrayList<>()).stream()
                 .filter(event -> event.equals(userEvent))
-                .collect(Collectors.toList());
-
+                .toList();
         if (userEventList.size() > userEvent.getLimit())
             throw new UserEventLimitException(userEvent);
     }

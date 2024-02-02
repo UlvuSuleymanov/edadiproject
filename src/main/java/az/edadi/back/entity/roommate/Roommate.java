@@ -1,5 +1,6 @@
 package az.edadi.back.entity.roommate;
 
+import az.edadi.back.entity.app.Article;
 import az.edadi.back.entity.app.File;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.request.RoommateReq;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,15 +22,20 @@ public class Roommate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String info;
-
-    private Integer amount;
-
-    private Date date;
 
     private Boolean haveHouse;
 
+    private String houseInfo;
+
+    private String authorGender;
+
     private String contact;
+
+    private String generalInfo;
+
+    private Date date;
+
+    private Date lastUpdate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
@@ -36,13 +43,24 @@ public class Roommate {
     @ManyToOne(fetch = FetchType.EAGER)
     private Region region;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<File> files;
+
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "roommate")
+    private List<File> files=new ArrayList<>();
 
 
+    @PreUpdate
+    public void preUpdate() {
+         this.date = new Date();
+    }
 
     public Roommate(RoommateReq roommateRequestModel) {
-
+        haveHouse=roommateRequestModel.getHaveHouse();
+        houseInfo=roommateRequestModel.getHouseInfo();
+        authorGender=roommateRequestModel.getSex();
+        contact=roommateRequestModel.getContact();
+        generalInfo= roommateRequestModel.getHouseInfo();
+        date=new Date();
+        lastUpdate=new Date();
     }
 
 }

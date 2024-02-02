@@ -5,10 +5,8 @@ import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.res.RoommateResponseRecord;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.service.RoomMateService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +16,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/v1/roommate")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RoommateController {
+
     private final RoomMateService roomMateService;
-    private final ApplicationEventPublisher applicationEventPublisher;
+
+    public RoommateController(RoomMateService roomMateService) {
+        this.roomMateService = roomMateService;
+    }
 
     @PostMapping
-    ResponseEntity addRoomAd(@RequestBody RoommateReq roommateRequest) {
-//        System.out.println(roommateRequestModel);
-////        applicationEventPublisher.publishEvent(UserEvent.ADD_ROOMMATE);
-////        RoommateResponseModel roommateResponseModel = roomMateService.addRoommate(roommateRequestModel);
-////        return ResponseEntity.ok(roommateResponseModel);
-        System.out.println(roommateRequest);
-        return ResponseEntity.ok(HttpEntity.EMPTY);
+    ResponseEntity<HttpStatus> addRoomAd(@RequestBody RoommateReq roommateRequest) {
+        System.out.println( roomMateService.addRoommate(roommateRequest));
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -53,13 +51,13 @@ public class RoommateController {
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }
 
-    @GetMapping(value = "/all")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public ResponseEntity getAllRoommateAds(@RequestParam(defaultValue = "0") int page) {
-        List<Roommate> roommates = roomMateService.getAllRoommateAds(page);
-        List<RoommateResponseRecord> roommateResponseRecords = roommates.stream().map(
-                roommateAd -> new RoommateResponseRecord(roommateAd)
-        ).collect(Collectors.toList());
-        return ResponseEntity.ok(roommateResponseRecords);
-    }
+//    @GetMapping(value = "/all")
+//    @PreAuthorize("hasAuthority('admin:read')")
+//    public ResponseEntity getAllRoommateAds(@RequestParam(defaultValue = "0") int page) {
+//        List<Roommate> roommates = roomMateService.getAllRoommateAds(page);
+//        List<RoommateResponseRecord> roommateResponseRecords = roommates.stream().map(
+//                roommateAd -> new RoommateResponseRecord(roommateAd)
+//        ).collect(Collectors.toList());
+//        return ResponseEntity.ok(roommateResponseRecords);
+//    }
 }

@@ -2,6 +2,7 @@ package az.edadi.back.entity.app;
 
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
+import az.edadi.back.entity.roommate.Roommate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,18 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 public class File {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid2")
     private UUID id;
 
     private String fileName;
 
     private String type;
 
-    private String used;
+    private Boolean used;
 
     private Date date;
 
@@ -33,5 +32,8 @@ public class File {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Roommate roommate;
 
 }

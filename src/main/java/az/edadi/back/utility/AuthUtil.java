@@ -1,6 +1,7 @@
 package az.edadi.back.utility;
 
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.exception.model.UserAuthorizationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,7 +49,7 @@ public class AuthUtil {
     public static Long getCurrentUserId() {
         if (userIsAuthenticated())
             return DataParser.objectToLong(SecurityContextHolder.getContext().getAuthentication().getCredentials());
-        return null;
+       throw new UserAuthorizationException();
     }
 
     public static String getCurrentUsername() {

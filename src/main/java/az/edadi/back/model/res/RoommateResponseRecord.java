@@ -18,17 +18,6 @@ public record RoommateResponseRecord(
         String contact,
         List<String> urls
 ) {
-    public RoommateResponseRecord(Roommate roommate) {
-        this(roommate.getId(),
-                roommate.getInfo(),
-        new UserSummary(roommate.getUser()),
-        roommate.getRegion().getName(),
-        roommate.getRegion().getId().toString(),
-        DateUtil.getHowLongAgoString(roommate.getDate()),
-        roommate.getAmount(),
-        roommate.getContact(),
-                Arrays.asList("")
-        );
-    }
+
 
 }

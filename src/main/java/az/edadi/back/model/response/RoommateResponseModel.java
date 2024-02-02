@@ -23,13 +23,12 @@ public class RoommateResponseModel {
 
     public RoommateResponseModel(Roommate roommate) {
         id = roommate.getId();
-        info = roommate.getInfo();
+        info = roommate.getGeneralInfo();
         author = new UserSummary(roommate.getUser());
         region = roommate.getRegion().getName();
         regionId = roommate.getRegion().getId().toString();
         date = DateUtil.getHowLongAgoString(roommate.getDate());
-        amount = roommate.getAmount();
-        contact = roommate.getContact();
+         contact = roommate.getContact();
         canDelete = AuthUtil.userIsAuthenticated() && (
                 roommate.getUser().getId().equals(AuthUtil.getCurrentUserId()) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)
         );
