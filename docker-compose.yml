@@ -13,7 +13,7 @@ services:
     ports:
       - 5432:5432
   minio:
-    container_name: flyjob_auth_dfs
+    container_name: edadi_dfs
     image: 'bitnami/minio:latest'
     ports:
       - '9000:9000'

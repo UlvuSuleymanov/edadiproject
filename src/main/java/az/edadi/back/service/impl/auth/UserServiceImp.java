@@ -14,6 +14,7 @@ import az.edadi.back.service.ImageService;
 import az.edadi.back.service.JwtService;
 import az.edadi.back.service.UserService;
 import az.edadi.back.utility.AuthUtil;
+import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,7 +67,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String setImage(MultipartFile multipartFile) throws IOException {
+    public String setImage(MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         Long userId = AuthUtil.getCurrentUserId();
         User user = userRepository.getById(userId);

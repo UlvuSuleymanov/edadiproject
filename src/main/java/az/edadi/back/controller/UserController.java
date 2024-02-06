@@ -6,6 +6,7 @@ import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.UserService;
 import az.edadi.back.utility.AuthUtil;
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 
 @RestController
@@ -37,7 +40,7 @@ public class UserController {
 
     @PostMapping("{username}/image")
     public ResponseEntity setImage(@RequestParam("image") MultipartFile multipartFile,
-                                   @PathVariable String username) throws IOException {
+                                   @PathVariable String username) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         String url = userService.setImage(multipartFile);
         return ResponseEntity.ok(new ImageModel(url));
     }

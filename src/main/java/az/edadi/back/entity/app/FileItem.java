@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class File {
+public class FileItem {
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
@@ -24,6 +24,8 @@ public class File {
     private String type;
 
     private Boolean used;
+
+    private String folder;
 
     private Date date;
 

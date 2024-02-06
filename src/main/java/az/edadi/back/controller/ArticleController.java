@@ -7,6 +7,7 @@ import az.edadi.back.model.response.ArticleSummaryResponseModel;
 import az.edadi.back.model.response.SimpleImageResponse;
 import az.edadi.back.service.ArticleService;
 import az.edadi.back.utility.AuthUtil;
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -33,7 +36,7 @@ public class ArticleController {
     }
 
     @PostMapping("/image")
-    public SimpleImageResponse upload(@RequestBody MultipartFile upload) throws IOException {
+    public SimpleImageResponse upload(@RequestBody MultipartFile upload) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
 
         Long id = AuthUtil.getCurrentUserId();
         return articleService.addPhoto(upload);

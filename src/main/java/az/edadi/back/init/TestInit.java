@@ -55,7 +55,7 @@ public class TestInit implements CommandLineRunner {
 
     void addDummyUniversities() {
         List<University> universityList = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             University university = new University();
             university.setAbbr(UUID.randomUUID().toString().substring(5, 10));
             university.setNameAz(UUID.randomUUID().toString().substring(5, 25));
@@ -75,7 +75,7 @@ public class TestInit implements CommandLineRunner {
         user.setEmail("admin@gmail.com");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.saveAndFlush(user);
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i <3; i++) {
             User user1 = new User();
             user1.setUsername(UUID.randomUUID().toString().substring(5, 20));
             user1.setEmail(UUID.randomUUID().toString().substring(5, 20) + "@gmail.com");
@@ -89,7 +89,7 @@ public class TestInit implements CommandLineRunner {
     void addQuestions(){
         List<Question> questions = new ArrayList<>();
 
-        for(int i=0;i<50; i++){
+        for(int i=0;i<5; i++){
             Question question = new Question();
             question.setDate(new Date());
             question.setUser(new User(1L));
@@ -103,7 +103,7 @@ public class TestInit implements CommandLineRunner {
     void addRegions(){
         List<Region> regions = new ArrayList<>();
 
-        for(int i=0;i<20; i++){
+        for(int i=0;i<10; i++){
              Region region = new Region();
              region.setName(UUID.randomUUID().toString().substring(1,10));
              regions.add(region);

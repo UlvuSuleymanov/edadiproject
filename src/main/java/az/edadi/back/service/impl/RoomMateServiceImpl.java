@@ -2,7 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.app.File;
+import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.Roommate;
@@ -31,18 +31,18 @@ public class RoomMateServiceImpl implements RoomMateService {
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
-    private final FileRepository fileRepository;
+    private final FileItemRepository fileItemRepository;
 
     public RoomMateServiceImpl(RoomMateRepository roomMateRepository,
                                RegionRepository regionRepository,
                                UserRepository userRepository,
                                UserEventsRepository userEventsRepository,
-                               FileRepository fileRepository) {
+                               FileItemRepository fileItemRepository) {
         this.roomMateRepository = roomMateRepository;
         this.regionRepository = regionRepository;
         this.userRepository = userRepository;
         this.userEventsRepository = userEventsRepository;
-        this.fileRepository = fileRepository;
+        this.fileItemRepository = fileItemRepository;
     }
 
 
@@ -58,12 +58,12 @@ public class RoomMateServiceImpl implements RoomMateService {
         Region region = regionRepository.findById(roommateRequestModel.getRegionId()).orElseThrow(
                 EntityNotFoundException::new
         );
-        List<File> images = new ArrayList<>();
+        List<FileItem> images = new ArrayList<>();
 
         if (roommateRequestModel.getHaveHouse()) {
-            images = fileRepository.findByIds(roommateRequestModel.getUrls());
-            fileRepository.saveAll(images);
-            roommate.setFiles(images);
+            images = fileItemRepository.findByIds(roommateRequestModel.getUrls());
+            fileItemRepository.saveAll(images);
+            roommate.setFileItems(images);
         }
 
 
@@ -74,9 +74,11 @@ public class RoomMateServiceImpl implements RoomMateService {
 
         if (roommateRequestModel.getHaveHouse()) {
             images = images.stream().map(file -> {file.setUsed(true); file.setRoommate(savedRoommate); return file;}).toList();
-            fileRepository.saveAll(images);
-            roommate.setFiles(images);
+            fileItemRepository.saveAll(images);
+            roommate.setFileItems(images);
         }
+
+        System.out.println(roommateRequestModel.getUrls());
         return new RoommateResponseModel(roomMateRepository.save(roommate));
     }
 

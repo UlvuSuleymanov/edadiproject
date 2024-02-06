@@ -1,14 +1,12 @@
 package az.edadi.back.entity.roommate;
 
-import az.edadi.back.entity.app.Article;
-import az.edadi.back.entity.app.File;
+import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.request.RoommateReq;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +43,7 @@ public class Roommate {
 
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "roommate")
-    private List<File> files=new ArrayList<>();
+    private List<FileItem> fileItems =new ArrayList<>();
 
 
     @PreUpdate

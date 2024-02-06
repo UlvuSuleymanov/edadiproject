@@ -3,6 +3,7 @@ package az.edadi.back.service.impl;
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.service.FileIOService;
 import az.edadi.back.service.ImageService;
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @Slf4j
 @Service
@@ -23,7 +26,7 @@ public class ImageServiceImpl implements ImageService {
     private final FileIOService fileIOService;
 
     @Override
-    public String saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException {
+    public String saveProfilePhoto(String name, MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("User upload profile image named {}", name);
 
         File orginalImage = convertMultiPartToFile(multipartFile);

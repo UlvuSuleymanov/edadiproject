@@ -3,7 +3,7 @@ package az.edadi.back.entity.auth;
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.app.Article;
-import az.edadi.back.entity.app.File;
+import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.app.Notification;
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.message.Message;
@@ -67,7 +67,7 @@ public class User implements Serializable {
     private List<Roommate> roommates =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<File> images =new ArrayList<>();
+    private List<FileItem> images =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();

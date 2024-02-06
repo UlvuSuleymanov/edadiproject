@@ -16,6 +16,7 @@ import az.edadi.back.service.FileIOService;
 import az.edadi.back.service.ImageService;
 import az.edadi.back.utility.AuthUtil;
 import az.edadi.back.utility.SlugUtil;
+import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -29,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException {
+    public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
         fileIOService.saveFile(name, file, AppConstants.BLOG_IMAGE_FOLDER);

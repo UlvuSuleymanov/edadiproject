@@ -1,6 +1,6 @@
 package az.edadi.back.entity.post;
 
-import az.edadi.back.entity.app.File;
+import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
@@ -45,7 +45,7 @@ public class Post {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")
-    private List<File> image = new ArrayList<>();
+    private List<FileItem> image = new ArrayList<>();
 
 
     //    @LazyCollection(LazyCollectionOption.EXTRA)
