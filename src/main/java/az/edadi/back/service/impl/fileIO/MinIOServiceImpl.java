@@ -28,12 +28,12 @@ public class MinIOServiceImpl implements FileIOService{
         this.minioConfig = minioConfig;
     }
 
-     public String saveFile(String key, MultipartFile file, String folder) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+     public String saveFile(String key, MultipartFile file) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         InputStream inputStream = file.getInputStream();
 
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket("edadi")
-                .object(key+".png")
+                .object(key)
                 .contentType(file.getContentType())
                 .stream(inputStream, inputStream.available(), -1)
                 .build());

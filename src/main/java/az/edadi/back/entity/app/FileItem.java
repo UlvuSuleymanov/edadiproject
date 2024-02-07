@@ -6,10 +6,12 @@ import az.edadi.back.entity.roommate.Roommate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
- 
+
 import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,15 +21,23 @@ public class FileItem {
     @GeneratedValue(generator = "uuid2")
     private UUID id;
 
-    private String fileName;
+    private String name;
 
-    private String type;
+    private String orginalName;
+
+    private String contentType;
 
     private Boolean used;
+
+    private String extension;
 
     private String folder;
 
     private Date date;
+
+    private String parent;
+
+    private Long size;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

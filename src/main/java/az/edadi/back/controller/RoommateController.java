@@ -1,18 +1,14 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.request.RoommateReq;
-import az.edadi.back.model.res.RoommateResponseRecord;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.service.RoomMateService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/v1/roommate")
@@ -26,6 +22,7 @@ public class RoommateController {
 
     @PostMapping
     ResponseEntity<HttpStatus> addRoomAd(@RequestBody RoommateReq roommateRequest) {
+        System.out.println(roommateRequest);
         System.out.println( roomMateService.addRoommate(roommateRequest));
 
         return ResponseEntity.ok(HttpStatus.CREATED);
