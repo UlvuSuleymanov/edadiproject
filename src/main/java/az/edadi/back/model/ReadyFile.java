@@ -1,5 +1,6 @@
 package az.edadi.back.model;
 
+import az.edadi.back.constants.UploadingType;
 import az.edadi.back.entity.app.FileItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +13,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReadyFile {
     private MultipartFile multipartFile;
     private FileItem fileItem;
+    private UploadingType uploadingType;
 }

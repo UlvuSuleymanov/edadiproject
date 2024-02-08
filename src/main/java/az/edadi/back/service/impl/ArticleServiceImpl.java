@@ -101,7 +101,7 @@ public class ArticleServiceImpl implements ArticleService {
     public SimpleImageResponse addPhoto(MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         File file = imageService.convertMultiPartToFile(multipartFile);
         String name = UUID.randomUUID().toString();
-        fileIOService.saveFile(name, file, AppConstants.BLOG_IMAGE_FOLDER);
+//        fileIOService.saveFile(name, file);
         file.delete();
         SimpleImageResponse simpleImageResponse = new SimpleImageResponse();
         simpleImageResponse.setUrl(AppConstants.ROOT_IMAGE_URL + AppConstants.BLOG_IMAGE_FOLDER + "/" + name);

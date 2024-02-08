@@ -16,7 +16,6 @@ public class RoommateResponseModel {
     private String region;
     private String regionId;
     private String date;
-    private Integer amount;
     private String contact;
     private boolean canDelete;
 

@@ -30,11 +30,11 @@ public class ImageServiceImpl implements ImageService {
         log.info("User upload profile image named {}", name);
 
         File orginalImage = convertMultiPartToFile(multipartFile);
-        fileIOService.saveFile(AppConstants.IMAGE_SIZE_L + name, orginalImage, AppConstants.USER_IMAGE_FOLDER);
+//        fileIOService.saveFile(AppConstants.IMAGE_SIZE_L + name, orginalImage);
 
         //reduce the size of the picture
         File imageS = getSSizePhoto(orginalImage);
-        fileIOService.saveFile(AppConstants.IMAGE_SIZE_S + name, imageS, AppConstants.USER_IMAGE_FOLDER);
+//        fileIOService.saveFile(AppConstants.IMAGE_SIZE_S + name, imageS);
 
         orginalImage.delete();
         imageS.delete();

@@ -1,54 +1,15 @@
 package az.edadi.back.constants;
 
-import az.edadi.back.exception.model.NoSuchFileTypeException;
-
 public enum FileType {
-    USER("user", "public/user/", "SM"),
-    ROOMMATE("roommate", "public/roommate/", "M"),
-    ARTICLE("article","public/article/","M"),
-    NOTE("note", "public/note/", "");
+    PDF("pdf"),
+    IMAGE("image");
+    private String type;
 
-
-    private String parent;
-    private String folder;
-    private String sizes;
-
-    FileType(String parent, String folder, String sizes) {
-        this.parent = parent;
-        this.folder = folder;
-        this.sizes = sizes;
+    FileType(String type) {
+        this.type = type;
     }
 
-    public static FileType of(String parent) {
-        for (FileType ft : FileType.values()) {
-            if (ft.parent.equalsIgnoreCase(parent)) {
-                return ft;
-            }
-        }
-        throw new NoSuchFileTypeException();
-    }
-
-    public String getParent() {
-        return parent;
-    }
-
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
-
-    public String getFolder() {
-        return folder;
-    }
-
-    public void setFolder(String folder) {
-        this.folder = folder;
-    }
-
-    public String getSizes() {
-        return sizes;
-    }
-
-    public void setSizes(String sizes) {
-        this.sizes = sizes;
+    public String getType() {
+        return type;
     }
 }

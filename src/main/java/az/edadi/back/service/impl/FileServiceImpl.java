@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.FileType;
+import az.edadi.back.constants.UploadingType;
 import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.ReadyFile;
@@ -11,11 +11,8 @@ import az.edadi.back.service.FileService;
 import az.edadi.back.utility.AuthUtil;
 import io.minio.errors.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -35,16 +32,31 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<SimpleFileRes> uploadFile(final String parent,
-                                          List<MultipartFile> multipartFiles) throws ExecutionException, InterruptedException {
-        FileType fileType = FileType.of(parent);
-        List<ReadyFile> readyFiles = multipartFiles
-                .stream()
-                .map(multipartFile -> {
-                    return new ReadyFile(multipartFile, getFileItem(multipartFile, fileType));
-                })
-                .toList();
-        readyFiles = saveReadyFiles(readyFiles);
-        return readyFiles.stream().map(readyFile -> new SimpleFileRes(readyFile.getFileItem())).toList();
+                                          List<MultipartFile> multipartFiles) throws ExecutionException, InterruptedException, IOException {
+        UploadingType uploadingType = UploadingType.of(parent);
+
+        List<ReadyFile> files = new ArrayList<>();
+        List<ReadyFile> uniques = new ArrayList<>();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+
+            ReadyFile readyFile = new ReadyFile(multipartFile, getFileItem(multipartFile, uploadingType), uploadingType);
+            files.add(readyFile);
+//            uniques.add(readyFile);
+
+//            if (uploadingType.getSizes().contains("M")) {
+//                readyFile = new ReadyFile(getImageSizeM(multipartFile), getCopy(readyFile.getFileItem(),getImageSizeM(multipartFile)), uploadingType);
+//                files.add(readyFile);
+//            }
+//            if (uploadingType.getSizes().contains("S")) {
+//                readyFile = new ReadyFile(getImageSizeS(multipartFile), getCopy(readyFile.getFileItem(),getImageSizeS(multipartFile)), uploadingType);
+//                files.add(readyFile);
+//            }
+
+        }
+        files = saveReadyFiles(files);
+
+        return files.stream().map(readyFile -> new SimpleFileRes(readyFile.getFileItem())).toList();
     }
 
     public File convertMultiPartToFile(MultipartFile multipartFile) throws IOException {
@@ -55,15 +67,15 @@ public class FileServiceImpl implements FileService {
         return convFile;
     }
 
-    private FileItem getFileItem(MultipartFile multipartFile, FileType fileType) {
-        final UUID uuid = UUID.randomUUID();
+    private FileItem getFileItem(MultipartFile multipartFile, UploadingType uploadingType) {
+        UUID uuid = UUID.randomUUID();
         String extension = "." + multipartFile.getContentType().split("/")[1];
         FileItem fileItem = new FileItem();
         fileItem.setId(uuid);
-        fileItem.setName(fileType.getFolder()+uuid + extension);
+        fileItem.setName(uploadingType.getFolder() + uuid);
         fileItem.setDate(new Date());
-        fileItem.setParent(fileType.getParent());
-        fileItem.setFolder(fileType.getFolder());
+        fileItem.setParent(uploadingType.getParent());
+        fileItem.setFolder(uploadingType.getFolder());
         fileItem.setSize(multipartFile.getSize());
         fileItem.setOrginalName(multipartFile.getOriginalFilename());
         fileItem.setContentType(multipartFile.getContentType());
@@ -73,12 +85,26 @@ public class FileServiceImpl implements FileService {
         return fileItem;
     }
 
+    private ReadyFile getThumbReadyFile(ReadyFile readyFile,MultipartFile newMultipart, String size){
+        FileItem fileItem1 = readyFile.getFileItem();
+        fileItem1.setName(fileItem1.getName()+size);
+        readyFile.setMultipartFile(newMultipart);
+        return readyFile;
+    }
+
     void saveFile(ReadyFile readyFile) throws InterruptedException, ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         fileRepository.save(readyFile.getFileItem());
-        fileIOService.saveFile(
-                readyFile.getFileItem().getName(),
-                readyFile.getMultipartFile());
+        fileIOService.saveFile(readyFile);
+//there are a lot of bugs
+//        if(readyFile.getUploadingType().getSizes().contains("M")){
+//            fileIOService.saveFile(getThumbReadyFile(readyFile,getImageSizeM(readyFile.getMultipartFile()),"M"));
+//        }
+//        if(readyFile.getUploadingType().getSizes().contains("S")){
+//            fileIOService.saveFile(getThumbReadyFile(readyFile,getImageSizeS(readyFile.getMultipartFile()),"S"));
+//        }
+
     }
+
 
     List<ReadyFile> saveReadyFiles(List<ReadyFile> files) throws ExecutionException, InterruptedException {
         CompletableFuture<Void>[] fileFutures = new CompletableFuture[files.size()];
@@ -102,6 +128,29 @@ public class FileServiceImpl implements FileService {
         result.get();
         return files;
     }
+
+
+//    public MultipartFile getImageSizeM(MultipartFile file) throws IOException {
+//        File temp = new File(UUID.randomUUID().toString());
+//        temp.createNewFile();
+//        Thumbnails.of(file.getInputStream())
+//                .size(160, 160)
+//                .toFile(temp);
+//        InputStream inputStream = new FileInputStream(temp);
+//        temp.delete();
+//        return new MockMultipartFile("thumb", inputStream);
+//    }
+//
+//    public MultipartFile getImageSizeS(MultipartFile file) throws IOException {
+//        File temp = new File(UUID.randomUUID().toString());
+//        temp.createNewFile();
+//        Thumbnails.of(file.getInputStream())
+//                .size(100, 100)
+//                .toFile(temp);
+//        InputStream inputStream = new FileInputStream(temp);
+//        temp.delete();
+//        return new MockMultipartFile("thumb", inputStream);
+//    }
 
 
 }

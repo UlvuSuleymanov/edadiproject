@@ -20,7 +20,6 @@ public class Roommate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private Boolean haveHouse;
 
     private String houseInfo;
@@ -44,7 +43,6 @@ public class Roommate {
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "roommate")
     private List<FileItem> fileItems =new ArrayList<>();
-
 
     @PreUpdate
     public void preUpdate() {

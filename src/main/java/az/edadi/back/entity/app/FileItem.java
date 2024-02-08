@@ -18,7 +18,6 @@ import java.util.UUID;
 @Entity
 public class FileItem {
     @Id
-    @GeneratedValue(generator = "uuid2")
     private UUID id;
 
     private String name;

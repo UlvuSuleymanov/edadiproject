@@ -20,7 +20,11 @@ public class DateUtil {
     private static Long durations[] = {31556926L, 2629743L, 604800L, 86400L, 3600L, 60L, 1L,};
 
     public static String getHowLongAgoString(Date date) {
-        long seconds = (new Date().getTime() - date.getTime()) / 1000;
+
+        final long  seconds = (new Date().getTime() - date.getTime()) / 1000;
+        if(seconds<10)
+            return Translator.getTranslation("just_now");
+
         String timeName = "";
         int times = 0;
         for (int i = 0; i < durations.length; i++) {
@@ -33,7 +37,8 @@ public class DateUtil {
         if (times > 1)
             timeName = timeName + "s";
 
-        String finalDateString = String.valueOf(times) + " " + Translator.getTranslation(timeName) + " " + Translator.getTranslation("ago");
-        return finalDateString;
+        return times + " " + Translator.getTranslation(timeName) + " " + Translator.getTranslation("ago");
+
+
     }
 }
