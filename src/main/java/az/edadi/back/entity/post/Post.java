@@ -1,7 +1,7 @@
 package az.edadi.back.entity.post;
 
 import az.edadi.back.entity.app.FileItem;
-import az.edadi.back.entity.app.Question;
+import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
@@ -41,7 +41,7 @@ public class Post {
     private Speciality speciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Question question;
+    private Topic topic;
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "post")

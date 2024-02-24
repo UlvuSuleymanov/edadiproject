@@ -26,11 +26,9 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping(value = "/post")
     public ResponseEntity addPost(@RequestBody @Valid PostRequestModel postRequestModel) {
-        applicationEventPublisher.publishEvent(UserEvent.ADD_POST);
         Post post = postService.createPost(postRequestModel);
         return ResponseEntity.ok(new PostResponseModel(post, false));
     }

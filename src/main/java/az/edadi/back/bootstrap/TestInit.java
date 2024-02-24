@@ -1,12 +1,12 @@
 package az.edadi.back.bootstrap;
 
-import az.edadi.back.entity.app.Question;
+import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.entity.university.University;
-import az.edadi.back.repository.QuestionRepository;
 import az.edadi.back.repository.RegionRepository;
+import az.edadi.back.repository.TopicRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.repository.search.SearchRepository;
@@ -26,7 +26,7 @@ public class TestInit implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final QuestionRepository questionRepository;
+    private final TopicRepository topicRepository;
     private final UniversityRepository universityRepository;
 
     private final RegionRepository regionRepository;
@@ -36,11 +36,11 @@ public class TestInit implements CommandLineRunner {
 
     public TestInit(UniversityRepository universityRepository,
                     UserRepository userRepository,
-                    PasswordEncoder passwordEncoder, QuestionRepository questionRepository, RegionRepository regionRepository, SearchRepository searchRepository) {
+                    PasswordEncoder passwordEncoder, TopicRepository topicRepository, RegionRepository regionRepository, SearchRepository searchRepository) {
         this.universityRepository = universityRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.questionRepository = questionRepository;
+        this.topicRepository = topicRepository;
         this.regionRepository = regionRepository;
         this.searchRepository = searchRepository;
     }
@@ -95,16 +95,16 @@ public class TestInit implements CommandLineRunner {
     }
 
     void addQuestions(){
-        List<Question> questions = new ArrayList<>();
+        List<Topic> topics = new ArrayList<>();
 
         for(int i=0;i<5; i++){
-            Question question = new Question();
-            question.setDate(new Date());
-            question.setUser(new User(1L));
-            question.setTitle(UUID.randomUUID().toString());
-            questions.add(question);
+            Topic topic = new Topic();
+            topic.setDate(new Date());
+            topic.setUser(new User(1L));
+            topic.setTitle(UUID.randomUUID().toString());
+            topics.add(topic);
         }
-        questionRepository.saveAll(questions);
+        topicRepository.saveAll(topics);
     }
 
 
@@ -121,6 +121,7 @@ public class TestInit implements CommandLineRunner {
 
 
     void addSearchItems(){
+        searchRepository.deleteAll();
         List<SearchItem> items = userRepository.findAll().stream().map(user -> new SearchItem(user)).toList();
         searchRepository.saveAll(items);
 

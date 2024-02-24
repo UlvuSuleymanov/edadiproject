@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class VoteController {
 
     private final VoteService voteService;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("api/vote")
     ResponseEntity addVote(@RequestBody VoteRequestModel voteRequestModel) {
-        applicationEventPublisher.publishEvent(UserEvent.ADD_VOTE);
         voteService.addVote(voteRequestModel);
         return ResponseEntity.ok(HttpEntity.EMPTY);
     }

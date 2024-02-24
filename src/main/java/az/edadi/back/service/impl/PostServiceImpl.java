@@ -2,7 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
-import az.edadi.back.entity.app.Question;
+import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.post.Vote;
@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UniversityRepository universityRepository;
     private final SpecialityRepository specialityRepository;
-    private final QuestionRepository questionRepository;
+    private final TopicRepository topicRepository;
     private final EntityManager entityManager;
     private final UserEventsRepository userEventsRepository;
 
@@ -67,10 +67,10 @@ public class PostServiceImpl implements PostService {
                 post.setSpeciality(speciality);
                 break;
             case "question":
-                Question question = questionRepository.findById(postRequestModel.getId()).orElseThrow(() ->
+                Topic topic = topicRepository.findById(postRequestModel.getId()).orElseThrow(() ->
                         new EntityNotFoundException("Question not found with  id : ")
                 );
-                post.setQuestion(question);
+                post.setTopic(topic);
                 break;
 
         }

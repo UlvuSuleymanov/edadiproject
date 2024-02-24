@@ -26,7 +26,6 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
     private final SearchRepository searchRepository;
 
     private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;
     private final PostRepository postRepository;
     private final UniversityRepository universityRepository;
     private final SpecialityRepository specialityRepository;
@@ -39,9 +38,9 @@ public class ElasticsearchServiceImpl implements ElasticsearchService {
                 userRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
         );
 
-        searchRepository.saveAll(
-                questionRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
-        );
+//        searchRepository.saveAll(
+//                questionRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())
+//        );
 
 //        searchRepository.saveAll(
 //                postRepository.findAll().stream().map(SearchItem::new).collect(Collectors.toList())

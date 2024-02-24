@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question {
+public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +26,7 @@ public class Question {
 
     private Date date;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "question")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "topic")
     private List<Post> posts =new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

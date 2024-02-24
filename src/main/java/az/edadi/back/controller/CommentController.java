@@ -29,13 +29,11 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
 
     @PostMapping(value = "/api/comment")
     public ResponseEntity addComment(@RequestBody @Valid CommentRequestModel commentRequestModel) {
         log.info("User {} add comment to post with id {}", AuthUtil.getCurrentUsername(), commentRequestModel);
-        applicationEventPublisher.publishEvent(UserEvent.ADD_COMMENT);
         CommentResponseModel commentResponseModel = commentService.addComment(commentRequestModel);
         return ResponseEntity.ok(commentResponseModel);
     }

@@ -25,11 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ArticleController {
     private final ArticleService articleService;
-    private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping
     ResponseEntity addArticle(@ModelAttribute ArticleRequestModel articleRequestModel) throws IOException {
-        applicationEventPublisher.publishEvent(UserEvent.ADD_ARTICLE);
         ArticleResponseModel articleResponseModel = articleService.addArticle(articleRequestModel);
         return ResponseEntity.ok(articleResponseModel);
 

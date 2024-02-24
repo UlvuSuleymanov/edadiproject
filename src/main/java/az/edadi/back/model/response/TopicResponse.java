@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.entity.app.Question;
+import az.edadi.back.entity.app.Topic;
 import az.edadi.back.model.UserSummary;
 import az.edadi.back.utility.DateUtil;
 import az.edadi.back.utility.SlugUtil;
@@ -16,11 +16,11 @@ public class TopicResponse {
     private String date;
     private UserSummary user;
 
-    public TopicResponse(Question question) {
-        id = question.getId();
-        slug = SlugUtil.createSlug(question.getTitle().toLowerCase(), question.getId());
-        title = question.getTitle();
-        date = DateUtil.getHowLongAgoString(question.getDate());
-        user=new UserSummary(question.getUser());
+    public TopicResponse(Topic topic) {
+        id = topic.getId();
+        slug = SlugUtil.createSlug(topic.getTitle().toLowerCase(), topic.getId());
+        title = topic.getTitle();
+        date = DateUtil.getHowLongAgoString(topic.getDate());
+        user=new UserSummary(topic.getUser());
     }
 }
