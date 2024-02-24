@@ -1,4 +1,4 @@
-package az.edadi.back.exception.model;
+package az.edadi.back.exception.model.not_found;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import org.springframework.http.HttpStatus;

@@ -1,13 +1,15 @@
-package az.edadi.back.init;
+package az.edadi.back.bootstrap;
 
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
+import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.repository.QuestionRepository;
 import az.edadi.back.repository.RegionRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.repository.UserRepository;
+import az.edadi.back.repository.search.SearchRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,15 +31,18 @@ public class TestInit implements CommandLineRunner {
 
     private final RegionRepository regionRepository;
 
+    private final SearchRepository searchRepository;
+
 
     public TestInit(UniversityRepository universityRepository,
                     UserRepository userRepository,
-                    PasswordEncoder passwordEncoder, QuestionRepository questionRepository, RegionRepository regionRepository) {
+                    PasswordEncoder passwordEncoder, QuestionRepository questionRepository, RegionRepository regionRepository, SearchRepository searchRepository) {
         this.universityRepository = universityRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.questionRepository = questionRepository;
         this.regionRepository = regionRepository;
+        this.searchRepository = searchRepository;
     }
 
 
@@ -51,6 +56,8 @@ public class TestInit implements CommandLineRunner {
         addQuestions();
 
         addRegions();
+
+        addSearchItems();
     }
 
     void addDummyUniversities() {
@@ -73,6 +80,7 @@ public class TestInit implements CommandLineRunner {
         user.setName("admin");
         user.setUsername("admin");
         user.setEmail("admin@gmail.com");
+        user.setPicture("https://cdn.vectorstock.com/i/1000x1000/30/97/flat-business-man-user-profile-avatar-icon-vector-4333097.webp");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.saveAndFlush(user);
         for (int i = 0; i <3; i++) {
@@ -109,6 +117,13 @@ public class TestInit implements CommandLineRunner {
              regions.add(region);
         }
         regionRepository.saveAll(regions);
+    }
+
+
+    void addSearchItems(){
+        List<SearchItem> items = userRepository.findAll().stream().map(user -> new SearchItem(user)).toList();
+        searchRepository.saveAll(items);
+
     }
 
 

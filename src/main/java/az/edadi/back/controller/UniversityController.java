@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/university")
+@RequestMapping("/api/v1/university")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 
 public class UniversityController {
@@ -33,7 +33,6 @@ public class UniversityController {
     }
 
     @GetMapping
-    @Cacheable("universities")
     ResponseEntity getUniList() {
         List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
         return ResponseEntity.ok(uniResponseModelList);

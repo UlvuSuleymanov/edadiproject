@@ -1,4 +1,4 @@
-package az.edadi.back.constants;
+package az.edadi.back.constants.type;
 
 public enum  PostTypes {
     UNIVERSITY("university"),

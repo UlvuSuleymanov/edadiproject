@@ -16,17 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Profile("test")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ElasticsearchServiceLocalImpl implements ElasticsearchService {
+public class ElasticsearchServiceLocalImpl {
 
 
-    @Override
+
     public void refreshElasticRepository() {
 
     }
 
-    @Override
+
     public List<SearchRes> search(String text, String type, int page) {
         return null;
     }

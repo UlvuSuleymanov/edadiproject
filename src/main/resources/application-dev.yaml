@@ -30,7 +30,6 @@ spring:
     elasticsearch:
       host: localhost
       port: 9200
-      cluster-name: 839c66f1568c
 jsa:
   aws:
     accessKeyId:

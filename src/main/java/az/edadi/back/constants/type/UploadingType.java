@@ -1,9 +1,9 @@
-package az.edadi.back.constants;
+package az.edadi.back.constants.type;
 
-import az.edadi.back.exception.model.NoSuchFileTypeException;
+import az.edadi.back.exception.model.not_found.NoSuchFileTypeException;
 
 public enum UploadingType {
-    USER("user", "public/user/",FileType.IMAGE, "SM"),
+    USER("user", "public/user/", FileType.IMAGE, "SM"),
     ROOMMATE("roommate", "public/roommate/", FileType.IMAGE, "M"),
     ARTICLE("article","public/article/",FileType.IMAGE,"M"),
     NOTE("note", "public/note/", FileType.PDF,"");

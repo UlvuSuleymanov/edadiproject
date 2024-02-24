@@ -1,6 +1,5 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.constants.EntityType;
 import az.edadi.back.entity.search.SearchItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;

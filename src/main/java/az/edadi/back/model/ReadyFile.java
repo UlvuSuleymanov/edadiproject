@@ -1,6 +1,6 @@
 package az.edadi.back.model;
 
-import az.edadi.back.constants.UploadingType;
+import az.edadi.back.constants.type.UploadingType;
 import az.edadi.back.entity.app.FileItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;

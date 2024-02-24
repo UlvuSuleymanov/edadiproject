@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.constants.NotificationType;
+import az.edadi.back.constants.type.NotificationType;
 import lombok.Builder;
 import lombok.Data;
 

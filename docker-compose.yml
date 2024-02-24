@@ -24,6 +24,15 @@ services:
     networks:
       - config-network
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - config-network
+
 networks:
   config-network:
     driver: bridge

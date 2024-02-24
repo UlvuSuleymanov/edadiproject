@@ -3,7 +3,7 @@ package az.edadi.back.controller;
 import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.service.RoomMateService;
-import org.springframework.http.HttpEntity;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,20 +21,16 @@ public class RoommateController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> addRoomAd(@RequestBody RoommateReq roommateRequest) {
-        System.out.println(roommateRequest);
-        System.out.println( roomMateService.addRoommate(roommateRequest));
-
-        return ResponseEntity.ok(HttpStatus.CREATED);
+    ResponseEntity<HttpStatus> addRoomAd(@Valid @RequestBody RoommateReq roommateRequest) {
+         roomMateService.addRoommate(roommateRequest);
+         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping
-    List<RoommateResponseModel> getRoommateAds(@RequestParam(defaultValue = "0") Long regionId,
+    List<RoommateResponseModel> getRoommateList(@RequestParam(defaultValue = "0") Long regionId,
                                                @RequestParam(defaultValue = "1") int page) {
-
         return roomMateService.getRoommates(regionId, page);
     }
-
 
     @GetMapping("/{id}")
     ResponseEntity deleteRoommateAd(@PathVariable Long id) {
@@ -43,9 +39,9 @@ public class RoommateController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity getRoommate(@PathVariable Long id) {
+    ResponseEntity<HttpStatus> getRoommate(@PathVariable Long id) {
         roomMateService.deleteRoommateAd(id);
-        return ResponseEntity.ok(HttpEntity.EMPTY);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 //    @GetMapping(value = "/all")

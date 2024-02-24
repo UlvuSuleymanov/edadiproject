@@ -2,9 +2,9 @@ package az.edadi.back;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
+//@PropertySource("classpath:application-${ENV}common.proporties")
 public class ApplicationStarter {
 	
 	public static void main(String[] args) {

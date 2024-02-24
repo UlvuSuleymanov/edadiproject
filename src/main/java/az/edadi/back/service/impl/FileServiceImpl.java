@@ -1,6 +1,6 @@
 package az.edadi.back.service.impl;
 
-import az.edadi.back.constants.UploadingType;
+import az.edadi.back.constants.type.UploadingType;
 import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.model.ReadyFile;
@@ -108,7 +108,9 @@ public class FileServiceImpl implements FileService {
 
     List<ReadyFile> saveReadyFiles(List<ReadyFile> files) throws ExecutionException, InterruptedException {
         CompletableFuture<Void>[] fileFutures = new CompletableFuture[files.size()];
+
         for (int i = 0; i < files.size(); i++) {
+
             int index = i;
             fileFutures[i] = CompletableFuture.runAsync(() -> {
                 try {
@@ -119,6 +121,7 @@ public class FileServiceImpl implements FileService {
                     throw new RuntimeException(e);
                 }
             });
+
         }
 
         CompletableFuture<Void> allOf = CompletableFuture.allOf(fileFutures);

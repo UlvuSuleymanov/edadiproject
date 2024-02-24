@@ -1,6 +1,6 @@
 package az.edadi.back.entity.search;
 
-import az.edadi.back.constants.EntityType;
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
@@ -9,7 +9,6 @@ import az.edadi.back.entity.university.University;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -64,5 +63,7 @@ public class SearchItem {
                 + " " + university.getNameAz()
                 + " " + university.getNameEn();
     }
+
+
 
 }

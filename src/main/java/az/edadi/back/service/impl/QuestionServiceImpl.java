@@ -1,12 +1,11 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
-import az.edadi.back.constants.event.UserEvent;
 import az.edadi.back.entity.app.Question;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.TopicRequestModel;
-import az.edadi.back.model.response.QuestionResponseModel;
+import az.edadi.back.model.response.TopicResponse;
 import az.edadi.back.repository.QuestionRepository;
 import az.edadi.back.repository.UserEventsRepository;
 import az.edadi.back.repository.UserRepository;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -40,10 +38,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @CacheEvict(cacheNames = "questions", allEntries = true)
-    public QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel) {
+    public TopicResponse addQuestion(TopicRequestModel topicRequestModel) {
         log.info("User {} try add new question", AuthUtil.getCurrentUsername());
         Long id = AuthUtil.getCurrentUserId();
-        userEventsRepository.check(UserEvent.ADD_QUESTION);
+//        userEventsRepository.check(UserEvent.ADD_Q);
 
         User user = userRepository.getById(id);
         Question question =
@@ -55,41 +53,41 @@ public class QuestionServiceImpl implements QuestionService {
 
         Question savedQuestion = questionRepository.saveAndFlush(question);
         log.info("User {} added new question", AuthUtil.getCurrentUsername());
-        QuestionResponseModel questionResponseModel = new QuestionResponseModel(savedQuestion);
+        TopicResponse questionResponseModel = new TopicResponse(savedQuestion);
         return questionResponseModel;
     }
 
     @Override
 //    @Cacheable("questions")
-    public List<QuestionResponseModel> getQuestionsList(int page) {
+    public List<TopicResponse> getQuestionsList(int page) {
 
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());
 
         return questionRepository.findAll(pageable)
                 .stream()
-                .map(topic -> new QuestionResponseModel(topic))
+                .map(topic -> new TopicResponse(topic))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<QuestionResponseModel> searchQuestion(String text, int page) {
+    public List<TopicResponse> searchQuestion(String text, int page) {
         Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("date").descending());
         return questionRepository
                 .searchUniversityPostsLikeText(text, pageable)
                 .stream()
                 .map(
-                        question -> new QuestionResponseModel(question))
+                        question -> new TopicResponse(question))
                 .collect(Collectors.toList());
     }
 
 
     @Override
-    public QuestionResponseModel getQuestion(String slug) {
+    public TopicResponse getQuestion(String slug) {
         Long id = SlugUtil.getId(slug);
         Question topic = questionRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("No Question found with the id " + id)
         );
-        return new QuestionResponseModel(topic);
+        return new TopicResponse(topic);
     }
 
     @Override

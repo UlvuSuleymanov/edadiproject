@@ -54,7 +54,7 @@ public class Roommate {
         houseInfo=roommateRequestModel.getHouseInfo();
         authorGender=roommateRequestModel.getSex();
         contact=roommateRequestModel.getContact();
-        generalInfo= roommateRequestModel.getHouseInfo();
+        generalInfo= roommateRequestModel.getGeneralInfo();
         date=new Date();
         lastUpdate=new Date();
     }

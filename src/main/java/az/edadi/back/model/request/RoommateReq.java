@@ -19,7 +19,6 @@ public class RoommateReq {
 
     private String contact;
 
-    @Length(min = 1, max = 10)
     private Long regionId;
 
     @Length(min = 1, max = 255)

@@ -1,19 +1,19 @@
 package az.edadi.back.service;
 
 import az.edadi.back.model.request.TopicRequestModel;
-import az.edadi.back.model.response.QuestionResponseModel;
+import az.edadi.back.model.response.TopicResponse;
 
 import java.util.List;
 
 public interface QuestionService {
 
-    QuestionResponseModel addQuestion(TopicRequestModel topicRequestModel);
+    TopicResponse addQuestion(TopicRequestModel topicRequestModel);
 
-    List<QuestionResponseModel> getQuestionsList(int page);
+    List<TopicResponse> getQuestionsList(int page);
 
-    List<QuestionResponseModel> searchQuestion(String text,int page);
+    List<TopicResponse> searchQuestion(String text, int page);
 
-    QuestionResponseModel getQuestion(String slug);
+    TopicResponse getQuestion(String slug);
 
     void deleteQuestion(Long id);
 

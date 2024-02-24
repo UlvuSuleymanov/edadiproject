@@ -1,6 +1,6 @@
 package az.edadi.back.entity.app;
 
-import az.edadi.back.constants.NotificationType;
+import az.edadi.back.constants.type.NotificationType;
 import az.edadi.back.entity.auth.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

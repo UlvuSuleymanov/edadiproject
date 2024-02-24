@@ -1,6 +1,6 @@
 package az.edadi.back.validation.validatedBy;
 
-import az.edadi.back.constants.PostTypes;
+import az.edadi.back.constants.type.PostTypes;
 import az.edadi.back.validation.PostType;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
