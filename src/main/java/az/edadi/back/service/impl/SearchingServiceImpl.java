@@ -1,13 +1,11 @@
 package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.type.EntityType;
-import az.edadi.back.constants.type.SearchedItemType;
 import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.model.response.SearchRes;
 import az.edadi.back.repository.*;
 import az.edadi.back.repository.search.SearchRepository;
-import az.edadi.back.service.ElasticsearchService;
-import jakarta.annotation.PostConstruct;
+import az.edadi.back.service.SearchingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -15,16 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Profile("elasticsearch")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class ElasticsearchServiceImpl implements ElasticsearchService {
+public class SearchingServiceImpl implements SearchingService {
 
     private final SearchRepository searchRepository;
-
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final UniversityRepository universityRepository;

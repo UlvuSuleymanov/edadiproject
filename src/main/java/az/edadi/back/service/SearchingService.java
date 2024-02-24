@@ -4,7 +4,7 @@ import az.edadi.back.model.response.SearchRes;
 
 import java.util.List;
 
-public interface ElasticsearchService {
+public interface SearchingService {
 
     void refreshElasticRepository();
 
