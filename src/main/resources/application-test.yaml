@@ -14,7 +14,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-
   jpa:
     showSql: true
   mail:
@@ -32,20 +31,11 @@ spring:
     elasticsearch:
       host: localhost
       port: 9200
-#      cluster-name: 839c66f1568c
 minio:
   endpoint: http://localhost:9000
   access-key: minio-root-user
   secret-key: minio-root-password
   bucket-name: edadi
-
-jsa:
-  aws:
-    accessKeyId: qweq
-    secretAccessKey: wqeq
-  s3:
-    bucket: edauni
-    region: eu-north-1
 app:
   jwt:
     title: Bearer
@@ -57,13 +47,3 @@ app:
     appName: Edauni
     domain: http://localhost:4200
     image-url: https://edauni.s3.eu-north-1.amazonaws.com/
-    user:
-      default-image: default
-      image-folder: public/user/
-    blog:
-      default-image: default
-      image-folder: public/blog/
-    file:
-      folder: public/file/
-    image:
-      size-s: thumbS

@@ -6,14 +6,15 @@ spring:
       maxFileSize: 25MB
       maxRequestSize: 35MB
   datasource:
-    url:
-    username: root
-    password:
-    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
-    hibernate:
-      dialect: org.hibernate.dialect.MySQL8Dialect
-      ddlAuto: update
     showSql: true
   mail:
     host: smtp.gmail.com
@@ -30,31 +31,19 @@ spring:
     elasticsearch:
       host: localhost
       port: 9200
-jsa:
-  aws:
-    accessKeyId:
-    secretAccessKey:
-  s3:
-    bucket: edauni
-    region: eu-north-1
+minio:
+  endpoint: http://localhost:9000
+  access-key: minio-root-user
+  secret-key: minio-root-password
+  bucket-name: edadi
 app:
   jwt:
     title: Bearer
-    secretKey:
+    secretKey: assaasdassadasdsad
     accessTokenSessionTime: 999999999999
     refreshTokenSessionTime: 99999999999
   constants:
     defaultSecurityMail: edaunicom2@gmail.com
     appName: Edauni
-    domain: https://edauni.com
+    domain: http://localhost:4200
     image-url: https://edauni.s3.eu-north-1.amazonaws.com/
-    user:
-      default-image: default
-      image-folder: public/user/
-    blog:
-      default-image: default
-      image-folder: public/blog/
-    file:
-      folder: public/file/
-    image:
-      size-s: thumbS

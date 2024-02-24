@@ -1,4 +1,4 @@
-package az.edadi.back.bootstrap;
+package az.edadi.back.bootstrap.dev;
 
 import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
@@ -20,27 +20,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Profile("test")
 @Configuration
-public class TestInit implements CommandLineRunner {
+@Profile("dev")
+public class InitDb implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final TopicRepository topicRepository;
     private final UniversityRepository universityRepository;
-
     private final RegionRepository regionRepository;
-
     private final SearchRepository searchRepository;
 
 
-    public TestInit(UniversityRepository universityRepository,
-                    UserRepository userRepository,
-                    PasswordEncoder passwordEncoder, TopicRepository topicRepository, RegionRepository regionRepository, SearchRepository searchRepository) {
-        this.universityRepository = universityRepository;
+    public InitDb(UserRepository userRepository,
+                  PasswordEncoder passwordEncoder,
+                  TopicRepository topicRepository,
+                  UniversityRepository universityRepository,
+                  RegionRepository regionRepository,
+                  SearchRepository searchRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.topicRepository = topicRepository;
+        this.universityRepository = universityRepository;
         this.regionRepository = regionRepository;
         this.searchRepository = searchRepository;
     }
@@ -83,7 +83,7 @@ public class TestInit implements CommandLineRunner {
         user.setPicture("https://cdn.vectorstock.com/i/1000x1000/30/97/flat-business-man-user-profile-avatar-icon-vector-4333097.webp");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.saveAndFlush(user);
-        for (int i = 0; i <3; i++) {
+        for (int i = 0; i < 3; i++) {
             User user1 = new User();
             user1.setUsername(UUID.randomUUID().toString().substring(5, 20));
             user1.setEmail(UUID.randomUUID().toString().substring(5, 20) + "@gmail.com");
@@ -94,10 +94,10 @@ public class TestInit implements CommandLineRunner {
         userRepository.saveAllAndFlush(userList);
     }
 
-    void addQuestions(){
+    void addQuestions() {
         List<Topic> topics = new ArrayList<>();
 
-        for(int i=0;i<5; i++){
+        for (int i = 0; i < 5; i++) {
             Topic topic = new Topic();
             topic.setDate(new Date());
             topic.setUser(new User(1L));
@@ -108,24 +108,22 @@ public class TestInit implements CommandLineRunner {
     }
 
 
-    void addRegions(){
+    void addRegions() {
         List<Region> regions = new ArrayList<>();
 
-        for(int i=0;i<10; i++){
-             Region region = new Region();
-             region.setName(UUID.randomUUID().toString().substring(1,10));
-             regions.add(region);
+        for (int i = 0; i < 10; i++) {
+            Region region = new Region();
+            region.setName(UUID.randomUUID().toString().substring(1, 10));
+            regions.add(region);
         }
         regionRepository.saveAll(regions);
     }
 
 
-    void addSearchItems(){
+    void addSearchItems() {
         searchRepository.deleteAll();
         List<SearchItem> items = userRepository.findAll().stream().map(user -> new SearchItem(user)).toList();
         searchRepository.saveAll(items);
 
     }
-
-
 }
