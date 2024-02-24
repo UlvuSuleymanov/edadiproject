@@ -12,6 +12,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.util.Date;
+
 @Data
 @Document(indexName = "search")
 public class SearchItem {
@@ -24,6 +26,8 @@ public class SearchItem {
     private String entityId;
 
     private EntityType type;
+
+    private Date date;
 
 
     public SearchItem() {
