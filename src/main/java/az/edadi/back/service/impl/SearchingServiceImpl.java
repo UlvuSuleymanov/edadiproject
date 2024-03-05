@@ -4,8 +4,7 @@ import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.model.response.SearchRes;
 import az.edadi.back.repository.*;
-import az.edadi.back.repository.search.SearchRepository;
-import az.edadi.back.service.SearchingService;
+import az.edadi.back.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Profile("elasticsearch")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class SearchingServiceImpl implements SearchingService {
+public class SearchingServiceImpl implements SearchService {
 
     private final SearchRepository searchRepository;
     private final UserRepository userRepository;
@@ -27,7 +26,7 @@ public class SearchingServiceImpl implements SearchingService {
     private final UniversityRepository universityRepository;
     private final SpecialityRepository specialityRepository;
 
-    @Override
+
     public void refreshElasticRepository() {
         searchRepository.deleteAll();
 
@@ -55,6 +54,7 @@ public class SearchingServiceImpl implements SearchingService {
 
     @Override
     public List<SearchRes> search(String text, String type, int page) {
+
         Pageable pageable = PageRequest.of(page - 1, 10);
         EntityType entityType = EntityType.of(type);
         List<SearchItem> items;

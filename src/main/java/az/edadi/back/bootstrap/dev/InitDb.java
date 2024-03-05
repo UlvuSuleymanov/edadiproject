@@ -5,14 +5,11 @@ import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.entity.university.University;
-import az.edadi.back.repository.RegionRepository;
-import az.edadi.back.repository.TopicRepository;
-import az.edadi.back.repository.UniversityRepository;
-import az.edadi.back.repository.UserRepository;
-import az.edadi.back.repository.search.SearchRepository;
+import az.edadi.back.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ public class InitDb implements CommandLineRunner {
     private final TopicRepository topicRepository;
     private final UniversityRepository universityRepository;
     private final RegionRepository regionRepository;
-    private final SearchRepository searchRepository;
+     private final Environment environment;
 
 
     public InitDb(UserRepository userRepository,
@@ -36,13 +33,13 @@ public class InitDb implements CommandLineRunner {
                   TopicRepository topicRepository,
                   UniversityRepository universityRepository,
                   RegionRepository regionRepository,
-                  SearchRepository searchRepository) {
+                  Environment environment) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.topicRepository = topicRepository;
         this.universityRepository = universityRepository;
         this.regionRepository = regionRepository;
-        this.searchRepository = searchRepository;
+         this.environment = environment;
     }
 
 
@@ -121,9 +118,19 @@ public class InitDb implements CommandLineRunner {
 
 
     void addSearchItems() {
-        searchRepository.deleteAll();
-        List<SearchItem> items = userRepository.findAll().stream().map(user -> new SearchItem(user)).toList();
-        searchRepository.saveAll(items);
+        String[] activeProfiles = environment.getActiveProfiles();
+
+//        for (String profile : activeProfiles)
+//            if (profile.equalsIgnoreCase("elasticsearch")) {
+//                searchRepository.deleteAll();
+//                List<SearchItem> items = userRepository
+//                        .findAll()
+//                        .stream()
+//                        .map(SearchItem::new).toList();
+//                searchRepository.saveAll(items);
+//                break;
+//            }
+
 
     }
 }

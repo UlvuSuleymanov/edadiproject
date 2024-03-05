@@ -31,6 +31,7 @@ spring:
     elasticsearch:
       host: localhost
       port: 9200
+#      cluster-name: 839c66f1568c
 minio:
   endpoint: http://localhost:9000
   access-key: minio-root-user

@@ -5,7 +5,6 @@ import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import co.elastic.clients.util.ContentType;
-import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.auth.AuthScope;
@@ -29,7 +28,6 @@ public class ElasticConfig{
     private String HOST;
     @Value("${spring.data.elasticsearch.port}")
     private int PORT;
-
 
     @Bean
     public RestClient getRestClient() {
