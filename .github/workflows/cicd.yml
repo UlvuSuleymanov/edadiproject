@@ -32,4 +32,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f edadi
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name edadi ulvusuleymanov1/edadi
+        run: docker run -d -p 5000:5000 --name edadi ulvusuleymanov1/edadi
