@@ -27,6 +27,8 @@ jobs:
     needs: build
     runs-on: [aws-ec2]
     steps:
+      - name: Delete old container
+        run: docker run -d --name elasticsearch1 -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.14.0
       - name: Pull Image from docker hub
         run: sudo docker pull ulvusuleymanov1/edadi:latest
       - name: Delete old container
