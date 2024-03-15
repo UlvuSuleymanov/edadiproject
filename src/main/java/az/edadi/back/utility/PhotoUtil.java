@@ -5,7 +5,7 @@ import az.edadi.back.constants.AppConstants;
 public class PhotoUtil {
 
     public static String getUniversityPhoto(String name) {
-        return AppConstants.DOMAIN + "/assets/images/university/" + name;
+        return AppConstants.DOMAIN + "/assets/images/university/" + "bsu.png";
     }
 
 }

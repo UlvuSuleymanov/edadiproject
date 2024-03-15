@@ -2,7 +2,7 @@ package az.edadi.back.service;
 
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.UniRequestModel;
-import az.edadi.back.model.response.UniResponseModel;
+import az.edadi.back.model.response.UniversityResponseModel;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ public interface UniversityService {
 
     University createUni(UniRequestModel uniRequestModel);
 
-    List<UniResponseModel> getUnisList();
+    List<UniversityResponseModel> getUnisList();
 
-    UniResponseModel getUni(Long id);
+    UniversityResponseModel getUni(Long id);
 
 }

@@ -53,7 +53,7 @@ public class SecurityConfigurer {
                         .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                          .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
                          .requestMatchers("/h2-console/**").permitAll()
-                         .requestMatchers("/test").permitAll()
+                         .requestMatchers("/").permitAll()
                          .requestMatchers("/file/upload/user").permitAll()
 
                          .anyRequest().authenticated()

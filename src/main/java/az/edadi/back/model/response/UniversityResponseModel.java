@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class UniResponseModel {
+public class UniversityResponseModel {
     private Long id;
     private String abbr;
     private String nameEn;
@@ -20,7 +20,7 @@ public class UniResponseModel {
     private String url;
     private String info;
 
-    public UniResponseModel(University university) {
+    public UniversityResponseModel(University university) {
         this.id = university.getId();
         this.abbr = university.getAbbr();
         this.nameAz = university.getNameAz();

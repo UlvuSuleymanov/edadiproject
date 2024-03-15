@@ -3,11 +3,10 @@ package az.edadi.back.controller;
 import az.edadi.back.service.UniversityService;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.model.request.UniRequestModel;
-import az.edadi.back.model.response.UniResponseModel;
+import az.edadi.back.model.response.UniversityResponseModel;
 import az.edadi.back.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,15 +33,15 @@ public class UniversityController {
 
     @GetMapping
     ResponseEntity getUniList() {
-        List<UniResponseModel> uniResponseModelList = universityService.getUnisList();
-        return ResponseEntity.ok(uniResponseModelList);
+        List<UniversityResponseModel> universityResponseModelList = universityService.getUnisList();
+        return ResponseEntity.ok(universityResponseModelList);
 
     }
 
     @GetMapping("/{id}")
     ResponseEntity getUni(@PathVariable Long id) {
-        UniResponseModel uniResponseModel = universityService.getUni(id);
-        return ResponseEntity.ok(uniResponseModel);
+        UniversityResponseModel universityResponseModel = universityService.getUni(id);
+        return ResponseEntity.ok(universityResponseModel);
     }
 
 
