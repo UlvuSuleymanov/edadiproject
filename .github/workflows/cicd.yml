@@ -28,10 +28,10 @@ jobs:
     runs-on: [aws-ec2]
     steps:
       - name: stop old container
-        run: docker stop edadi
+        run: sudo docker stop edadi
       - name: Delete old container
-        run: docker rm -f edadi
+        run: sudo docker rm -f edadi
       - name: Pull Image from docker hub
-        run: docker pull ulvusuleymanov1/edadi:latest
+        run: sudo docker pull ulvusuleymanov1/edadi:latest
       - name: Run docker container
-        run: docker run -d -p 5000:5000 --name edadi ulvusuleymanov1/edadi
+        run: sudo docker run -d -p 5000:5000 --name edadi ulvusuleymanov1/edadi
