@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-@Profile("dev")
+@Profile("h2")
 public class InitDb implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

@@ -1,21 +1,6 @@
-server:
-  port: 5000
 spring:
-  servlet:
-    multipart:
-      maxFileSize: 25MB
-      maxRequestSize: 35MB
-  datasource:
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    showSql: true
+  config:
+    import: classpath:properties/postgres-prop.yml
   mail:
     host: smtp.gmail.com
     port: 587
@@ -47,4 +32,4 @@ app:
     defaultSecurityMail: edaunicom2@gmail.com
     appName: Edauni
     domain: http://localhost:4200
-    image-url: https://edauni.s3.eu-north-1.amazonaws.com/
+    image-url: http://localhost:9200

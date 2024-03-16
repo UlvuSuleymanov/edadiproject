@@ -1,0 +1,11 @@
+server:
+  port: 5000
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      maxFileSize: 25MB
+      maxRequestSize: 35MB
+  messages:
+    encoding: UTF-8

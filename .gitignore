@@ -12,8 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
-application-prod.yaml
-
+postgres-prop.yml
 ### IntelliJ IDEA ###
 .idea
 *.iws
