@@ -2,7 +2,7 @@ server:
   port: 5000
 spring:
   profiles:
-    active: dev
+    active: test
   servlet:
     multipart:
       maxFileSize: 25MB
