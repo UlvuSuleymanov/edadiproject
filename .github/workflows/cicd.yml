@@ -6,10 +6,6 @@ on:
 jobs:
   build:
     runs-on: [ubuntu-latest]
-    env:
-      POSTGRES_URL: ${{secrets.POSTGRES_URL}}
-      POSTGRES_USERNAME: ${{secrets.POSTGRES_USERNAME}}
-      POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -19,6 +15,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build Project
+        env:
+          SPRING_DATASOURCE_URL: ${{secrets.POSTGRES_URL}}
+          SPRING_DATASOURCE_USERNAME: ${{secrets.POSTGRES_USERNAME}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
         run: mvn clean install -DskipTests
       - name: Login to docker hub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
