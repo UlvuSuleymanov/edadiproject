@@ -35,4 +35,4 @@ jobs:
       - name: Delete old container
         run: sudo docker rm -f edadi
       - name: Run docker container
-        run: sudo docker run -d -p 5000:5000 --name edadi ulvusuleymanov1/edadi
+        run: sudo docker run -d -p 5000:5000 --name edadi -e POSTGRES_URL=${{secrets.POSTGRES_URL}} -e POSTGRES_USERNAME=${{secrets.POSTGRES_USERNAME}} -e POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}} ulvusuleymanov1/edadi
