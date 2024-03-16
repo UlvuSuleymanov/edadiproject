@@ -2,7 +2,7 @@ name: CICD
 
 on:
   push:
-    branches: [master]
+    branches: [test]
 jobs:
   build:
     runs-on: [ubuntu-latest]
