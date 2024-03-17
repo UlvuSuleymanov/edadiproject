@@ -54,7 +54,7 @@ public class SearchItem {
 
     public SearchItem(Topic topic) {
         text = topic.getTitle();
-        type = EntityType.QUESTION;
+        type = EntityType.TOPIC;
         entityId = topic.getId().toString();
     }
 

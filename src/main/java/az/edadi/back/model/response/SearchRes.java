@@ -21,7 +21,7 @@ public class SearchRes {
         switch (item.getType()) {
             case USER -> this.url = "/user/" + item.getEntityId();
             case UNIVERSITY -> this.url = "/university/" + item.getEntityId();
-            case QUESTION -> this.url = "/question/" + item.getEntityId();
+            case TOPIC -> this.url = "/topic/" + item.getEntityId();
             default -> this.url = "/";
         }
     }
