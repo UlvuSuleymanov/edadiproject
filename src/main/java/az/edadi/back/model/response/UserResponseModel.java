@@ -28,7 +28,7 @@ public class UserResponseModel {
     public UserResponseModel(User user) {
         username = user.getUsername();
         name = user.getName();
-        date = DateUtil.getHowLongAgoString(user.getProfileBirthDay());
+        date = DateUtil.getHowLongAgoString(user.getDateCreated());
         picture=user.getPicture();
         Optional<Speciality> speciality  = Optional.ofNullable(user.getSpeciality());
         if(speciality.isPresent()){

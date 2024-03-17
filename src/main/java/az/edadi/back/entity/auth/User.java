@@ -2,6 +2,7 @@ package az.edadi.back.entity.auth;
 
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
+import az.edadi.back.entity.BaseEntity;
 import az.edadi.back.entity.app.Article;
 import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.app.Notification;
@@ -30,10 +31,7 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
-public class User implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
 
     @Column(unique = true,nullable = false,length = 40)
     private  String username;
@@ -47,8 +45,6 @@ public class User implements Serializable {
     private String password;
 
     private String picture;
-
-    private Date profileBirthDay;
 
     private String provider;
 
@@ -107,7 +103,6 @@ public class User implements Serializable {
     private Set<UserAuthority> authorities = new HashSet<>();
 
     public User(){
-        this.profileBirthDay=new Date();
         this.lastSeen=new Date();
         this.authorities.add(UserAuthority.USER_READ);
         this.authorities.add(UserAuthority.USER_UPDATE);
@@ -139,7 +134,7 @@ public class User implements Serializable {
         picture=user.getPicture();
     }
     public User(Long id){
-        this.id=id;
+        super.setId(id);
     }
 
 
