@@ -25,7 +25,7 @@ public class InitDb implements CommandLineRunner {
     private final TopicRepository topicRepository;
     private final UniversityRepository universityRepository;
     private final RegionRepository regionRepository;
-     private final Environment environment;
+    private final Environment environment;
 
 
     public InitDb(UserRepository userRepository,

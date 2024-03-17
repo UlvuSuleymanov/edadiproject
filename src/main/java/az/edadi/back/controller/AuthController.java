@@ -18,7 +18,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "api/auth")
+@RequestMapping(value = "api/v1/auth")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthController {
 
