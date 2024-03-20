@@ -7,8 +7,6 @@ import az.edadi.back.service.AuthenticationService;
 
 import freemarker.template.TemplateException;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,28 +17,30 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "api/v1/auth")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthController {
-
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/refresh")
+    public AuthController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
+    @PostMapping("refresh")
     public ResponseEntity refreshToken(@RequestBody JwtTokenResponseModel tokens) {
         return ResponseEntity.ok(authenticationService.refreshToken(tokens));
     }
 
-    @PostMapping(value = "/signin")
+    @PostMapping(value = "signin")
     public ResponseEntity<?> login(@RequestBody SignInRequestModel signInRequestModel) {
         return ResponseEntity.ok(authenticationService.login(signInRequestModel));
     }
 
-    @PostMapping(value = "/signup")
+    @PostMapping(value = "signup")
     public ResponseEntity addUser(@Valid @RequestBody final SignUpRequestModel signUpRequestModel) {
         authenticationService.register(signUpRequestModel);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/google")
+    @PostMapping(value = "google")
     public ResponseEntity addUser(@RequestBody OAuth2LoginRequest request) {
         SignInResponseModel signInResponseModel = authenticationService.socialLogin(request);
         return ResponseEntity.ok(signInResponseModel);

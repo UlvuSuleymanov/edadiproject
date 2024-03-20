@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SecurityBeanConfig  {
-
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
@@ -24,7 +23,6 @@ public class SecurityBeanConfig  {
     JwtBean jwtBean(){
         return new JwtBean();
     }
-
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -38,24 +36,4 @@ public class SecurityBeanConfig  {
             }
         };
     }
-
-    public static void main(String[] args) {
-
-        String arr = "adsfghj";
-
-        char [] c = arr.toCharArray();
-        int i=0;
-        int j=c.length-1;
-        while(i<j){
-            char t=c[i];
-            c[i]=c[j];
-            c[j]=t;
-            i++;
-            j--;
-        }
-
-        for(int k=0;k<c.length;k++)
-            System.out.println(c[k]);
-    }
-
 }
