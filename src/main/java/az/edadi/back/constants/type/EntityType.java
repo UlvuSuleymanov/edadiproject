@@ -3,25 +3,27 @@ package az.edadi.back.constants.type;
 import az.edadi.back.exception.model.not_found.EntityTypeNotFoundException;
 
 public enum EntityType {
-    USER("user"),
-    ROOMMATE("roommate"),
-    POST("post"),
-    UNIVERSITY("university"),
-    SPECIALITY("speciality"),
-    TOPIC("question"),
-
-    All("all");
+    USER("user","/user"),
+    ROOMMATE("roommate","/roommate"),
+    POST("post","/post"),
+    UNIVERSITY("university","/university"),
+    SPECIALITY("speciality","/speciality"),
+    TOPIC("topic","/topic"),
+    All("all","/");
 
     private final String type;
+    private final String page;
 
-    EntityType(String type) {
+    EntityType(String type,String page) {
         this.type = type;
+        this.page=page;
     }
-
     public String getType() {
         return type;
     }
-
+    public String getPage() {
+        return page;
+    }
     public static EntityType of(String entityTypeString) {
         for (EntityType entityType : EntityType.values())
             if (entityType.type.equalsIgnoreCase(entityTypeString))

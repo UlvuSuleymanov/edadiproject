@@ -13,15 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/v1/roommate")
 public class RoommateController {
-
     private final RoomMateService roomMateService;
-
     public RoommateController(RoomMateService roomMateService) {
         this.roomMateService = roomMateService;
     }
-
     @PostMapping
-    ResponseEntity<HttpStatus> addRoomAd(@Valid @RequestBody RoommateReq roommateRequest) {
+    ResponseEntity<HttpStatus> saveRoommate(@Valid @RequestBody RoommateReq roommateRequest) {
          roomMateService.addRoommate(roommateRequest);
          return ResponseEntity.ok(HttpStatus.CREATED);
     }
@@ -29,16 +26,16 @@ public class RoommateController {
     @GetMapping
     List<RoommateResponseModel> getRoommateList(@RequestParam(defaultValue = "0") Long regionId,
                                                @RequestParam(defaultValue = "1") int page) {
-        return roomMateService.getRoommates(regionId, page);
+        return roomMateService.getRoommateList(regionId, page);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     ResponseEntity deleteRoommateAd(@PathVariable Long id) {
         RoommateResponseModel roommateResponseModel = roomMateService.getRoommate(id);
         return ResponseEntity.ok(roommateResponseModel);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     ResponseEntity<HttpStatus> getRoommate(@PathVariable Long id) {
         roomMateService.deleteRoommateAd(id);
         return ResponseEntity.ok(HttpStatus.OK);

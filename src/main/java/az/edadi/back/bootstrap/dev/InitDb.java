@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
-@Profile("h2")
+@Profile("test")
 public class InitDb implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,15 +39,15 @@ public class InitDb implements CommandLineRunner {
         this.topicRepository = topicRepository;
         this.universityRepository = universityRepository;
         this.regionRepository = regionRepository;
-         this.environment = environment;
+        this.environment = environment;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
-        //add dummy universities
+
         addDummyUniversities();
-        //add dummy users
+
         addDummyUsers();
 
         addQuestions();

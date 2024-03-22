@@ -12,7 +12,7 @@ public interface RoomMateService {
 
     RoommateResponseModel addRoommate(RoommateReq roommateRequestModel);
 
-    List<RoommateResponseModel> getRoommates(Long regionId,int page);
+    List<RoommateResponseModel> getRoommateList(Long regionId,int page);
 
     List<Roommate> getAllRoommateAds(int page);
 

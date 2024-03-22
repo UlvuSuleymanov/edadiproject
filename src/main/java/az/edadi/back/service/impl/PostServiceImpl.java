@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PostServiceImpl implements PostService {
-
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final UniversityRepository universityRepository;

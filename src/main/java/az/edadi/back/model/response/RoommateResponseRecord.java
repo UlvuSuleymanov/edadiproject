@@ -1,4 +1,4 @@
-package az.edadi.back.model.res;
+package az.edadi.back.model.response;
 
 import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.UserSummary;

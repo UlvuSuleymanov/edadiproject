@@ -11,6 +11,7 @@ import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.repository.*;
+import az.edadi.back.service.ReelsService;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,19 +33,20 @@ public class RoomMateServiceImpl implements RoomMateService {
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
     private final FileItemRepository fileItemRepository;
+    private final ReelsService reelsService;
 
     public RoomMateServiceImpl(RoomMateRepository roomMateRepository,
                                RegionRepository regionRepository,
                                UserRepository userRepository,
                                UserEventsRepository userEventsRepository,
-                               FileItemRepository fileItemRepository) {
+                               FileItemRepository fileItemRepository, ReelsService reelsService) {
         this.roomMateRepository = roomMateRepository;
         this.regionRepository = regionRepository;
         this.userRepository = userRepository;
         this.userEventsRepository = userEventsRepository;
         this.fileItemRepository = fileItemRepository;
+        this.reelsService = reelsService;
     }
-
 
     @Override
     public RoommateResponseModel addRoommate(RoommateReq roommateRequestModel) {
@@ -66,24 +68,21 @@ public class RoomMateServiceImpl implements RoomMateService {
             roommate.setFileItems(images);
         }
 
-
         roommate.setUser(user);
         roommate.setRegion(region);
         Roommate savedRoommate = roomMateRepository.saveAndFlush(roommate);
-
-
         if (roommateRequestModel.getHaveHouse()) {
             images = images.stream().map(file -> {file.setUsed(true); file.setRoommate(savedRoommate); return file;}).toList();
             fileItemRepository.saveAll(images);
             roommate.setFileItems(images);
         }
 
-        System.out.println(roommateRequestModel.getUrls());
+        reelsService.saveReels(savedRoommate);
         return new RoommateResponseModel(roomMateRepository.save(roommate));
     }
 
     @Override
-    public List<RoommateResponseModel> getRoommates(Long regionId, int page) {
+    public List<RoommateResponseModel> getRoommateList(Long regionId, int page) {
 
         Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
         List<Roommate> roommates = regionId.intValue() != 0 ?
@@ -93,7 +92,7 @@ public class RoomMateServiceImpl implements RoomMateService {
 
         return roommates
                 .stream()
-                .map(roommateAd -> new RoommateResponseModel(roommateAd))
+                .map(RoommateResponseModel::new)
                 .collect(Collectors.toList());
     }
 

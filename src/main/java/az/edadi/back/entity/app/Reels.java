@@ -6,7 +6,9 @@ import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.roommate.Roommate;
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 public class Reels extends BaseEntity {
     private EntityType type;
@@ -18,4 +20,5 @@ public class Reels extends BaseEntity {
     private Post post;
     @OneToOne
     private Roommate roommate;
+
 }
