@@ -42,7 +42,13 @@ public class ReelsRes {
     }
 
     private void setTopic(Topic topic) {
-
+        TopicResponse topicResponse = new TopicResponse(topic);
+        this.entityId=topicResponse.getId();
+        this.title=topicResponse.getTitle();
+        this.date=topicResponse.getDate();
+        this.user=topicResponse.getUser();
+        parentPage=EntityType.TOPIC.getPage();
+        entityPage=parentPage+"/"+topicResponse.getSlug();
     }
 
     private void setRoommate(Roommate roommate) {
@@ -51,6 +57,8 @@ public class ReelsRes {
         this.title=roommateResponseModel.getInfo();
         this.date=roommateResponseModel.getDate();
         this.user=roommateResponseModel.getAuthor();
+        this.parentPage=EntityType.ROOMMATE.getPage();
+        this.entityPage=parentPage+"/"+roommate.getId();
     }
 
 }
