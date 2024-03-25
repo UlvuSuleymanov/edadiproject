@@ -5,8 +5,6 @@ import az.edadi.back.model.UserEventModel;
 
 public interface UserEventsRepository {
     void saveEvent(UserEvent userEvent);
-
     void check(UserEvent userEvent);
-
     void clearAll();
 }

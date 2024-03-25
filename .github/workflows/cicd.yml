@@ -18,7 +18,7 @@ jobs:
         env:
           SPRING_DATASOURCE_URL: ${{secrets.POSTGRES_URL}}
           SPRING_DATASOURCE_USERNAME: ${{secrets.POSTGRES_USERNAME}}
-          SPRING_DATASOURCE_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.POSt mTGRES_PASSWORD}}
         run: mvn clean install -DskipTests
       - name: Login to docker hub
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
