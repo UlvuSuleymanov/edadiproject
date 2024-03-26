@@ -77,7 +77,7 @@ public class InitDb implements CommandLineRunner {
         user.setName("admin");
         user.setUsername("admin");
         user.setEmail("admin@gmail.com");
-        user.setPicture("https://cdn.vectorstock.com/i/1000x1000/30/97/flat-business-man-user-profile-avatar-icon-vector-4333097.webp");
+        user.setPicture("assets/images/user/default.png");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.saveAndFlush(user);
         for (int i = 0; i < 3; i++) {

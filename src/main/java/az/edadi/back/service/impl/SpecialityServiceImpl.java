@@ -11,7 +11,6 @@ import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UniversityRepository;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class SpecialityServiceImpl implements SpecialityService {
-
     private final UniversityRepository universityRepository;
     private final SpecialityRepository specialityRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public SpecialityServiceImpl(UniversityRepository universityRepository, SpecialityRepository specialityRepository, UserRepository userRepository) {
         this.universityRepository = universityRepository;
         this.specialityRepository = specialityRepository;
@@ -38,14 +35,10 @@ public class SpecialityServiceImpl implements SpecialityService {
 
     @Override
     @Cacheable("specialities")
-    public List<SpecialitySummaryResModel> getSpecialities(Long group) {
-        List<Speciality> specialities = new ArrayList<>();
-        specialities = specialityRepository.getSpeciality(group);
-        return specialities.stream()
-                .map(speciality -> new SpecialitySummaryResModel(speciality))
+    public List<SpecialitySummaryResModel> getSpecialityList(Long group) {
+        return specialityRepository.findAllByGroup(group).stream()
+                .map(SpecialitySummaryResModel::new)
                 .collect(Collectors.toList());
-
-
     }
 
     @Override

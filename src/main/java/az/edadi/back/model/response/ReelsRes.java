@@ -12,7 +12,7 @@ import lombok.Data;
 public class ReelsRes {
     private Long reelsId;
     private Long entityId;
-    private String entityType;
+    private String type;
     private String title;
     private String date;
     private String parentPage;
@@ -26,7 +26,7 @@ public class ReelsRes {
             case ROOMMATE -> this.setRoommate(reels.getRoommate());
             case TOPIC -> this.setTopic(reels.getTopic());
         }
-        this.setEntityType(reels.getType().getType());
+        this.setType(reels.getType().toString());
         this.reelsId=reels.getId();
 
     }

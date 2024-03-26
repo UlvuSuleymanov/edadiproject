@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SpecialityService {
 
-     List<SpecialitySummaryResModel> getSpecialities(Long group);
+     List<SpecialitySummaryResModel> getSpecialityList(Long group);
 
      List<SpecialitySummaryResModel> getUniversitySpecialities(Long uniId);
 
