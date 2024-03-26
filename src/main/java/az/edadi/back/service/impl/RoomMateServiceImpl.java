@@ -2,16 +2,16 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.roommate.Region;
 import az.edadi.back.entity.roommate.Roommate;
+import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.exception.model.UserAuthorizationException;
-import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.request.RoommateReq;
 import az.edadi.back.model.response.RoommateResponseModel;
 import az.edadi.back.repository.*;
-import az.edadi.back.service.ReelsService;
 import az.edadi.back.service.RoomMateService;
 import az.edadi.back.utility.AuthUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,19 +33,17 @@ public class RoomMateServiceImpl implements RoomMateService {
     private final UserRepository userRepository;
     private final UserEventsRepository userEventsRepository;
     private final FileItemRepository fileItemRepository;
-    private final ReelsService reelsService;
 
     public RoomMateServiceImpl(RoomMateRepository roomMateRepository,
                                RegionRepository regionRepository,
                                UserRepository userRepository,
                                UserEventsRepository userEventsRepository,
-                               FileItemRepository fileItemRepository, ReelsService reelsService) {
+                               FileItemRepository fileItemRepository) {
         this.roomMateRepository = roomMateRepository;
         this.regionRepository = regionRepository;
         this.userRepository = userRepository;
         this.userEventsRepository = userEventsRepository;
         this.fileItemRepository = fileItemRepository;
-        this.reelsService = reelsService;
     }
 
     @Override
@@ -54,7 +52,7 @@ public class RoomMateServiceImpl implements RoomMateService {
         Roommate roommate = new Roommate(roommateRequestModel);
 
         User user = userRepository.findById(AuthUtil.getCurrentUserId()).orElseThrow(
-                UserNotFoundException::new
+                () -> new EdadiEntityNotFoundException(EntityType.USER)
         );
 
         Region region = regionRepository.findById(roommateRequestModel.getRegionId()).orElseThrow(
@@ -70,21 +68,24 @@ public class RoomMateServiceImpl implements RoomMateService {
 
         roommate.setUser(user);
         roommate.setRegion(region);
+
         Roommate savedRoommate = roomMateRepository.saveAndFlush(roommate);
         if (roommateRequestModel.getHaveHouse()) {
-            images = images.stream().map(file -> {file.setUsed(true); file.setRoommate(savedRoommate); return file;}).toList();
+            images = images.stream().map(file -> {
+                file.setUsed(true);
+                file.setRoommate(savedRoommate);
+                return file;
+            }).toList();
             fileItemRepository.saveAll(images);
             roommate.setFileItems(images);
         }
-
-        reelsService.saveReels(savedRoommate);
         return new RoommateResponseModel(roomMateRepository.save(roommate));
     }
 
     @Override
     public List<RoommateResponseModel> getRoommateList(Long regionId, int page) {
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("date").descending());
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("dateCreated").descending());
         List<Roommate> roommates = regionId.intValue() != 0 ?
                 roomMateRepository.getRoommatesByRegion(regionId, pageable)
                 :
@@ -98,7 +99,7 @@ public class RoomMateServiceImpl implements RoomMateService {
 
     @Override
     public List<Roommate> getAllRoommateAds(int page) {
-        Pageable pageable = PageRequest.of(page, 20, Sort.by("date").descending());
+        Pageable pageable = PageRequest.of(page, 20, Sort.by("dateCreated").descending());
         List<Roommate> roommates = roomMateRepository.findAll(pageable).getContent();
         return roommates;
     }
@@ -114,13 +115,13 @@ public class RoomMateServiceImpl implements RoomMateService {
 
     @Override
     public void deleteRoommateAd(Long id) {
-        Long currentId = AuthUtil.getCurrentUserId();
         Roommate roommate = roomMateRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException()
+                EntityNotFoundException::new
         );
-        if (roommate.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
-            roomMateRepository.delete(roommate);
-        else
+        Long currentId = AuthUtil.getCurrentUserId();
+        if (!(roommate.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)))
             throw new UserAuthorizationException();
+
+        roomMateRepository.delete(roommate);
     }
 }

@@ -1,6 +1,6 @@
 package az.edadi.back.model.response;
 
-import az.edadi.back.constants.UserAuthority;
+import  az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.UserSummary;
@@ -32,7 +32,7 @@ public class RoommateResponseModel {
         author = new UserSummary(roommate.getUser());
         region = roommate.getRegion().getName();
         regionId = roommate.getRegion().getId().toString();
-        date = DateUtil.getHowLongAgoString(roommate.getDate());
+        date = DateUtil.getHowLongAgoString(roommate.getDateCreated());
         contact = roommate.getContact();
         gender=roommate.getAuthorGender();
         houseInfo=roommate.getHouseInfo();

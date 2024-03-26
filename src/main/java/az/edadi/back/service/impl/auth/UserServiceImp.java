@@ -1,7 +1,9 @@
 package az.edadi.back.service.impl.auth;
 
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
+import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
@@ -43,8 +45,7 @@ public class UserServiceImp implements UserService {
     @Override
     public UserResponseModel getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException());
-
+                .orElseThrow(() -> new EdadiEntityNotFoundException(EntityType.USER));
         return new UserResponseModel(user);
     }
 

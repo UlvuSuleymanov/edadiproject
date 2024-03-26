@@ -17,7 +17,6 @@ public class UserExceptionHandler {
         return new ResponseEntity("User not found",HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler({UserAuthorizationException.class})
     public ResponseEntity handleUserAuthorizationExceptions() {
         return new ResponseEntity("User not authorized to perform this action.",HttpStatus.UNAUTHORIZED);

@@ -18,25 +18,25 @@ public class RoommateController {
         this.roomMateService = roomMateService;
     }
     @PostMapping
-    ResponseEntity<HttpStatus> saveRoommate(@Valid @RequestBody RoommateReq roommateRequest) {
+    ResponseEntity<HttpStatus> addRoommate(@Valid @RequestBody RoommateReq roommateRequest) {
          roomMateService.addRoommate(roommateRequest);
          return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping
     List<RoommateResponseModel> getRoommateList(@RequestParam(defaultValue = "0") Long regionId,
-                                               @RequestParam(defaultValue = "1") int page) {
+                                                @RequestParam(defaultValue = "1") int page) {
         return roomMateService.getRoommateList(regionId, page);
     }
 
     @GetMapping("{id}")
-    ResponseEntity deleteRoommateAd(@PathVariable Long id) {
+    ResponseEntity<RoommateResponseModel> getRoommate(@PathVariable Long id) {
         RoommateResponseModel roommateResponseModel = roomMateService.getRoommate(id);
         return ResponseEntity.ok(roommateResponseModel);
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<HttpStatus> getRoommate(@PathVariable Long id) {
+    ResponseEntity<HttpStatus> deleteRoommate(@PathVariable Long id) {
         roomMateService.deleteRoommateAd(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

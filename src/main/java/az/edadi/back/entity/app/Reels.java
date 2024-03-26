@@ -7,9 +7,11 @@ import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.roommate.Roommate;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Reels extends BaseEntity {
     private EntityType type;
     @OneToOne
@@ -20,5 +22,10 @@ public class Reels extends BaseEntity {
     private Post post;
     @OneToOne
     private Roommate roommate;
+
+    public Reels(Roommate roommate){
+        this.setRoommate(roommate);
+        this.setType(EntityType.ROOMMATE);
+    }
 
 }
