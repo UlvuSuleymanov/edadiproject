@@ -116,7 +116,7 @@ public class RoomMateServiceImpl implements RoomMateService {
     @Override
     public void deleteRoommateAd(Long id) {
         Roommate roommate = roomMateRepository.findById(id).orElseThrow(
-                EntityNotFoundException::new
+                ()->new EdadiEntityNotFoundException(EntityType.ROOMMATE)
         );
         Long currentId = AuthUtil.getCurrentUserId();
         if (!(roommate.getUser().getId().equals(currentId) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)))

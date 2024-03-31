@@ -28,7 +28,7 @@ public class PostResponseModel {
     public PostResponseModel(Post post, boolean isLiked) {
         id = post.getId();
         text = post.getText();
-        date = DateUtil.getHowLongAgoString(post.getDate());
+        date = DateUtil.getHowLongAgoString(post.getDateCreated());
         likeCount = post.getVotes().size();
         commentCount = post.getComments().size();
         author = new UserSummary(post.getUser());

@@ -1,6 +1,5 @@
 package az.edadi.back.controller;
 
-import az.edadi.back.entity.post.Post;
 import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
 import az.edadi.back.model.response.PostResponseModel;
@@ -9,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -20,14 +21,13 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity savePost(@RequestBody @Valid PostRequestModel postRequestModel) {
-        Post post = postService.createPost(postRequestModel);
-        return ResponseEntity.ok(new PostResponseModel(post, false));
+    public ResponseEntity<PostResponseModel> savePost(@RequestBody @Valid PostRequestModel postRequestModel) {
+        return ResponseEntity.ok(new PostResponseModel(postService.createPost(postRequestModel), false));
     }
 
     @GetMapping
-    public ResponseEntity getPostsResponse(@ModelAttribute @Valid GetPostRequestModel getPostRequestModel) {
-        return ResponseEntity.ok(postService.getPostList(getPostRequestModel));
+    public ResponseEntity<List<PostResponseModel>> getPostList(@ModelAttribute @Valid GetPostRequestModel getPostRequestModel) {
+         return ResponseEntity.ok(postService.getPostList(getPostRequestModel));
     }
 
 //    @GetMapping(value = "/post/all")
@@ -39,7 +39,7 @@ public class PostController {
 //    }
 
     @GetMapping(value = "search")
-    public ResponseEntity searchPost(@ModelAttribute @Valid GetPostRequestModel getPostRequestModel) {
+    public ResponseEntity<List<PostResponseModel>> searchPost(@ModelAttribute @Valid GetPostRequestModel getPostRequestModel) {
         return ResponseEntity.ok(postService.searchPost(getPostRequestModel));
     }
 
@@ -50,9 +50,8 @@ public class PostController {
     }
 
     @DeleteMapping("{postId}")
-    public ResponseEntity deletePost(@PathVariable Long postId) {
+    public void deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 

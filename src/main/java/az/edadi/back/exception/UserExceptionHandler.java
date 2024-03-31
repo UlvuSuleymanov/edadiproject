@@ -18,7 +18,7 @@ public class UserExceptionHandler {
     }
 
     @ExceptionHandler({UserAuthorizationException.class})
-    public ResponseEntity handleUserAuthorizationExceptions() {
+    public ResponseEntity<String> handleUserAuthorizationExceptions() {
         return new ResponseEntity("User not authorized to perform this action.",HttpStatus.UNAUTHORIZED);
     }
 }

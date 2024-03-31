@@ -2,7 +2,7 @@ package az.edadi.back.service;
 
 import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.model.request.RoommateReq;
- import az.edadi.back.model.response.RoommateResponseModel;
+import az.edadi.back.model.response.RoommateResponseModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

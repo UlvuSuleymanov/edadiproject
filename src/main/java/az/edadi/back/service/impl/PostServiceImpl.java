@@ -2,6 +2,7 @@ package az.edadi.back.service.impl;
 
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.constants.event.UserEvent;
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
@@ -9,6 +10,7 @@ import az.edadi.back.entity.post.Vote;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.exception.model.BadParamsForPostListException;
+import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.exception.model.UserAuthorizationException;
 import az.edadi.back.model.request.GetPostRequestModel;
 import az.edadi.back.model.request.PostRequestModel;
@@ -65,7 +67,7 @@ public class PostServiceImpl implements PostService {
                 );
                 post.setSpeciality(speciality);
                 break;
-            case "question":
+            case "topic":
                 Topic topic = topicRepository.findById(postRequestModel.getId()).orElseThrow(() ->
                         new EntityNotFoundException("Question not found with  id : ")
                 );
@@ -83,7 +85,7 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long postId) {
         log.info("User {} trying to delete post {}", AuthUtil.getCurrentUsername(), postId);
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new EntityNotFoundException()
+                () -> new EdadiEntityNotFoundException(EntityType.POST)
         );
         if (!post.getUser().getId().equals(AuthUtil.getCurrentUserId()) &&
                 !AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE))
@@ -95,7 +97,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponseModel> getPostList(GetPostRequestModel getPostRequestModel) {
-        Query query = createGetPostListQuery(getPostRequestModel.getType(),
+        Query query = createGetPostListQuery(getPostRequestModel.getType().getType(),
                 getPostRequestModel.getId(),
                 getPostRequestModel.getPage(),
                 getPostSortQuery(getPostRequestModel.getSort()),
@@ -158,7 +160,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostResponseModel> searchPost(GetPostRequestModel getPostRequestModel) {
 
-        Query query = createSearchQuery(getPostRequestModel.getType(),
+        Query query = createSearchQuery(getPostRequestModel.getType().getType(),
                 getPostRequestModel.getId(),
                 getPostRequestModel.getPage(),
                 getPostSortQuery(getPostRequestModel.getSort()),
@@ -187,7 +189,7 @@ public class PostServiceImpl implements PostService {
             case "comment":
                 return "SIZE(p.comments)";
             case "date":
-                return "date";
+                return "dateCreated";
             default:
                 throw new BadParamsForPostListException();
         }

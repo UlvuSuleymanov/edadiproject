@@ -31,4 +31,9 @@ public class Topic {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
+    public Topic(Long id){
+        this.id=id;
+    }
+
 }

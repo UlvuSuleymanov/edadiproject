@@ -1,17 +1,20 @@
 package az.edadi.back.constants.type;
 
-public enum  PostTypes {
+import lombok.Getter;
+
+@Getter
+public enum PostType {
+
     UNIVERSITY("university"),
+
     SPECIALITY("speciality"),
-    QUESTION("question");
+
+    TOPIC("topic");
 
     private final String type;
 
-    PostTypes(String type) {
+    PostType(String type) {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
 }

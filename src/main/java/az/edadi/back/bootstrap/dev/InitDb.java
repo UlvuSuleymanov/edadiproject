@@ -1,11 +1,13 @@
 package az.edadi.back.bootstrap.dev;
 
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.app.Topic;
 import az.edadi.back.entity.auth.User;
+import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.roommate.Region;
-import az.edadi.back.entity.search.SearchItem;
 import az.edadi.back.entity.university.University;
 import az.edadi.back.repository.*;
+import az.edadi.back.validation.PostType;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,6 +28,7 @@ public class InitDb implements CommandLineRunner {
     private final UniversityRepository universityRepository;
     private final RegionRepository regionRepository;
     private final Environment environment;
+    private final PostRepository postRepository;
 
 
     public InitDb(UserRepository userRepository,
@@ -33,13 +36,14 @@ public class InitDb implements CommandLineRunner {
                   TopicRepository topicRepository,
                   UniversityRepository universityRepository,
                   RegionRepository regionRepository,
-                  Environment environment) {
+                  Environment environment, PostRepository postRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.topicRepository = topicRepository;
         this.universityRepository = universityRepository;
         this.regionRepository = regionRepository;
         this.environment = environment;
+        this.postRepository = postRepository;
     }
 
 
@@ -55,7 +59,22 @@ public class InitDb implements CommandLineRunner {
         addRegions();
 
         addSearchItems();
+
+        addPosts();
     }
+
+    private void addPosts() {
+        List<Post> postList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Post post = new Post();
+            post.setText("dummy adsa dsa ads asd sasad as");
+            post.setUser(new User(1L));
+            post.setParent(EntityType.TOPIC);
+            post.setTopic(new Topic(1L));
+            postList.add(post);
+         }
+            postRepository.saveAll(postList);
+        }
 
     void addDummyUniversities() {
         List<University> universityList = new ArrayList<>();
