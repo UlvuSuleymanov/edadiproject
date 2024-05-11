@@ -50,6 +50,8 @@ public class User extends BaseEntity {
 
     private Date lastSeen;
 
+    private boolean isShownLastSeen;
+
     @ManyToOne
     private Speciality speciality;
 
@@ -79,9 +81,6 @@ public class User extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<TextBookFile> textBookFiles =new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Message> messages =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Thread> userThreads = new ArrayList<>();

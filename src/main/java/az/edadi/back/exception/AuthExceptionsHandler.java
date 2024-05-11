@@ -1,6 +1,5 @@
 package az.edadi.back.exception;
 
-import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthExceptionsHandler {
 
-    @ExceptionHandler({EntityNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class})
     @ResponseBody
     public ResponseEntity handleLoginDetails() {
         return new ResponseEntity(HttpStatus.NOT_FOUND);

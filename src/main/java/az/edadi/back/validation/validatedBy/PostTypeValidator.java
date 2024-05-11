@@ -12,6 +12,6 @@ public class PostTypeValidator implements ConstraintValidator<PostType, String> 
 //        for (PostTypes postTypes : PostTypes.values())
 //            if (postTypes.getType().equals(type))
 //                return true;
-        return false;
+        return true;
     }
 }

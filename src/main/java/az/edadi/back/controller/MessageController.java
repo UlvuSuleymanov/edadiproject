@@ -24,22 +24,15 @@ public class MessageController {
     }
 
     @MessageMapping("/send/message")
-    public MessageResponseModel messageResponseModel(
-            @Payload MessageRequestModel messageRequestModel,
-            StompHeaderAccessor accessor
-    ) throws JsonProcessingException {
-
+    public void messageResponseModel(@Payload MessageRequestModel messageRequestModel,
+                                     StompHeaderAccessor accessor) throws JsonProcessingException {
         messageService.sendMessageToRoom(
                 messageRequestModel, Long.valueOf(accessor.getUser().getName())
         );
-        return MessageResponseModel.builder()
-                .body(messageRequestModel.getContent())
-                .date(new Date().toString())
-                .threadId(messageRequestModel.getThreadId())
-                .build();
+
     }
 
-    @GetMapping("api/message")
+    @GetMapping("api/v1/message")
     List<MessageResponseModel> getThreadMessages(@RequestParam Long threadId, @RequestParam int page) {
         List<MessageResponseModel> messages = messageService.getMessages(threadId, page);
         return messages;

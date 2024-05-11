@@ -4,10 +4,8 @@ import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.model.EdadiEntityNotFoundException;
-import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
-import az.edadi.back.model.response.JwtTokenResponseModel;
 import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.model.response.UserResponseModel;
 import az.edadi.back.repository.SpecialityRepository;
@@ -103,7 +101,7 @@ public class UserServiceImp implements UserService {
     public SignInResponseModel getCurrentUser() {
         Long id = AuthUtil.getCurrentUserId();
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new EdadiEntityNotFoundException(EntityType.USER));
         return new SignInResponseModel(user, jwtService.getTokenResponse(user));
     }
 

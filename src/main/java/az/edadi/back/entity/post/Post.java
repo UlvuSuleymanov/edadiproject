@@ -24,7 +24,6 @@ import java.util.*;
 @AllArgsConstructor
 public class Post extends BaseEntity {
 
-
     @Lob
     private String text;
 
@@ -67,6 +66,7 @@ public class Post extends BaseEntity {
 
     public Post(PostRequestModel postRequestModel, User user) {
         text = postRequestModel.getText();
+        parent=EntityType.of(postRequestModel.getType());
         this.user = user;
     }
 

@@ -30,6 +30,7 @@ public class BaseEntity {
     @PrePersist
     protected void onCreate() {
         this.dateCreated = new Date();
+        this.dateModified = new Date();
     }
 
     @PreUpdate

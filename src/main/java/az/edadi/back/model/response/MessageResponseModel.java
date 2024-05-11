@@ -17,15 +17,15 @@ public class MessageResponseModel {
     private String body;
     private String date;
     private UserSummary author;
-    private Long threadId;
+    private Long conversationId;
     private boolean incoming;
 
     public MessageResponseModel(Message message) {
         id = message.getId();
         body = message.getText();
-        date = DateUtil.getHowLongAgoString(message.getDate());
-        author = new UserSummary(message.getUser());
-        threadId=message.getThread().getId();
-        incoming= !AuthUtil.getCurrentUserId().equals(author.getId());
+        date = DateUtil.getHowLongAgoString(message.getDateCreated());
+        author = new UserSummary(message.getThread().getUser());
+        conversationId = message.getConversation().getId();
+        incoming = !AuthUtil.getCurrentUserId().equals(author.getId());
     }
 }

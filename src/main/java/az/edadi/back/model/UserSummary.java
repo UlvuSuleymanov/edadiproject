@@ -22,6 +22,7 @@ public class UserSummary {
         name=user.getName();
         username=user.getUsername();
         picture=user.getPicture();
-        lastSeen= DateUtil.getHowLongAgoString(user.getLastSeen());
+        if(user.isShownLastSeen())
+          lastSeen= DateUtil.getHowLongAgoString(user.getLastSeen());
     }
 }

@@ -1,5 +1,6 @@
 package az.edadi.back.model.request;
 
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.validation.PostType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +20,6 @@ public class PostRequestModel {
     private String text;
 
     @NotBlank
-    @PostType
     private String type;
 
     @NotNull

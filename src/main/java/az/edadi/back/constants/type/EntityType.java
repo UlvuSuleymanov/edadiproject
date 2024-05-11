@@ -8,6 +8,7 @@ public enum EntityType {
     POST("post","/post"),
     UNIVERSITY("university","/university"),
     SPECIALITY("speciality","/speciality"),
+    CONVERSATION("conversation","/conversation"),
     TOPIC("topic","/topic"),
     All("all","/");
 

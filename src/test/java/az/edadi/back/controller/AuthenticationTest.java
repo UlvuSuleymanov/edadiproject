@@ -1,7 +1,7 @@
 package az.edadi.back.controller;
 
 import az.edadi.back.model.request.SignUpRequestModel;
-import az.edadi.back.utility.PatternFactory;
+import az.edadi.back.utility.factory.PatternFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mifmif.common.regex.Generex;
 import org.junit.Test;

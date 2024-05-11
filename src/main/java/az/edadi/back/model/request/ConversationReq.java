@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomReq {
-    private Long userId;
+public class ConversationReq {
+    private String username;
 }

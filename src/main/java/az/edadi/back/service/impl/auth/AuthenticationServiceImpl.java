@@ -1,10 +1,11 @@
 package az.edadi.back.service.impl.auth;
 
 import az.edadi.back.constants.AppConstants;
+import az.edadi.back.constants.type.EntityType;
 import az.edadi.back.entity.auth.Login;
 import az.edadi.back.entity.auth.User;
+import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.exception.model.TooManyAttemptException;
-import az.edadi.back.exception.model.UserNotFoundException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
 import az.edadi.back.model.request.OAuth2LoginRequest;
 import az.edadi.back.model.request.SignInRequestModel;
@@ -57,18 +58,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String sendTokenByEmail(String usernamOrEmail) throws MessagingException, IOException, TemplateException, jakarta.mail.MessagingException {
-        Optional<User> user = userRepository.findByUsernameOrEmail(usernamOrEmail, usernamOrEmail);
-        if (!user.isPresent())
-            throw new UserNotFoundException();
+       User user = userRepository.findByUsernameOrEmail(usernamOrEmail, usernamOrEmail)
+               .orElseThrow(()-> new EdadiEntityNotFoundException(EntityType.USER));
 
-        String token = jwtService.generateResetPasswordToken(user.get());
+        String token = jwtService.generateResetPasswordToken(user);
         String link = AppConstants.DOMAIN + "/recovery?token=" + token;
         Map<String, String> mailModel = new HashMap<>();
-        mailModel.put("name", user.get().getName());
+        mailModel.put("name", user.getName());
         mailModel.put("link", link);
-        mailService.sendResetPasswordMail(user.get().getEmail(), mailModel);
+        mailService.sendResetPasswordMail(user.getEmail(), mailModel);
 
-        return getSecureEmail(user.get().getEmail());
+        return getSecureEmail(user.getEmail());
 
 
     }
@@ -79,7 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> user = userRepository.findById(untrustedId);
 
         if (!user.isPresent())
-            throw new UserNotFoundException();
+            throw new EdadiEntityNotFoundException(EntityType.USER);
         User u = user.get();
         Long id = jwtService.getIdFromToken(token, user.get());
         u.setPassword(passwordEncoder.encode(newPassword));
@@ -95,7 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> user = userRepository.findById(accessId);
 
         if (!user.isPresent())
-            throw new UserNotFoundException();
+            throw new EdadiEntityNotFoundException(EntityType.USER);
 
         //check refreshToken
         jwtService.getIdFromToken(tokens.getRefreshToken(), user.get());
