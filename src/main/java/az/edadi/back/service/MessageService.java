@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MessageService {
 
-    MessageResponseModel sendMessageToRoom(MessageRequestModel messageRequestModel,Long currentUser) throws JsonProcessingException;
+    MessageResponseModel sendMessage(MessageRequestModel messageRequestModel,Long currentUser) throws JsonProcessingException;
 
     List<MessageResponseModel> getMessages(Long roomId, int page);
 }

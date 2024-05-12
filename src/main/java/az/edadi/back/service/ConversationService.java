@@ -14,5 +14,5 @@ public interface ConversationService {
 
     List<ConversationRes> getConversationList(int page);
 
-    void updateConversationLastModifiedDate(Long conversationId, Date date);
+    void updateConversationLastMessageDate(Long conversationId);
 }

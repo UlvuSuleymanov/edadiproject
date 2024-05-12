@@ -20,6 +20,7 @@ import az.edadi.back.utility.DateUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +84,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public List<ConversationRes> getConversationList(int page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("lastMessageDate").descending());
         return conversationRepository.getConversationList(AuthUtil.getCurrentUserId(), pageable)
                 .stream()
                 .map(this::toConversationRes)
@@ -93,7 +94,7 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Async
     @Override
-    public void updateConversationLastModifiedDate(Long conversationId, Date date) {
+    public void updateConversationLastMessageDate(Long conversationId) {
         Conversation conversation=conversationRepository.findById(conversationId)
                 .orElseThrow(()->  new EdadiEntityNotFoundException(EntityType.CONVERSATION));
          conversation.setLastMessageDate(new Date());

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,15 +25,11 @@ public class MessageController {
     @MessageMapping("/send/message")
     public void messageResponseModel(@Payload MessageRequestModel messageRequestModel,
                                      StompHeaderAccessor accessor) throws JsonProcessingException {
-        messageService.sendMessageToRoom(
-                messageRequestModel, Long.valueOf(accessor.getUser().getName())
-        );
-
+        messageService.sendMessage(messageRequestModel, Long.valueOf(accessor.getUser().getName()));
     }
 
     @GetMapping("api/v1/message")
     List<MessageResponseModel> getThreadMessages(@RequestParam Long threadId, @RequestParam int page) {
-        List<MessageResponseModel> messages = messageService.getMessages(threadId, page);
-        return messages;
+        return messageService.getMessages(threadId, page);
     }
 }

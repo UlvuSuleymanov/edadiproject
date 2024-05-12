@@ -12,6 +12,7 @@ import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.repository.ConversationRepository;
 import az.edadi.back.repository.MessageRepository;
 import az.edadi.back.repository.ThreadRepository;
+import az.edadi.back.service.ConversationService;
 import az.edadi.back.service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,37 +38,9 @@ public class MessageServiceImpl implements MessageService {
     private final ObjectMapper objectMapper;
     int MESSAGES_PAGE_SIZE = 15;
 
-//    @Async
-//    @Override
-//    public void saveMessage(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException {
-//        UserThread userThread = userThreadRepository.findByUserIdAndThreadId(currentUserID, messageRequestModel.getThreadId()).orElseThrow(
-//                () -> new EntityNotFoundException("Thread Not Found")
-//        );
-
-//    }
-
-//    @Override
-//    public List<MessageResponseModel> getRoomMessages(Long roomId, int page) {
-//        messageRepository
-//        Thread thread = threadRepository
-//                .findByUserIdAndThreadId(AuthUtil.getCurrentUserId(), threadId)
-//                .orElseThrow(UserAuthorizationException::new);
-//
-//        PageRequest pageRequest = PageRequest.of(
-//                page,
-//                MESSAGES_PAGE_SIZE,
-//                Sort.by("date").descending()
-//        );
-
-//        return messageRepository.findByThreadId(1L, ).stream().map(
-//                MessageResponseModel::new
-//        ).collect(Collectors.toList());
-//        return Collections.emptyList();
-//    }
-
 
     @Override
-    public MessageResponseModel sendMessageToRoom(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException {
+    public MessageResponseModel sendMessage(MessageRequestModel messageRequestModel, Long currentUserID) throws JsonProcessingException {
 
         Thread thread = threadRepository.findById(messageRequestModel.getThreadId())
                 .orElseThrow(() -> new EdadiEntityNotFoundException(EntityType.CONVERSATION));
@@ -80,7 +53,7 @@ public class MessageServiceImpl implements MessageService {
                 .build();
         message = messageRepository.saveAndFlush(message);
         notifyUsers(currentUserID, message);
-
+        updateConversationLastMessageDate(thread.getConversation().getId());
         return null;
     }
 
@@ -103,23 +76,31 @@ public class MessageServiceImpl implements MessageService {
                 {
                     try {
                         simpMessagingTemplate.convertAndSendToUser(
-                                        String.valueOf(userThread.getUser().getId()),
-                                        "/message",
-                                        objectMapper.writeValueAsString(MessageResponseModel.builder()
-                                                .body(message.getText())
-                                                .id(message.getId())
-                                                .date(new Date().toString())
-                                                .incoming(!currentUserId.equals(userThread.getUser().getId()))
-                                                .author(new UserSummary(userThread.getUser()))
-                                                .conversationId(message.getConversation().getId())
-                                                .build())
-                                );
+                                String.valueOf(userThread.getUser().getId()),
+                                "/message",
+                                objectMapper.writeValueAsString(MessageResponseModel.builder()
+                                        .body(message.getText())
+                                        .id(message.getId())
+                                        .date(new Date().toString())
+                                        .incoming(!currentUserId.equals(userThread.getUser().getId()))
+                                        .author(new UserSummary(userThread.getUser()))
+                                        .conversationId(message.getConversation().getId())
+                                        .build())
+                        );
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
 
                 }
         );
+    }
+
+    @Async
+    void updateConversationLastMessageDate(Long conversationId) {
+        Conversation conversation = conversationRepository.findById(conversationId)
+                .orElseThrow(() -> new EdadiEntityNotFoundException(EntityType.CONVERSATION));
+        conversation.setLastMessageDate(new Date());
+        conversationRepository.save(conversation);
     }
 
 }

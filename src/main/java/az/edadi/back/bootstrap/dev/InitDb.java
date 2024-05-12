@@ -108,7 +108,12 @@ public class InitDb implements CommandLineRunner {
         user.setPicture("assets/images/user/default.png");
         user.setPassword(passwordEncoder.encode("admin"));
         userRepository.saveAndFlush(user);
-        for (int i = 0; i < 3; i++) {
+        user.setUsername("ulvu");
+        user.setPassword(passwordEncoder.encode("ulvu"));
+        user.setEmail("ulvu@gmail.com");
+        userRepository.saveAndFlush(user);
+
+         for (int i = 0; i < 20; i++) {
             User user1 = new User();
             user1.setUsername(UUID.randomUUID().toString().substring(5, 20));
             user1.setEmail(UUID.randomUUID().toString().substring(5, 20) + "@gmail.com");
@@ -165,19 +170,21 @@ public class InitDb implements CommandLineRunner {
     }
 
     void addThreads(){
-        Conversation conversation = new Conversation();
-        conversation= conversationRepository.saveAndFlush(conversation);
 
-        Thread thread = new Thread();
-        thread.setConversation(conversation);
-        thread.setUser(new User(1L));
-        threadRepository.saveAndFlush(thread);
+        for(int i=3; i<15; i++) {
+            Conversation conversation = new Conversation();
+            conversation = conversationRepository.saveAndFlush(conversation);
 
-        Thread newThread = new Thread();
-        newThread.setConversation(conversation);
-        newThread.setUser(new User(2L));
-        threadRepository.saveAndFlush(newThread);
+            Thread thread = new Thread();
+            thread.setConversation(conversation);
+            thread.setUser(new User(1L));
+            threadRepository.saveAndFlush(thread);
 
+            Thread newThread = new Thread();
+            newThread.setConversation(conversation);
+            newThread.setUser(new User(Long.valueOf(i)));
+            threadRepository.saveAndFlush(newThread);
+        }
 
 
      }
