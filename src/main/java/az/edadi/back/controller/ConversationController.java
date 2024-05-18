@@ -24,8 +24,8 @@ public class ConversationController {
         return conversationService.getConversationById(id);
     }
     @GetMapping()
-    List<ConversationRes> getConversationResList(@RequestParam(value = "page",defaultValue = "1") int page){
-       return conversationService.getConversationList(page);
+    List<ConversationRes> getConversationResList(@RequestParam(value = "page",defaultValue = "1") int page) throws InterruptedException {
+       return    conversationService.getConversationList(page);
     }
 
 }
