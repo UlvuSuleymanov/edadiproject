@@ -2,17 +2,19 @@ package az.edadi.back.service.impl.fileIO;
 
 import az.edadi.back.config.MinioConfig;
 import az.edadi.back.model.ReadyFile;
+import az.edadi.back.model.response.UploadFileRes;
 import az.edadi.back.service.FileIOService;
 import io.minio.PutObjectArgs;
 import io.minio.errors.*;
 import org.springframework.stereotype.Service;
 import io.minio.MinioClient;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-@Service
+
 public class MinIOServiceImpl implements FileIOService {
 
     private final MinioClient minioClient;
@@ -24,16 +26,16 @@ public class MinIOServiceImpl implements FileIOService {
         this.minioConfig = minioConfig;
     }
 
+
+    @Override
+    public UploadFileRes uploadUserImage(MultipartFile multipartFile, File file, String key) {
+        return null;
+    }
+
     @Override
     public String saveFile(ReadyFile readyFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        InputStream inputStream = readyFile.getMultipartFile().getInputStream();
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(bucket)
-                .object(readyFile.getFileItem().getName())
-                .contentType(readyFile.getFileItem().getContentType())
-                .stream(inputStream, inputStream.available(), -1)
-                .build());
-        return readyFile.getFileItem().getName();
+
+        return readyFile.getFileItem().toString();
     }
 
 

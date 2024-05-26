@@ -1,13 +1,16 @@
 package az.edadi.back.service.impl.auth;
 
 import az.edadi.back.constants.type.EntityType;
+import az.edadi.back.entity.app.FileItem;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.model.UserPrincipalModel;
 import az.edadi.back.model.request.SetSpecialityRequestModel;
+import az.edadi.back.model.request.UpdateUserImageReq;
 import az.edadi.back.model.response.SignInResponseModel;
 import az.edadi.back.model.response.UserResponseModel;
+import az.edadi.back.repository.FileItemRepository;
 import az.edadi.back.repository.SpecialityRepository;
 import az.edadi.back.repository.UserRepository;
 import az.edadi.back.service.ImageService;
@@ -39,6 +42,7 @@ public class UserServiceImp implements UserService {
     private final ImageService imageService;
     private final SpecialityRepository specialityRepository;
     private final JwtService jwtService;
+    private final FileItemRepository fileItemRepository;
 
     @Override
     public UserResponseModel getUserByUsername(String username) {
@@ -46,7 +50,6 @@ public class UserServiceImp implements UserService {
                 .orElseThrow(() -> new EdadiEntityNotFoundException(EntityType.USER));
         return new UserResponseModel(user);
     }
-
 
     @Override
     public UserPrincipalModel createUserPrincipial(User user) {
@@ -66,24 +69,17 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String setImage(MultipartFile multipartFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-
-        Long userId = AuthUtil.getCurrentUserId();
-        User user = userRepository.getById(userId);
-
-        String name = UUID.randomUUID().toString();
-        String url = imageService.saveProfilePhoto(name, multipartFile);
-
-//        String oldImageName = user.getImageName();
-        user.setPicture(url);
-        userRepository.save(user);
-
-//        if (!oldImageName.equals(AppConstants.USER_DEFAULT_PHOTO)) {
-//            imageService.deleteUserOldImages(oldImageName);
-//        }
-
-        return url;
-
+    public String updateUserImage(UpdateUserImageReq updateUserImageReq) {
+        FileItem fileItem = fileItemRepository.findByUuid(updateUserImageReq.getId()).orElseThrow(
+                ()->new EdadiEntityNotFoundException(EntityType.FILE));
+        User currentUser = userRepository.findById(AuthUtil.getCurrentUserId()).orElseThrow(
+                ()->new EdadiEntityNotFoundException(EntityType.USER));
+        currentUser.setPicture(fileItem.getUrl());
+        fileItem.setUsed(true);
+        fileItem.setUser(currentUser);
+        userRepository.save(currentUser);
+        fileItemRepository.save(fileItem);
+        return fileItem.getUrl();
     }
 
     @Override

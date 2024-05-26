@@ -1,5 +1,6 @@
 package az.edadi.back.entity.app;
 
+import az.edadi.back.entity.BaseEntity;
 import az.edadi.back.entity.auth.User;
 import az.edadi.back.entity.post.Post;
 import az.edadi.back.entity.roommate.Roommate;
@@ -13,26 +14,22 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class FileItem {
-    @Id
-    private UUID id;
+public class FileItem extends BaseEntity {
 
-    private String name;
+    private UUID uuid;
 
     private String orginalName;
+
+    private String url;
 
     private String contentType;
 
     private Boolean used;
 
-    private String extension;
-
     private String folder;
-
-    private Date date;
 
     private String parent;
 

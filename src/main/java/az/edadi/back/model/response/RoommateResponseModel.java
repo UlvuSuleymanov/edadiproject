@@ -36,7 +36,7 @@ public class RoommateResponseModel {
         contact = roommate.getContact();
         gender=roommate.getAuthorGender();
         houseInfo=roommate.getHouseInfo();
-        images=roommate.getFileItems().stream().map(FileItem::getName).toList();
+//        images=roommate.getFileItems().stream().map(FileItem::getName).toList();
         canDelete = AuthUtil.userIsAuthenticated() && (
                 roommate.getUser().getId().equals(AuthUtil.getCurrentUserId()) || AuthUtil.hasAuthority(UserAuthority.ADMIN_UPDATE)
         );

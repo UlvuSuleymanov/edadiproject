@@ -1,6 +1,6 @@
 spring:
   config:
-    import: classpath:properties/h2-properties.yml
+    import: classpath:properties/h2-properties.yml,classpath:properties/s3-properties.yml
   mail:
     host: smtp.gmail.com
     port: 587
@@ -25,9 +25,9 @@ minio:
 app:
   jwt:
     title: Bearer
-    secretKey: assaasdassadasdsad
-    accessTokenSessionTime: 999999999999
-    refreshTokenSessionTime: 99999999999
+    secretKey: KMij3IJWl94kjsOosjaUuIIiiwIo
+    accessTokenSessionTime:  864000000
+    refreshTokenSessionTime: 5500000000
   constants:
     defaultSecurityMail: edaunicom2@gmail.com
     appName: Edauni

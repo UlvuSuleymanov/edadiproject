@@ -7,6 +7,7 @@ import az.edadi.back.entity.auth.User;
 import az.edadi.back.exception.model.EdadiEntityNotFoundException;
 import az.edadi.back.exception.model.TooManyAttemptException;
 import az.edadi.back.exception.model.UsernameOrPasswordNotCorrectException;
+import az.edadi.back.model.UserSummary;
 import az.edadi.back.model.request.OAuth2LoginRequest;
 import az.edadi.back.model.request.SignInRequestModel;
 import az.edadi.back.model.request.SignUpRequestModel;
@@ -89,18 +90,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public JwtTokenResponseModel refreshToken(JwtTokenResponseModel tokens) {
+    public SignInResponseModel refreshToken(JwtTokenResponseModel tokens) {
         Long accessId = jwtService.getUntrustedIdFromToken(tokens.getRefreshToken());
-
-        Optional<User> user = userRepository.findById(accessId);
-
-        if (!user.isPresent())
-            throw new EdadiEntityNotFoundException(EntityType.USER);
-
-        //check refreshToken
-        jwtService.getIdFromToken(tokens.getRefreshToken(), user.get());
-
-        return jwtService.getTokenResponse(user.get());
+        User user = userRepository.findById(accessId).orElseThrow(
+                ()->   new EdadiEntityNotFoundException(EntityType.USER)
+        );
+        jwtService.getIdFromToken(tokens.getRefreshToken(), user);
+        return new SignInResponseModel(user, jwtService.getTokenResponse(user));
 
     }
 

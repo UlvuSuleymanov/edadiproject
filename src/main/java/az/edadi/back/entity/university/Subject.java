@@ -1,5 +1,6 @@
 package az.edadi.back.entity.university;
 
+import az.edadi.back.entity.app.SharedStudyMaterial;
 import az.edadi.back.entity.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class Subject {
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
-    private List<TextBookFile> textBookFiles = new ArrayList<>();
+    private List<SharedStudyMaterial> textBookFiles = new ArrayList<>();
 
 
 }

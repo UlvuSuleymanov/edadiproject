@@ -3,11 +3,7 @@ package az.edadi.back.entity.auth;
 import az.edadi.back.constants.AppConstants;
 import az.edadi.back.constants.UserAuthority;
 import az.edadi.back.entity.BaseEntity;
-import az.edadi.back.entity.app.Article;
-import az.edadi.back.entity.app.FileItem;
-import az.edadi.back.entity.app.Notification;
-import az.edadi.back.entity.app.Topic;
-import az.edadi.back.entity.message.Message;
+import az.edadi.back.entity.app.*;
 import az.edadi.back.entity.message.Thread;
 import az.edadi.back.entity.post.Comment;
 import az.edadi.back.entity.post.Post;
@@ -16,7 +12,6 @@ import az.edadi.back.entity.roommate.Roommate;
 import az.edadi.back.entity.textbook.TextbookAd;
 import az.edadi.back.entity.university.Speciality;
 import az.edadi.back.entity.university.Subject;
-import az.edadi.back.entity.university.TextBookFile;
 import az.edadi.back.model.request.SignUpRequestModel;
 import az.edadi.back.model.response.OAuth2CustomUser;
 import az.edadi.back.utility.UserUtil;
@@ -24,7 +19,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.*;
 
 @Data
@@ -79,8 +73,6 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Subject> subjects =new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<TextBookFile> textBookFiles =new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Thread> userThreads = new ArrayList<>();
@@ -94,6 +86,8 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Notification> notifications = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    private List<SharedStudyMaterial> sharedStudyMaterialList = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "id"))

@@ -25,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity refreshToken(@RequestBody JwtTokenResponseModel tokens) {
+    public ResponseEntity<SignInResponseModel> refreshToken(@RequestBody JwtTokenResponseModel tokens) {
         return ResponseEntity.ok(authenticationService.refreshToken(tokens));
     }
 

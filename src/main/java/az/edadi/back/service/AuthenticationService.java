@@ -20,7 +20,7 @@ public interface AuthenticationService {
 
     SignInResponseModel resetPassword(String token, String newPassword);
 
-    JwtTokenResponseModel refreshToken(JwtTokenResponseModel tokens);
+    SignInResponseModel refreshToken(JwtTokenResponseModel tokens);
 
     SignInResponseModel socialLogin(OAuth2LoginRequest oAuth2LoginRequest);
 

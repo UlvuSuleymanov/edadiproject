@@ -10,6 +10,7 @@ public enum EntityType {
     SPECIALITY("speciality","/speciality"),
     CONVERSATION("conversation","/conversation"),
     TOPIC("topic","/topic"),
+    FILE("file","/file"),
     All("all","/");
 
     private final String type;

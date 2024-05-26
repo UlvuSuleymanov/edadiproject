@@ -30,9 +30,6 @@ public class TextbookAd {
     private float price;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private TextBookType type;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)

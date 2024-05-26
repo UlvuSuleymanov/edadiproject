@@ -17,14 +17,11 @@ public class SimpleFileRes {
 
     public SimpleFileRes(FileItem fileItem) {
         id=fileItem.getId().toString();
-        url="http://localhost:9000/edadi/"+fileItem.getName();
-        name=fileItem.getName();
         key=fileItem.getId().toString();
         folder=fileItem.getFolder();
         contentType=fileItem.getContentType();
         parent = fileItem.getParent();
-        extension=fileItem.getExtension();
-        size=fileItem.getSize();
+         size=fileItem.getSize();
     }
 
     public SimpleFileRes() {
