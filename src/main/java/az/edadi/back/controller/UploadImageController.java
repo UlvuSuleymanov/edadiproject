@@ -27,6 +27,7 @@ public class UploadImageController {
         UploadFileRes fileRes= fileService.uploadUserProfileImage(file);
         return ResponseEntity.ok(fileRes);
     }
+
     @PostMapping("{parent}")
     List<SimpleFileRes> uploadFile(
             @PathVariable String parent,

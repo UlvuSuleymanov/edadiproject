@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/university")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
-
 public class UniversityController {
     private final UniversityRepository universityRepository;
     private final UniversityService universityService;

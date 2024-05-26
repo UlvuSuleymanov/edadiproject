@@ -14,5 +14,6 @@ public enum State {
     EDITED,
     FEATURED,
     PROMOTED,
+    INITIAL,
     REVIEWED;
 }

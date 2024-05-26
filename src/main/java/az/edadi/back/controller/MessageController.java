@@ -4,6 +4,7 @@ import az.edadi.back.model.request.MessageRequestModel;
 import az.edadi.back.model.response.MessageResponseModel;
 import az.edadi.back.service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -14,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class MessageController {
 
     private final MessageService messageService;
 
-    public MessageController(MessageService messageService) {
-        this.messageService = messageService;
-    }
 
     @MessageMapping("/send/message")
     public void messageResponseModel(@Payload MessageRequestModel messageRequestModel,

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,14 +27,14 @@ public class Topic {
 
     private Date date;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "topic")
-    private List<Post> posts =new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "topic")
+    private List<Post> posts = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    public Topic(Long id){
-        this.id=id;
+    public Topic(Long id) {
+        this.id = id;
     }
 
 }

@@ -31,6 +31,7 @@ public class BaseEntity {
     protected void onCreate() {
         this.dateCreated = new Date();
         this.dateModified = new Date();
+        this.state = State.INITIAL;
     }
 
     @PreUpdate

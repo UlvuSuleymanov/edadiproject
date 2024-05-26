@@ -66,7 +66,7 @@ public class Post extends BaseEntity {
 
     public Post(PostRequestModel postRequestModel, User user) {
         text = postRequestModel.getText();
-        parent=EntityType.of(postRequestModel.getType());
+        parent = EntityType.of(postRequestModel.getType());
         this.user = user;
     }
 

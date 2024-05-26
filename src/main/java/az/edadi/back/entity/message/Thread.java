@@ -23,11 +23,11 @@ public class Thread extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Conversation conversation;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "thread")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "thread")
     private List<Message> messages = new ArrayList<>();
 
     public Thread(Conversation conversation, User user) {
-      this.user = user;
-      this.conversation=conversation;
+        this.user = user;
+        this.conversation = conversation;
     }
 }

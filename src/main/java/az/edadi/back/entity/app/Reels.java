@@ -23,7 +23,7 @@ public class Reels extends BaseEntity {
     @OneToOne
     private Roommate roommate;
 
-    public Reels(Roommate roommate){
+    public Reels(Roommate roommate) {
         this.setRoommate(roommate);
         this.setType(EntityType.ROOMMATE);
     }

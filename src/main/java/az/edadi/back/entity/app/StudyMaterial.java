@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class SharedStudyMaterial extends BaseEntity {
+public class StudyMaterial extends BaseEntity {
 
     private String name;
 

@@ -16,8 +16,8 @@ public class SpecialityOffer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-     private String author;
-     private String name;
-     private Long userId;
-     private Long uniId;
+    private String author;
+    private String name;
+    private Long userId;
+    private Long uniId;
 }

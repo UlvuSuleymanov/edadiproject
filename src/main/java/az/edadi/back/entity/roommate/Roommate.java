@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -33,19 +34,19 @@ public class Roommate extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Region region;
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "roommate")
-    private List<FileItem> fileItems =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roommate")
+    private List<FileItem> fileItems = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL,  mappedBy = "roommate")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "roommate")
     private Reels reels;
 
     public Roommate(RoommateReq roommateRequestModel) {
-        haveHouse=roommateRequestModel.getHaveHouse();
-        houseInfo=roommateRequestModel.getHouseInfo();
-        authorGender=roommateRequestModel.getSex();
-        contact=roommateRequestModel.getContact();
-        generalInfo= roommateRequestModel.getGeneralInfo();
-        reels=new Reels(this);
+        haveHouse = roommateRequestModel.getHaveHouse();
+        houseInfo = roommateRequestModel.getHouseInfo();
+        authorGender = roommateRequestModel.getSex();
+        contact = roommateRequestModel.getContact();
+        generalInfo = roommateRequestModel.getGeneralInfo();
+        reels = new Reels(this);
     }
 
 }

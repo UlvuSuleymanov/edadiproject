@@ -25,10 +25,10 @@ public class Login {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private User user;
 
-    public Login(User user){
-        this.user=user;
-        this.date= new Date();
-        this.ip= AuthUtil.getcurrentIp();
+    public Login(User user) {
+        this.user = user;
+        this.date = new Date();
+        this.ip = AuthUtil.getcurrentIp();
     }
 }
 

@@ -18,9 +18,9 @@ import java.util.List;
 public class University implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
-     private String abbr;
+    private String abbr;
 
     private String abbrAz;
     private String nameAz;
@@ -31,12 +31,14 @@ public class University implements Serializable {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
-    private List<Post> postList= new ArrayList<>();;
+    private List<Post> postList = new ArrayList<>();
+    ;
 
 //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
 //    private List<User> userList= new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "university")
-    private List<Speciality> specialities= new ArrayList<>();;
+    private List<Speciality> specialities = new ArrayList<>();
+    ;
 
 }

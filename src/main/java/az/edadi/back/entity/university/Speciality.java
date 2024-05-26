@@ -51,5 +51,4 @@ public class Speciality implements Serializable {
     private University university;
 
 
-
 }

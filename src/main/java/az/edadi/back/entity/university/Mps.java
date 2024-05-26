@@ -19,5 +19,5 @@ public class Mps {
 
     @ManyToOne
     private Speciality speciality;
-    
+
 }

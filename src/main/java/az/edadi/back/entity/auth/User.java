@@ -27,11 +27,11 @@ import java.util.*;
 @AllArgsConstructor
 public class User extends BaseEntity {
 
-    @Column(unique = true,nullable = false,length = 40)
-    private  String username;
+    @Column(unique = true, nullable = false, length = 40)
+    private String username;
 
     @Column(length = 50)
-    private  String name;
+    private String name;
 
     @Column(unique = true, length = 40)
     private String email;
@@ -49,44 +49,44 @@ public class User extends BaseEntity {
     @ManyToOne
     private Speciality speciality;
 
-    @OneToMany( cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Post> posts =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Article> articles =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Roommate> roommates =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Roommate> roommates = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<FileItem> images =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<FileItem> images = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Vote> votes=new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Vote> votes = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Topic> topics =new ArrayList<>();
-    
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
-    private List<Subject> subjects =new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Topic> topics = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Subject> subjects = new ArrayList<>();
 
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Thread> userThreads = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<TextbookAd> textbookAds = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Login> logins = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Notification> notifications = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<SharedStudyMaterial> sharedStudyMaterialList = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -95,8 +95,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Set<UserAuthority> authorities = new HashSet<>();
 
-    public User(){
-        this.lastSeen=new Date();
+    public User() {
+        this.lastSeen = new Date();
         this.authorities.add(UserAuthority.USER_READ);
         this.authorities.add(UserAuthority.USER_UPDATE);
     }
@@ -110,23 +110,25 @@ public class User extends BaseEntity {
 //
 
 
-    public User(SignUpRequestModel signUpRequestModel){
+    public User(SignUpRequestModel signUpRequestModel) {
         this();
-        username=signUpRequestModel.getUsername().toLowerCase();
-        name=signUpRequestModel.getName();
-        email=signUpRequestModel.getEmail().toLowerCase();
-        picture= AppConstants.ROOT_IMAGE_URL+AppConstants.USER_IMAGE_FOLDER+AppConstants.USER_DEFAULT_PHOTO;
+        username = signUpRequestModel.getUsername().toLowerCase();
+        name = signUpRequestModel.getName();
+        email = signUpRequestModel.getEmail().toLowerCase();
+        picture = AppConstants.ROOT_IMAGE_URL + AppConstants.USER_IMAGE_FOLDER + AppConstants.USER_DEFAULT_PHOTO;
         provider = "NATIVE";
     }
-    public User(OAuth2CustomUser user){
+
+    public User(OAuth2CustomUser user) {
         this();
-        name=user.getName();
-        username= UserUtil.getRandomUsername();
-        email= user.getEmail();
+        name = user.getName();
+        username = UserUtil.getRandomUsername();
+        email = user.getEmail();
         provider = user.getProvider();
-        picture=user.getPicture();
+        picture = user.getPicture();
     }
-    public User(Long id){
+
+    public User(Long id) {
         super.setId(id);
     }
 
